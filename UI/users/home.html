@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/quick-credit.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link rel="stylesheet" href="../assets/css/animation.css">
+    <title>Quick Credit | Home</title>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <span class="logo">Quick Credit</span>
+            <nav>
+                <a href="#signup">Signup</a>
+                <a href="#login">Login</a>
+            </nav>
+        </div>
+        <div class="home-bg-image"></div>
+        <div class="overlay home-overlay bg-black opacity-8 animate-fadein">
+            <div class="row to-front">
+                <div class="col-4">
+                    <div class="form interest-calc-form">
+                        <h4 class="heading">Rate Calculator</h4>
+                        <form action="">
+                            <div class="input-wrapper">
+                                <label for="">Amount</label>
+                                <input type="text">
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="">Tenor</label>
+                                <input type="text">
+                            </div>
+                            <button class="btn primary-bg-color primary-color"> Calculate</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-5 offset-3">
+                    <div class="form login-form">
+                            <h4 class="heading">User Login</h4>
+                            <form action="" id="login">
+                                <div class="input-wrapper">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" required>
+                                </div>
+                                <div class="input-wrapper">
+                                    <label for="">Password</label>
+                                    <input type="text">
+                                </div>
+                                <button class="btn primary-bg-color primary-color"> Login</button>
+                                <span class="primary-color size-16">Not yet a Member? <a href="#signup" class="color-red">Signup here</a></span>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner home-banner">
+            <div class="row padding-16">
+                <h4 class="heading">Why Choose Us?</h4>
+                <div class="col-4"><p class="banner-text">Quick and Easy Loans</p></div>
+                <div class="col-4"><p class="banner-text">Lower rates</p></div>
+                <div class="col-4"><p class="banner-text">No penalties</p></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8 offset-2">
+                <div class="form signup-form bg-black opacity-9">
+                    <h4 class="heading">Register With Us</h4>
+                    <form action="" method="POST" id="signup">
+                            <div class="input-wrapper">
+                                <label for="" class="primary-color">First Name</label>
+                                <input class="required" type="text" name="firstName" placeholder="John" required>
+                            </div>
+                            <div class="input-wrapper">
+                                    <label for="" class="primary-color">Last Name</label>
+                                    <input class="required" type="text" name="lastName" placeholder="Doe" required>
+                            </div>
+                            <div class="input-group">
+                                    <div class="input-wrapper">
+                                            <label for="" class="primary-color">Email</label>
+                                            <input class="required" type="email" name="email" placeholder="johnDe@example.com" required>
+                                    </div>
+                                    <div class="input-wrapper">
+                                            <label for="" class="primary-color">Mobile</label>
+                                            <input class="required" type="password" name="passwordConfirm" placeholder="+2348132255421" required>
+                                    </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-wrapper">
+                                        <label for="" class="primary-color">Password </label>
+                                        <input class="required" type="password" name="password" placeholder="********" required>
+                                    </div>
+                                <div class="input-wrapper">
+                                        <label for="" class="primary-color">Confirm Password</label>
+                                        <input class="required" type="password" name="passwordConfirm" placeholder="********" required>
+                                </div>
+                            </div>
+                            <div class="input-wrapper">
+                                    <label for="" class="primary-color">Contact Address</label>
+                                    <input class="required" type="text" name="address" placeholder="address" required>
+                            </div>
+                            <div class="input-wrapper">
+                                    <button class="btn login-btn" type="submit">Register</button>
+                            </div>
+                            <span>Already Have an account? <a href="#login" > Login here</a></span>
+                        </form>
+                </div>
+            </div>
+        </div>
+        <div class="alert">
+            <i class="close-btn">close</i>
+            <p class="message">
+                Your account was created Succesfully
+            </p>
+        </div>
+        <div class="notification">
+            <i class="close-btn">close</i>
+            <p class="message">
+                You have unread messages
+            </p>
+        </div>
+        <div class="modal">
+                <i class="close-btn">close</i>
+                <p class="message">
+                    You have unread messages
+                </p>
+        </div>
+    </div>    
+</body>
+<script src="../assets/js/quick-credit.js"></script>
+</html>
