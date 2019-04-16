@@ -28,12 +28,12 @@
     margin-bottom: 20px;
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 720px) {
     .interest-calc-form{
         left: 100px;
     }
     .home-banner{
         margin-top: 55px;
-        height: 150px !important;
+        height: 160px !important;
     }
 }
