@@ -1,3 +1,6 @@
+/* Primary #6028c1
+text #f5ce42 */
+
 *{
     box-sizing: border-box;
 }
@@ -22,7 +25,6 @@ body{
     margin-left: 0%;
 }
 .overlay{
-    height: 500px;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -45,6 +47,32 @@ body{
 .form form{
     display: block;
 }
+.primary-color{
+    color: white;
+    font-weight: bold;
+    font-size: 16px
+}
+.size-16{
+    font-size: 16px;
+}
+.heading{
+    color: #f5ce42;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 20px;
+}
+.primary-bg-color{
+    background-color: rgb(170, 12, 12);
+}
+.primary-bg-color:hover{
+    background-color: red;
+}
+.color-red{
+    color: firebrick;
+}
+.color-red:hover{
+    color: red;
+}
 
 /* Form css */
 .input-wrapper{
@@ -52,6 +80,7 @@ body{
 }
 label{
     font-weight: bolder;
+    font-size: 18px;
     color: white;
 }
 input{
@@ -88,14 +117,14 @@ input:focus{
 }
 .btn{
     min-width: 70px;
-    height: 30px;
+    height: 25px;
     border: none;
-    background-color: rgb(170, 12, 12);
+    background-color: #6028c1;
     color: white;
     font-weight: 900;
 }
 .btn:hover, .btn:focus{
-    background-color: red;
+    background-color: #8245ec;
     transition: all 0.5s linear;
 }
 
@@ -119,7 +148,34 @@ input:focus{
     color: white;
     font-weight: bold;
 }
-
-.to-front{
-    z-index: 20;
+.menu{
+    height: 50px;
+    background-color: #6028c1;
+    z-index: 99999;
 }
+.menu nav{
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    float: right;
+    color: white;
+    padding: 10px
+}
+.menu nav a {
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+    font-size: 17px;
+}
+.menu nav a:hover {
+    color: #f5ce42;
+}
+.logo{
+    display: inline-block;
+    color: #f5ce42;
+    font-weight: bolder;
+    font-size: 20px;
+    padding: 10px;
+}
+
+/* .banner */
