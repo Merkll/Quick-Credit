@@ -14,14 +14,26 @@
     position: relative;
     top: 20px;
 }
+.signup-form{
+    /* background-color: black; */
+}
 
 .home-overlay{
     min-height: 550px;
     top: 50px !important;
 }
+.home-banner{
+    margin-top: 120px;
+    height: 350px !important;
+    margin-bottom: 20px;
+}
 
 @media only screen and (min-width: 700px) {
     .interest-calc-form{
         left: 100px;
+    }
+    .home-banner{
+        margin-top: 55px;
+        height: 150px !important;
     }
 }
