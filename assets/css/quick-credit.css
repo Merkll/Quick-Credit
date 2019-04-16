@@ -167,7 +167,7 @@ input:focus{
 .menu{
     height: 50px;
     background-color: #6028c1;
-    z-index: 99999;
+    z-index: 10;
 }
 .menu nav{
     position: absolute;
@@ -209,4 +209,79 @@ input:focus{
     color: white;
     font-weight: bolder;
     text-align: center;
+}
+
+.alert{
+    height: 100px;
+    background-color: green;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    opacity: .8;
+    z-index: 999;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow:    0 0 5px black;
+    box-shadow:         0 0 5px black;
+}
+.close-btn{
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    right: 5px;
+}
+.close-btn:hover{
+    color: red;
+}
+.message{
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.notification{
+    height: 150px;
+    width: 300px;
+    background-color: orange;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    opacity: .8;
+    z-index: 999;
+}
+.modal{
+    height: 350px;
+    width: 70%;
+    background-color: green;
+    position: fixed;
+    top: 20%;
+    left: 15%;
+    z-index: 999;
+}
+.success{
+    background-color: green;
+}
+.warning{
+    background-color: yellow;
+}
+
+.danger{
+    background-color: red;
+}
+
+.info{
+    background-color: orange;
+}
+
+
+.alert, .notification, .modal{
+    display: none;
+}
+.show{
+    display: block;
+}
+
+.hide{
+    display: none;
 }
