@@ -102,17 +102,17 @@ label{
 input{
     border: none;
     background-color: transparent;
-    border-bottom: 1px solid rgb(224, 223, 223);
+    border-bottom: .1px solid rgb(224, 223, 223);
     height: 30px;
     width: 100%;
     color: white
 }
 input.isrequired{
-    border-bottom: 2px solid red;
+    border-bottom: 1px solid red;
     transition: all 0.5s linear;
 }
 input:focus{
-    border-bottom: 2px solid red;
+    border-bottom: 1px solid red;
     outline: none;
     transition: all 0.5s linear;
 }
@@ -128,7 +128,7 @@ input:focus{
     clear: both;
 }
 ::placeholder{
-    color: red;
+    color: white;
     opacity: .7
 }
 .btn{
