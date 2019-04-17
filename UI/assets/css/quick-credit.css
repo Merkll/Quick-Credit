@@ -38,9 +38,37 @@ body{
     right: 0px;
     z-index: 5;
 }
+.full-overlay{
+    background-color: black;
+    bottom: 0px;
+    opacity: .9;
+    padding: 30px;
+    top: 50px
+}
+.full-overlay .content{
+    height: 600px;
+    top: 10%;
+    background-color: rgb(255, 251, 251);
+    overflow-y: scroll;
+    padding: 20px;
+}
+.overlay-btn{
+    position: static !important;
+    margin: 10px;
+}
+.full-overlay .content .details * {
+    color: firebrick;
+    border-color: firebrick;
+}
+.full-overlay .content .details label {
+    font-size: 14px
+}
 
 .bg-black{
     background-color: black;
+}
+.bg-red{
+    background-color: firebrick
 }
 .opacity-5{
     opacity: .5;
@@ -55,9 +83,26 @@ body{
     opacity: .9;
 }
 
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
+}
+.float-left::after, .float-right::after{
+    content: " ";
+    display: table;
+    clear: both;
+}
 /* Padding */
 .padding-16{
     padding: 16px;
+}
+.no-padding{
+    padding: 0px;
+}
+.margin-20{
+    margin: 20px;
 }
 
 .form form{
@@ -68,9 +113,8 @@ body{
     font-weight: bold;
     font-size: 16px
 }
-.size-16{
-    font-size: 16px;
-}
+.colo
+
 .heading{
     color: #f5ce42;
     font-weight: bolder;
@@ -86,7 +130,18 @@ body{
 .color-red{
     color: firebrick;
 }
+.color-grey{
+    color: grey !important;
+}
 .color-red:hover{
+    color: red;
+}
+
+a{
+    color: firebrick;
+    text-decoration: none;
+}
+a:hover{
     color: red;
 }
 
@@ -165,6 +220,7 @@ input:focus{
     font-weight: bold;
 }
 .menu{
+    position: relative;
     height: 50px;
     background-color: rgb(105, 19, 19);
     z-index: 10;
@@ -199,6 +255,116 @@ input:focus{
     padding: 10px;
 }
 
+.sidebar{
+    height: 500px;
+    background-color: red;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    background-color: black;
+    opacity: .9;
+}
+.sidebar a{
+    display: block;
+    text-align: left
+}
+.sidebar a{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 2px;
+}
+.sidebar a i{
+    color: firebrick;
+    font-size: 13px;
+}
+.sidebar a:hover{
+    color: red;
+}
+.sidebar .account-name{
+    display: block;
+    margin-bottom: 20px;
+    border-bottom: 1px solid firebrick;
+    text-align: center;
+}
+.content{
+    width: 100%;
+    position: relative;
+}
+.page-title{
+    padding: 5px;
+    border-bottom: 2px solid firebrick;
+    margin-bottom: 10px
+    /* display: none; */
+}
+.page-title span{
+    color: firebrick;
+    font-size: 20px;
+    font-weight: bold;
+}
+.card-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+}
+.card{
+    height: 180px;
+    width: 230px;
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: rgb(216, 213, 213);
+}
+.card-header{
+    padding: 5px;
+    margin-bottom: 30px;
+}
+.card-header span:nth-child(1){
+    float: left;
+    color: firebrick;
+}
+.card-header span:nth-child(2){
+    float: right;
+    color: gray;
+}
+.card-header span::after{
+    content: " ";
+    display: table;
+    clear: both;
+}
+.card-content{
+    padding: 5px;
+}
+.card-content span{
+    display: block;
+    color: firebrick;
+    font-weight: 500;
+}
+
+.card-content span i{
+    color: gray;
+    font-size: 14px;
+}
+.card-content span i::before{
+   content: ":";
+   color: red;
+}
+
+.card-content a{
+    margin-top: 20px;
+    background-color: firebrick;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 2px;
+    float: right;
+}
+.card-content a:hover{
+    background-color: red;
+}
+
 .banner{
     height: 150px;
     background-color:firebrick;
@@ -214,6 +380,12 @@ input:focus{
 .full-height{
     height: 100%;
 }
+
+/* Position */
+.position-relative{
+    position: relative;
+}
+
 
 .alert{
     height: 100px;
@@ -289,3 +461,11 @@ input:focus{
 .hide{
     display: none;
 }
+
+.size-16 *{
+    font-size: 16px;
+}
+.size-10 *{
+    font-size: 10px;
+}
+
