@@ -27,6 +27,8 @@ const foreachNodeInNodelist = (listOfNodes, callbackFunction) => {
 
 addEventToDomNodelist('click', modalCloseButton, (event)=>{
     const modal = event.target.parentNode;
+    const modalParent = modal.parentNode;
     modal.classList.add('hide');
+    if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.add('hide');
 });
 
