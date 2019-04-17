@@ -90,11 +90,12 @@ body{
 .float-right{
     float: right;
 }
-.float-left::after, .float-right::after{
+.clear, .float-left::after, .float-right::after{
     content: " ";
     display: table;
     clear: both;
 }
+
 /* Padding */
 .padding-16{
     padding: 16px;
@@ -182,6 +183,10 @@ input:focus{
     content: " ";
     display: table;
     clear: both;
+}
+textarea {
+    width: 100%;
+    resize: none;
 }
 ::placeholder{
     color: white;
