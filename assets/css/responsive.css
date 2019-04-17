@@ -2,6 +2,13 @@
     .content-box{
         width: 90%;
     }
+    .page-title{
+        display: block;
+    }
+    .card{
+        margin: 0px;
+        margin-bottom: 20px;
+    }
     .col-1{width: 8.33%}
     .col-2{width: 16.66%}
     .col-3{width: 24.99%}

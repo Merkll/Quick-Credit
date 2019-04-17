@@ -39,6 +39,7 @@ body{
     z-index: 5;
 }
 
+
 .bg-black{
     background-color: black;
 }
@@ -58,6 +59,9 @@ body{
 /* Padding */
 .padding-16{
     padding: 16px;
+}
+.no-padding{
+    padding: 0px;
 }
 
 .form form{
@@ -87,6 +91,14 @@ body{
     color: firebrick;
 }
 .color-red:hover{
+    color: red;
+}
+
+a{
+    color: firebrick;
+    text-decoration: none;
+}
+a:hover{
     color: red;
 }
 
@@ -165,6 +177,7 @@ input:focus{
     font-weight: bold;
 }
 .menu{
+    position: relative;
     height: 50px;
     background-color: rgb(105, 19, 19);
     z-index: 10;
@@ -199,6 +212,115 @@ input:focus{
     padding: 10px;
 }
 
+.sidebar{
+    height: 500px;
+    background-color: red;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    background-color: black;
+    opacity: .9;
+}
+.sidebar a{
+    display: block;
+    text-align: left
+}
+.sidebar a{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 2px;
+}
+.sidebar a i{
+    color: firebrick;
+    font-size: 13px;
+}
+.sidebar a:hover{
+    color: red;
+}
+.sidebar .account-name{
+    display: block;
+    margin-bottom: 20px;
+    border-bottom: 1px solid firebrick;
+    text-align: center;
+}
+.content{
+    width: 100%;
+    position: relative;
+}
+.page-title{
+    padding: 5px;
+    border-bottom: 2px solid firebrick;
+    display: none;
+}
+.page-title span{
+    color: firebrick;
+    font-size: 20px;
+    font-weight: bold;
+}
+.card-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+}
+.card{
+    height: 180px;
+    width: 230px;
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: rgb(216, 213, 213);
+}
+.card-header{
+    padding: 5px;
+    margin-bottom: 30px;
+}
+.card-header span:nth-child(1){
+    float: left;
+    color: firebrick;
+}
+.card-header span:nth-child(2){
+    float: right;
+    color: gray;
+}
+.card-header span::after{
+    content: " ";
+    display: table;
+    clear: both;
+}
+.card-content{
+    padding: 5px;
+}
+.card-content span{
+    display: block;
+    color: firebrick;
+    font-weight: 500;
+}
+
+.card-content span i{
+    color: gray;
+    font-size: 14px;
+}
+.card-content span i::before{
+   content: ":";
+   color: red;
+}
+
+.card-content a{
+    margin-top: 20px;
+    background-color: firebrick;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 2px;
+    float: right;
+}
+.card-content a:hover{
+    background-color: red;
+}
+
 .banner{
     height: 150px;
     background-color:firebrick;
@@ -214,6 +336,12 @@ input:focus{
 .full-height{
     height: 100%;
 }
+
+/* Position */
+.position-relative{
+    position: relative;
+}
+
 
 .alert{
     height: 100px;
@@ -289,3 +417,4 @@ input:focus{
 .hide{
     display: none;
 }
+
