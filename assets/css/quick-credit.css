@@ -43,7 +43,8 @@ body{
     bottom: 0px;
     opacity: .9;
     padding: 30px;
-    top: 50px
+    top: 50px;
+    display: none;
 }
 .full-overlay .content{
     height: 600px;
