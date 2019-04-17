@@ -32,3 +32,13 @@ addEventToDomNodelist('click', modalCloseButton, (event)=>{
     if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.add('hide');
 });
 
+// loads the js template file
+const templateScript = document.createElement('script');
+templateScript.src = '/UI/assets/js/template.js';
+document.body.insertBefore(templateScript, document.getElementById('main-js'));
+
+document.body.onload = () => {
+
+}
+
+
