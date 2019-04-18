@@ -32,12 +32,45 @@ addEventToDomNodelist('click', modalCloseButton, (event)=>{
     if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.add('hide');
 });
 
-// loads the js template file
-const templateScript = document.createElement('script');
-templateScript.src = '/UI/assets/js/template.js';
-document.body.insertBefore(templateScript, document.getElementById('main-js'));
 
+/**Template Engine actions */
+const initialiseTemplateEngine = () =>{
+    const templateScript = document.createElement('script');
+    templateScript.src = '/UI/assets/js/template.js';
+    templateScript.id = "template-js";
+    document.body.insertBefore(templateScript, document.getElementById('main-js'));
+
+};
+
+initialiseTemplateEngine()
+// loads the js template file
+
+const sidebarTags = {
+    "accountName": "Mike John",
+    "inboxCount": 55
+
+}
+const topmenuTags = {
+    links: [
+        {
+            text: "Logout",
+            href: '/home',
+            baseTemplate: '<a href="{{href}}">{{text}}</a>',
+            // data: 'a'
+        },
+        {
+            text: "Name",
+            href: '/home',
+            baseTemplate: '<a href="{{href}}">{{text}}</a>',
+            // data: 'a'
+        }
+    ]
+}
 document.body.onload = () => {
+    loadTemplateFiles(['sidebar', 'top-menu'])
+    .then((res)=> render('sidebar', sidebarTags))
+    .then((res)=> render('top-menu', topmenuTags))
+
 
 }
 
