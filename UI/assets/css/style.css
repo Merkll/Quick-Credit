@@ -12,18 +12,16 @@
 }
 .login-form{
     position: relative;
-    top: 20px;
+    top: 70px;
 }
-.signup-form{
-    /* background-color: black; */
-}
+
 
 .home-overlay{
     min-height: 550px;
-    top: 50px !important;
+    /* top: 50px !important; */
 }
 .home-banner{
-    margin-top: 120px;
+    margin-top: 150px;
     height: 350px !important;
     margin-bottom: 20px;
 }
@@ -87,7 +85,7 @@
         left: 100px;
     }
     .home-banner{
-        margin-top: 55px;
+        margin-top: 10px;
         height: 160px !important;
     }
 }
