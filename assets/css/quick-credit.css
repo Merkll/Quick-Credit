@@ -384,7 +384,7 @@ textarea {
 .alert{
     height: 100px;
     background-color: green;
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     right: 0px;
