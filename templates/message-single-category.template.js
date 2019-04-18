@@ -1,6 +1,6 @@
 (function(){
     const templateHtml = `
-        <li class="{{class}}"><a href="#">{{text}}</a></li>
+        <li class="{{class}}"><a href="#" data-message="{{messageId}}" class="{{linkClass}}">{{text}}</a></li>
  `;
 
 
