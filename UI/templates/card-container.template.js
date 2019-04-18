@@ -9,7 +9,9 @@
     const cardContainer = {
         root: 'card-container-root',
         classNames: [],
-        template: templateHtml
+        template: templateHtml,
+        childComponent: 'loans-card',
+        childTag: 'cards',
     };
     templates['card-container'] = cardContainer;
 }());

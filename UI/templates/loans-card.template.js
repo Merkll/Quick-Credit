@@ -9,9 +9,9 @@
             <span>Application Date <i>{{applicationDate}}</i></span>
             <span>Loan Amount <i>{{loanAmount}}</i></span>
             <span>Loan Tenor <i>{{loanTenor}}</i></span>
-            <span>Balance <i>{{balance}}</i></span>
+            <span>Balance <i>{{loanBalance}}</i></span>
             <span>Next Repayment <i>{{nextRepayment}} </i></span>
-            <a href="#" data-loan="{{loanId}}">View Loan</a>
+            <a href="#" data-loan="{{loanId}}" class="view-loan">View Loan</a>
         </div>
     </div>
  `;
