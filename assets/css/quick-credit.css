@@ -44,7 +44,7 @@ body{
     opacity: .9;
     padding: 30px;
     top: 50px;
-    display: none;
+    /* display: none; */
 }
 .full-overlay .content{
     height: 600px;
