@@ -21,7 +21,9 @@
     const repayments = {
         root: 'repayments-root',
         classNames: [],
-        template: templateHtml
+        template: templateHtml,
+        childComponent: 'repayments-table-row',
+        childTag: 'repayments'
     };
     templates['repayments'] = repayments;
 }());
