@@ -178,6 +178,11 @@ input:focus{
     display: table;
     clear: both;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
 textarea {
     width: 100%;
     resize: none;
