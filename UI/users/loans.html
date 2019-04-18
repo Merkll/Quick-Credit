@@ -30,69 +30,14 @@
         <div class="overlay full-overlay">
             <i class="close-btn">close</i>
             <div class="content">
-                <div class="page-title">
-                    <span>Loan <i>#0000839h</i></span>
-                    <span class="float-right color-grey">Current</i></span>
+                <div id="loan-details-root">
+                    
                 </div>
-                <div class="details">
-                    <div class="form">
-                            <div class="input-group">
-                                    <div class="input-wrapper">
-                                            <label for="" class="primary-color">Application Date</label>
-                                            <input type="text" value="31 Mar 2019" disabled>
-                                    </div>
-                                    <div class="input-wrapper">
-                                            <label for="" class="primary-color">Amount</label>
-                                            <input type="text" value="30000" disabled>
-                                    </div>
-                                    <div class="input-wrapper">
-                                            <label for="" class="primary-color">Tenor</label>
-                                            <input type="text" value="12" disabled>
-                                    </div>
-                            </div>
-                            <div class="input-group">
-                                    <div class="input-wrapper">
-                                            <label for="" class="primary-color">Balance</label>
-                                            <input type="text" value="30000" disabled>
-                                    </div>
-                                    <div class="input-wrapper">
-                                            <label for="" class="primary-color">Next Repayment</label>
-                                            <input type="text" value="31 Mar 2019" disabled>
-                                    </div>
-                            </div>
-                    </div>
-                </div>
-
                 <div class="details">
                     <div class="page-title">
                         <span>Loan Repayment History </span>
                     </div>
-                    <div class="table-container">
-                            <table class="repayment-table">
-                                    <thead>
-                                    <tr>
-                                        <th>Payment ID</th>
-                                        <th>Date Paid</th>
-                                        <th>Amount Paid</th>
-                                        <th>Loan Balance</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>#9i998746564</td>
-                                        <td>31 March 2019</td>
-                                        <td>6000</td>
-                                        <td>5000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>#9i998746564</td>
-                                        <td>31 March 2019</td>
-                                        <td>6000</td>
-                                        <td>5000</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                        </div>
+                    <div class="table-container" id="repayments-root"></div>
                 </div>
                 <button class="btn float-right close-btn overlay-btn">OK</button>
             </div>

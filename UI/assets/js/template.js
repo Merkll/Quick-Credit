@@ -98,7 +98,7 @@ const render = (template, tags) => {
     if(templates && templates[template]){
         template = templates[template];
         let html = populate(template.template, tags).trim();
-         html = replaceTrailingTags(html);
+        html = replaceTrailingTags(html);
         console.log(html)
         const templateRoot = template.root;
         const templateRenderFunction = template.render;
