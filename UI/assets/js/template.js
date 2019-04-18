@@ -86,11 +86,15 @@ const populate = (templateHtml, tags, rootTag = "") => {
 const render = (template, tags) => {
     if(templates && templates[template]){
         template = templates[template];
+        const html = populate(template.template, tags).trim();
+        console.log(html)
         const templateRoot = template.root;
+        const templateRenderFunction = template.render;
+        if(templateRenderFunction) return templateRenderFunction(html);
         const rootElement = document.getElementById(templateRoot);
-        const html = populate(template.template, tags);
         if(rootElement) rootElement.innerHTML = html; 
-        return html;  
+        return html;
+        
     }
 }
 

@@ -66,10 +66,18 @@ const topmenuTags = {
         }
     ]
 }
+const loanCardData = {
+    loanId: "#88828288"
+}
 document.body.onload = () => {
-    loadTemplateFiles(['sidebar', 'top-menu'])
-    .then((res)=> render('sidebar', sidebarTags))
-    .then((res)=> render('top-menu', topmenuTags))
+    loadTemplateFiles(['sidebar', 'top-menu', 'alert', 'notification', 'modal', 'loans-card'])
+    // .then((res)=> render('sidebar', sidebarTags))
+    // .then((res)=> render('top-menu', topmenuTags))
+    // .then((res)=> render('alert', topmenuTags))
+    // .then((res)=> render('notification', topmenuTags))
+    // .then((res)=> render('modal', {content: "Hello from templa"}))
+    .then((res)=> render('loans-card', loanCardData))
+
 
 
 }
