@@ -29,7 +29,7 @@ const replaceTrailingTags = (templateHtml) => {
 }
 
 const replaceTag = (templateHtml, tag, value) => {
-    const templateTag = `{{${tag}}}`;
+    const templateTag = new RegExp(`{{${tag}}}`, 'g');
     return templateHtml.replace(templateTag, `${value}${templateTag}`);
 }
 
