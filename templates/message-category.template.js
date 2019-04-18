@@ -9,7 +9,9 @@
     const messageCategory = {
         root: 'message-category-root',
         classNames: [],
-        template: templateHtml
+        template: templateHtml,
+        childComponent: 'message-single-category',
+        childTag: 'category',
     };
     templates['message-category'] = messageCategory;
 }());

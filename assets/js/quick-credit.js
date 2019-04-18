@@ -43,6 +43,7 @@ document.body.onload = () => {
     //event handler for dynamic dom elements rendered by the template engine
     document.addEventListener('click', (event) => {
         if(event.target.matches('.close-btn')) modalCloseAction(event);
+        if(event.target.matches('.view-loan')) viewLoanAction(event);
     });
 
     addEventToDomNodelist('click', formSubmitButton, (event)=>{
@@ -57,7 +58,7 @@ document.body.onload = () => {
     });
 
 
-    Mock();
+    Mock.mock();
 
 }
 
@@ -66,6 +67,7 @@ const calculateRate = (formData) => {
     const tenor = parseInt(formData.get('tenor'));
     const rate = Math.round( amount / tenor).toFixed(1);//
     const payment = Math.round(amount / tenor);
+    if(!(rate && payment)) return;
    displayRate({rate, payment});
     
 }
@@ -89,11 +91,30 @@ const signup = (formData) => {
     render('alert', {content: `Account Creation succesfull`} );
 }
 
+const passwordReset = (formData) => {
+    const email = formData.get('email');
+    render('alert', {content: `Password reset succesfull`} );
+}
+
 const modalCloseAction = (event) =>{
     const modal = event.target.parentNode;
     const modalParent = modal.parentNode;
-    modal.classList.add('hide');
-    if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.add('hide');
+    modal.classList.remove('show');
+    if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.remove('show');
+}
+
+const viewLoanAction = async (event) => {
+    event.preventDefault();
+    const loanId = event.target.dataset.loan;
+    const repayments = Mock.data.repayments[loanId];
+    const loanDetails = Mock.data.loanDetails[loanId];
+    render('repayments', repayments);
+    render('loan-details', loanDetails);
+    document.querySelector('.full-overlay').classList.add('show');
+}
+
+const loanApplication = (formData) => {
+    render('alert', {content: `Loan application Successful`} );
 }
 
 
@@ -101,7 +122,9 @@ const modalCloseAction = (event) =>{
 const formActions = {
     'calculator': calculateRate,
     login,
-    signup
+    signup,
+    apply: loanApplication,
+    'password-reset': passwordReset
 }
 
 
