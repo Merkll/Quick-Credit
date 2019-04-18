@@ -44,6 +44,9 @@ document.body.onload = () => {
     document.addEventListener('click', (event) => {
         if(event.target.matches('.close-btn')) modalCloseAction(event);
         if(event.target.matches('.view-loan')) viewLoanAction(event);
+        if(event.target.matches('.new-message')) newMessageAction(event);
+        if(event.target.matches('.view-message')) viewMessageAction(event);
+
     });
 
     addEventToDomNodelist('click', formSubmitButton, (event)=>{
@@ -103,7 +106,7 @@ const modalCloseAction = (event) =>{
     if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.remove('show');
 }
 
-const viewLoanAction = async (event) => {
+const viewLoanAction = (event) => {
     event.preventDefault();
     const loanId = event.target.dataset.loan;
     const repayments = Mock.data.repayments[loanId];
@@ -111,6 +114,27 @@ const viewLoanAction = async (event) => {
     render('repayments', repayments);
     render('loan-details', loanDetails);
     document.querySelector('.full-overlay').classList.add('show');
+}
+
+const newMessageAction = (event) => {
+    event.preventDefault();
+    const newButton = event.target;
+    const newButtonListItem = newButton.closest('li');
+    const activeLinks = document.querySelector('.active-category');
+    activeLinks.classList.remove('active-category');
+    newButtonListItem.classList.add('active-category');
+    render('message', {});
+}
+const viewMessageAction = (event) => {
+    event.preventDefault();
+    const newButton = event.target;
+    const messageId = newButton.dataset.message;
+    const newButtonListItem = newButton.closest('li');
+    const activeLinks = document.querySelector('.active-category');
+    activeLinks.classList.remove('active-category');
+    newButtonListItem.classList.add('active-category');
+    const message = Mock.data.message[messageId];
+    render('message', message);
 }
 
 const loanApplication = (formData) => {

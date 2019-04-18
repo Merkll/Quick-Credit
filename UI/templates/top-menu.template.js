@@ -1,7 +1,7 @@
 (function(){
     const templateHtml = `
         <div class="menu">
-            <span class="logo">Quick Credit</span>
+        <a href="./home.html"><span class="logo">Quick Credit</span></a>            
             <nav>
                 {{links}}
             </nav>

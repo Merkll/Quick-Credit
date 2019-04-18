@@ -248,6 +248,7 @@ textarea {
     font-weight: bolder;
     text-decoration: none;
     font-size: 17px;
+    margin-left: 10px;
 }
 .menu nav a:hover {
     color: #f5ce42;

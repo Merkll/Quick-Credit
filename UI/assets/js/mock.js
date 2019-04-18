@@ -1,29 +1,40 @@
 const Mock = (function(){
-    const homePageMenu = {
-            links: [
-                {
-                    data: '<a href="#login">Login</a>'
-                },
-                {
-                    data: '<a href="#signup">Signup</a>'
-                }
-            ]
-    }
+    const topMenu = (() =>{
+        const url = window.location.href.split('/')
+        const page = url[url.length -1];
+        let template = {
+            childTag: 'links',
+            childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
+            childNodes: [
+                    {
+                        text: "Logout",
+                        href: '/home',
+                    }
+                ]
+        };
+        if(page == 'home.html') {
+            template = {
+                childTag: 'links',
+                childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
+                childNodes: [
+                        {
+                            text: "Login",
+                            href: '#login',
+                        },
+                        {
+                            text: "Signup",
+                            href: '#signup',
+                        }
+                    ]
+            };
+        }
+        return template;
+    })();
 
-    const dashboardTopMenu = {
-        childTag: 'links',
-        childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
-        childNodes: [
-                {
-                    text: "Logout",
-                    href: '/home',
-                }
-            ]
-    }
 
     const sideBar = {
         "accountName": "Mike John",
-        "inboxCount": 55
+        "inboxCount": 1
     }
 
     const cardContainer = {
@@ -102,19 +113,23 @@ const Mock = (function(){
     
 
     const messageCategoryDetails = {
-        subject: "Approval of Loan #9908udu",
-        content : "Loan Approved",
-        // action: '<a href="" class="">Reply</a>'
+        "#88828289": {
+            subject: "Approval of Loan #9908udu",
+            content : "Loan Approved",
+        }
     }
+
     const messageCategory = {
         childNodes: [
             {
                 text: 'New',
-                class: 'new-message'
+                class: 'new-message active-category',
+                linkClass: 'new-message'
             },
             {
                 text: 'Loan-#88iodha98',
-                class: 'active-category'
+                linkClass: 'view-message',
+                messageId: '#88828289',
             }
         ]
     }
@@ -122,7 +137,7 @@ const Mock = (function(){
     return {
             mock: () => {
                 render('sidebar', sideBar)
-                render('top-menu', dashboardTopMenu)
+                render('top-menu', topMenu)
                 render('card-container', cardContainer)
                 render('message', messageCategoryDetails)
                 render('message-category', messageCategory )
@@ -130,8 +145,8 @@ const Mock = (function(){
             },
             data: {
                 repayments,
-                loanDetails
-
+                loanDetails,
+                message: messageCategoryDetails
             }
         }
 }());
