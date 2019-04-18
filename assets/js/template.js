@@ -29,21 +29,24 @@ const replaceTrailingTags = (templateHtml) => {
 }
 
 const replaceTag = (templateHtml, tag, value) => {
-    const templateTag = new RegExp(`{{${tag}}}`, 'g');
-    return templateHtml.replace(templateTag, `${value}${templateTag}`);
+    const templateTag = `{{${tag}}}`;
+    return templateHtml.replace(new RegExp(templateTag, 'g'), `${value}${templateTag}`);
 }
 
-const multiTagsPopulate = (templateHtml, tags, rootTag) => {
+const multiTagsPopulate = ({templateHtml, tags, rootTag, childTemplate, childTag}) => {
   for (const singleTag of tags) {
       const data = singleTag.data;
-      const baseTemplate = singleTag.baseTemplate;
+      const baseTemplate = childTemplate || singleTag.baseTemplate;
+      const baseTag = childTag || rootTag;
       if(data){
           templateHtml = replaceTag(templateHtml, rootTag, data);
       }else if(baseTemplate && templates[baseTemplate]){
             const html = render(baseTemplate, singleTag);
             const childTemplate = [];
-            childTemplate[rootTag] = html;
-            templateHtml = populate(templateHtml, tags);
+            childTemplate[baseTag] = html; 
+            templateHtml = populate(templateHtml, childTemplate); 
+            console.log(templateHtml);           
+
       }else if(baseTemplate){
           const baseHtml = populate(baseTemplate, singleTag);
           templateHtml = replaceTag(templateHtml, rootTag, baseHtml)
@@ -64,9 +67,16 @@ const isObject = (data) => !!(data instanceof Object)
  */
 const populate = (templateHtml, tags, rootTag = "") => {
     if(isObject(tags)){
-        for (const [tag, value] of Object.entries(tags)){
+        if(tags.childrenTemplate) {
+            const childTemplate = tags.childrenTemplate;
+            const childTag = tags.childrenTag;
+            if(isArray(tags.data)){
+                templateHtml = multiTagsPopulate({templateHtml, tags:tags.data, childTemplate, childTag});
+            }
+        }
+        for (let [tag, value] of Object.entries(tags)){
             if(isArray(value)){
-                templateHtml = multiTagsPopulate(templateHtml, value, tag);
+                templateHtml = multiTagsPopulate({templateHtml, tags:value, rootTag:tag});
 
             }else{
                 templateHtml = replaceTag(templateHtml, tag, value);
@@ -75,6 +85,7 @@ const populate = (templateHtml, tags, rootTag = "") => {
     }else if(isArray(tags)){
         templateHtml = multiTagsPopulate(templateHtml, value, rootTag);
     }
+    return templateHtml;
     return replaceTrailingTags(templateHtml);
 }
 
@@ -86,7 +97,8 @@ const populate = (templateHtml, tags, rootTag = "") => {
 const render = (template, tags) => {
     if(templates && templates[template]){
         template = templates[template];
-        const html = populate(template.template, tags).trim();
+        let html = populate(template.template, tags).trim();
+         html = replaceTrailingTags(html);
         console.log(html)
         const templateRoot = template.root;
         const templateRenderFunction = template.render;

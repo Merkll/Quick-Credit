@@ -69,14 +69,26 @@ const topmenuTags = {
 const loanCardData = {
     loanId: "#88828288"
 }
+const cardContainer = {
+    childrenTemplate: 'loans-card',
+    childrenTag: 'cards',
+    data: [
+        {
+            loanId: "#88828288" 
+        }, {
+            loanId: "#88828289"
+        }
+    ]
+}
 document.body.onload = () => {
-    loadTemplateFiles(['sidebar', 'top-menu', 'alert', 'notification', 'modal', 'loans-card'])
+    loadTemplateFiles(['sidebar', 'top-menu', 'alert', 'notification', 'modal', 'loans-card', 'card-container'])
     // .then((res)=> render('sidebar', sidebarTags))
     // .then((res)=> render('top-menu', topmenuTags))
     // .then((res)=> render('alert', topmenuTags))
     // .then((res)=> render('notification', topmenuTags))
     // .then((res)=> render('modal', {content: "Hello from templa"}))
-    .then((res)=> render('loans-card', loanCardData))
+    // .then((res)=> render('loans-card', loanCardData))
+    .then((res)=> render('card-container', cardContainer))
 
 
 
