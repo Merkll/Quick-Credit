@@ -39,11 +39,10 @@ initialiseTemplateEngine();
 document.body.onload = () => {
     const modalCloseButton = document.querySelectorAll('.close-btn');
     const formSubmitButton = document.querySelectorAll('button[type="submit"]');
-    addEventToDomNodelist('click', modalCloseButton, (event)=>{
-        const modal = event.target.parentNode;
-        const modalParent = modal.parentNode;
-        modal.classList.add('hide');
-        if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.add('hide');
+    
+    //event handler for dynamic dom elements rendered by the template engine
+    document.addEventListener('click', (event) => {
+        if(event.target.matches('.close-btn')) modalCloseAction(event);
     });
 
     addEventToDomNodelist('click', formSubmitButton, (event)=>{
@@ -63,8 +62,8 @@ document.body.onload = () => {
 }
 
 const calculateRate = (formData) => {
-    const amount = formData.get('amount');
-    const tenor = formData.get('tenor');
+    const amount = parseInt(formData.get('amount'));
+    const tenor = parseInt(formData.get('tenor'));
     const rate = Math.round( amount / tenor).toFixed(1);//
     const payment = Math.round(amount / tenor);
    displayRate({rate, payment});
@@ -80,8 +79,29 @@ const displayRate = ({rate, payment}) => {
     render('alert', {content: message });
 }
 
+const login = (formData) => {
+    const email = formData.get('email');
+    render('alert', {content: `Welcome ${email}`} );
+}
+
+const signup = (formData) => {
+    const email = formData.get('email');
+    render('alert', {content: `Account Creation succesfull`} );
+}
+
+const modalCloseAction = (event) =>{
+    const modal = event.target.parentNode;
+    const modalParent = modal.parentNode;
+    modal.classList.add('hide');
+    if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.add('hide');
+}
+
+
+
 const formActions = {
-    'calculator': calculateRate
+    'calculator': calculateRate,
+    login,
+    signup
 }
 
 

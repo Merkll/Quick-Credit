@@ -29,11 +29,11 @@
                         <form action="" id="calculator">
                             <div class="input-wrapper">
                                 <label for="">Amount</label>
-                                <input type="text" name="amount">
+                                <input type="number" name="amount" required>
                             </div>
                             <div class="input-wrapper">
                                 <label for="">Tenor</label>
-                                <input type="number" name="tenor">
+                                <input type="number" name="tenor" min="1" max="12" required>
                             </div>
                             <button class="btn primary-bg-color primary-color" type="submit"> Calculate</button>
                         </form>
