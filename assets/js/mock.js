@@ -7,7 +7,7 @@ const Mock = (function(){
     }
     const getPage = () => {
         const url = window.location.href.split('/');
-        return url[url.length - 2];
+        return url[url.length - 1];
     }
     const topMenu = (() =>{
         const url = window.location.href.split('/')
@@ -88,7 +88,7 @@ const Mock = (function(){
         return (isAdmin()) ? admin : user;
     })();
 
-    const cardContainer = (() => {
+    const cardContainer = ((isloan = false) => {
         const loan = {
             childNodes: [
                 {
@@ -132,9 +132,9 @@ const Mock = (function(){
                 },
             ]
         } 
-
-        return clients;
-    })()
+        if(isloan) return loan;
+        return (getPage() == 'clients.html') ? clients : loan;
+    });
 
     const repayments = {
         "#88828288" : {
@@ -210,6 +210,23 @@ const Mock = (function(){
             }            
         },
     }
+
+    const clients = {
+        '#88828289': {
+            userId:  '#88828289',
+            status: 'Approved',
+            userJoinedDate: '31 Mar 2019',
+            userLoans: 1,
+            userEmail: "john@example.com"
+        },
+        '#88828289': {
+            userId:  '#88828289',
+            status: 'Pending',
+            userJoinedDate: '31 Mar 2019',
+            userLoans: 1,
+            userEmail: "mike@example.com"
+        },
+    }
     
 
     const messageCategoryDetails = {
@@ -238,7 +255,7 @@ const Mock = (function(){
             mock: () => {
                 render('sidebar', sideBar);
                 render('top-menu', topMenu);
-                render('card-container', cardContainer);
+                render('card-container', cardContainer());
                 render('message', messageCategoryDetails);
                 render('message-category', messageCategory );
                 render('message-single-category', messageCategoryDetails);
@@ -248,6 +265,8 @@ const Mock = (function(){
             data: {
                 repayments,
                 loanDetails,
+                clients,
+                cardContainer,
                 message: messageCategoryDetails
             }
         }

@@ -9,7 +9,7 @@
             <span>Date Joined <i>{{userJoinedDate}}</i></span>
             <span>Email <i>{{userEmail}}</i></span>
             <span>Loans <i>{{userLoans}}</i></span>
-            <a href="#" data-loan="{{clientId}}" class="view-client">View Client</a>
+            <a href="#" data-client="{{userId}}" class="view-client">View Client</a>
         </div>
     </div>
  `;
