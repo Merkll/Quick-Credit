@@ -29,7 +29,8 @@ const render = (()=>{
     }
 
     const replaceTrailingTags = (templateHtml) => {
-        const tagsRegularExp = new RegExp(/{{.*?}}/, 'gi');  
+        const tagsRegularExp = new RegExp(/{{.*?}}/, 'gi'); 
+        if(templateHtml) 
         return templateHtml.replace(tagsRegularExp, "");
     }
 
@@ -83,11 +84,20 @@ const render = (()=>{
         return templateHtml.trim();
     }
 
+    const templateHook = ({component, action, data = {}}) => {
+        if(component[action]){
+            data = (data[action]) ? data[action] : data
+            component[action](); component[action](data);
+        }
+       
+
+    }
+
     /**
      * Renders the template file
      * @param {String} template 
      */
-    const render = async (templateComponent, tags) => {
+    const render = async (templateComponent, tags, dataToPassHook = {}) => {
        const { component, template: templateHtml } = await loadTemplateFile(templateComponent);
         if(component){
             const populatedTemplate = await populate({templateHtml, tags, component});
@@ -96,6 +106,7 @@ const render = (()=>{
             if(templateRenderFunction) return templateRenderFunction(html);
             const rootElement = document.getElementById(root);
             if(rootElement) rootElement.innerHTML = html; 
+            templateHook({component, action: 'afterRender', data: dataToPassHook});
             return html;            
         }
     }
