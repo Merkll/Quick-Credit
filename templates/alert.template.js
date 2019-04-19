@@ -1,7 +1,7 @@
 (function(){
     const templateHtml = `
         <div class="alert">
-            <i class="close-btn">close</i>
+            <i class="close-btn icon close"></i>
             <p class="message">
                 {{content}}
             </p>
