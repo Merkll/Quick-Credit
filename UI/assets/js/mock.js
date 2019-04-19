@@ -1,4 +1,10 @@
+
 const Mock = (function(){
+    const isAdmin = () => {
+        const url = window.location.href.split('/');
+        const sidebarMode = url[url.length - 2];
+        return sidebarMode == 'admin';
+    }
     const topMenu = (() =>{
         const url = window.location.href.split('/')
         const page = url[url.length -1];
@@ -34,7 +40,7 @@ const Mock = (function(){
 
 
     const sideBar = (() =>{
-        return {
+        const admin = {
             "accountName": "Mike John",
             "inboxCount": 1,
             "links": {
@@ -42,8 +48,8 @@ const Mock = (function(){
                 childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
                 childNodes: [
                         {
-                            text: "Login",
-                            href: '#login',
+                            text: "Loans",
+                            href: './loans.html',
                         },
                         {
                             text: "Signup",
@@ -51,7 +57,29 @@ const Mock = (function(){
                         }
                     ]
             }
+        };
+
+        const user = {
+            "accountName": "Mike John",
+            "inboxCount": 1,
+            "links": {
+                childTag: 'links',
+                childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
+                childNodes: [
+                        {
+                            text: "Loans",
+                            href: './loans.html',
+                        },
+                        {
+                            text: "Apply",
+                            href: './application.html',
+                        }
+                    ]
+            }
         }
+        const url = window.location.href.split('/');
+        const sidebarMode = url[url.length - 2];
+        return (sidebarMode == 'admin') ? admin : user;
     })();
 
     const cardContainer = {
@@ -154,11 +182,11 @@ const Mock = (function(){
     return {
             mock: () => {
                 render('sidebar', sideBar);
-                // render('top-menu', topMenu);
-                // render('card-container', cardContainer);
-                // render('message', messageCategoryDetails);
-                // render('message-category', messageCategory );
-                // render('message-single-category', messageCategoryDetails);
+                render('top-menu', topMenu);
+                render('card-container', cardContainer);
+                render('message', messageCategoryDetails);
+                render('message-category', messageCategory );
+                render('message-single-category', messageCategoryDetails);
             },
             data: {
                 repayments,

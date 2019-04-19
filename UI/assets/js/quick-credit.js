@@ -47,6 +47,9 @@ document.body.onload = () => {
         if(event.target.matches('.new-message')) newMessageAction(event);
         if(event.target.matches('.view-message')) viewMessageAction(event);
         if(event.target.matches('.sidebar-icon i')) sideBarAction(event);
+        if(event.target.matches('.loan-action')) loanAction(event);
+
+        
     });
 
     addEventToDomNodelist('click', formSubmitButton, (event)=>{

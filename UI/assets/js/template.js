@@ -92,7 +92,6 @@ const render = (()=>{
         if(component){
             const populatedTemplate = await populate({templateHtml, tags, component});
             const html = replaceTrailingTags(populatedTemplate);
-            console.log(html);
             const { root, render: templateRenderFunction } = component;
             if(templateRenderFunction) return templateRenderFunction(html);
             const rootElement = document.getElementById(root);

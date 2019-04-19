@@ -62,6 +62,10 @@ body{
     color: firebrick;
     border-color: firebrick;
 }
+.full-overlay .content .details .btn {
+    color: white;
+    border-color: white;
+}
 .full-overlay .content .details label {
     font-size: 14px
 }
