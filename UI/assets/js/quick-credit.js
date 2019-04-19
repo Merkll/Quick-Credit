@@ -44,11 +44,12 @@ document.body.onload = () => {
     document.addEventListener('click', (event) => {
         if(event.target.matches('.close-btn')) modalCloseAction(event);
         if(event.target.matches('.view-loan')) viewLoanAction(event);
+        if(event.target.matches('.view-client')) viewClientAction(event);
         if(event.target.matches('.new-message')) newMessageAction(event);
         if(event.target.matches('.view-message')) viewMessageAction(event);
         if(event.target.matches('.sidebar-icon i')) sideBarAction(event);
         if(event.target.matches('.loan-action')) loanAction(event);
-
+        if(event.target.matches('.client-action')) clientAction(event);
         
     });
 
@@ -118,6 +119,15 @@ const viewLoanAction = async (event) => {
     document.querySelector('.full-overlay').classList.add('show');
 }
 
+const viewClientAction = async (event) => {
+    event.preventDefault();
+    const clientId = event.target.dataset.client;
+    const clientDetails = Mock.data.clients[clientId];
+    const clientLoans = Mock.data.cardContainer(true);
+    const html = await render('single-client', {}, { clientDetails, clientLoans});
+    document.querySelector('.full-overlay').classList.add('show');
+}
+
 const newMessageAction = (event) => {
     event.preventDefault();
     const newButton = event.target;
@@ -144,7 +154,6 @@ const sideBarAction = (event) => {
     const sideBar = document.querySelector('.sidebar');
     event.target.classList.toggle('close');
     sideBar.classList.toggle('show');
-
 }
 
 const loanAction = async (event) => {
@@ -153,9 +162,14 @@ const loanAction = async (event) => {
     const action = event.target.dataset.action;
     // foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
     render('alert', {content: `Loan ${action} Succesful` });
+}
 
-
-
+const clientAction = async (event) => {
+    event.preventDefault();
+    const actionBtn = document.querySelectorAll('.client-action');
+    const action = event.target.dataset.action;
+    // foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
+    render('alert', {content: `Client ${action} Succesful` });
 }
 
 const loanApplication = (formData) => {
@@ -165,7 +179,7 @@ const loanApplication = (formData) => {
 
 
 const formActions = {
-    'calculator': calculateRate,
+    calculator: calculateRate,
     login,
     signup,
     apply: loanApplication,

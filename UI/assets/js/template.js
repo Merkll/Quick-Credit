@@ -124,7 +124,8 @@ const render = (()=>{
             if(templateRenderFunction) {
                 templateRenderFunction(html);
             }else{
-                const rootElement = document.getElementById(root);
+                const rootId = tags.root || root;
+                const rootElement = document.getElementById(rootId);
                 if(rootElement) rootElement.innerHTML = html; 
                 templateHook({component, action: 'afterRender', data: dataToPassHook});
             }

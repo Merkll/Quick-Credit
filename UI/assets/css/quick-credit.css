@@ -62,7 +62,7 @@ body{
     color: firebrick;
     border-color: firebrick;
 }
-.content .details .btn {
+.content .details .btn, .content .details a {
     color: white;
     border-color: white;
 }
