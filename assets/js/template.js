@@ -70,7 +70,11 @@ const render = (()=>{
         }else{
             for (const [tag, value] of Object.entries(tags)){
                 if(isArray(value)){
-                    templateHtml = await multipleChildPopulate({templateHtml, childNodes:value, rootTag:tag});
+                    const childNodes = value;                   
+                    templateHtml = await multipleChildPopulate({templateHtml, childNodes, rootTag:tag});
+                }else if(isArray(value.childNodes)){
+                    const { childNodes, childComponent, childTag } = value;                   
+                    templateHtml = await multipleChildPopulate({templateHtml, childNodes, childComponent, childTag, rootTag:tag});
                 }else{
                     templateHtml = replaceTag(templateHtml, tag, value);
                 }
@@ -88,6 +92,7 @@ const render = (()=>{
         if(component){
             const populatedTemplate = await populate({templateHtml, tags, component});
             const html = replaceTrailingTags(populatedTemplate);
+            console.log(html);
             const { root, render: templateRenderFunction } = component;
             if(templateRenderFunction) return templateRenderFunction(html);
             const rootElement = document.getElementById(root);
