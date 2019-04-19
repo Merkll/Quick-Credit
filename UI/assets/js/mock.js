@@ -52,8 +52,12 @@ const Mock = (function(){
                             href: './loans.html',
                         },
                         {
-                            text: "Signup",
-                            href: '#signup',
+                            text: "Clients",
+                            href: './clients.html',
+                        },
+                        {
+                            text: "Repayments",
+                            href: './repayments',
                         }
                     ]
             }
@@ -138,21 +142,45 @@ const Mock = (function(){
     const loanDetails = {
         "#88828288" : {
             loanId:  '#88828288',
-            status: 'Repaid',
+            status: 'Current',
             applicationDate: '30 Mar 2019',
             loanAmount: 6000,
             loanTenor: 6,
             loanBalance: 3000,
-            nextRepayment: '31 Mar 2019'
+            nextRepayment: '31 Mar 2019',
+            action: {
+                childTag: 'action',
+                childComponent: {type: 'literal', data:' <button class="btn float-right overlay-btn loan-action" data-action="{{buttonAction}}">{{text}}</button>'},
+                childNodes: [
+                        {
+                            text: "Post Repayment",
+                            buttonAction: 'Repayment'
+                        }
+                    ]
+            }
         },
         "#88828289" : {
             loanId:  '#88828289',
-            status: 'Current',
+            status: 'Pending Approval ',
             applicationDate: '31 Mar 2019',
             loanAmount: 6000,
             loanTenor: 6,
             loanBalance: 3000,
-            nextRepayment: '31 Mar 2019'
+            nextRepayment: '31 Mar 2019',
+            action: {
+                childTag: 'action',
+                childComponent: {type: 'literal', data:' <button class="btn float-right overlay-btn loan-action" data-action="{{buttonAction}}">{{text}}</button>'},
+                childNodes: [
+                        {
+                            text: "Approve",
+                            buttonAction: 'Approval',
+                        },
+                        {
+                            text: "Reject",
+                            buttonAction: 'Rejection',
+                        }
+                    ]
+            }            
         },
     }
     
