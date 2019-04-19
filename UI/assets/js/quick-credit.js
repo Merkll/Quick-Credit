@@ -47,6 +47,9 @@ document.body.onload = () => {
         if(event.target.matches('.new-message')) newMessageAction(event);
         if(event.target.matches('.view-message')) viewMessageAction(event);
         if(event.target.matches('.sidebar-icon i')) sideBarAction(event);
+        if(event.target.matches('.loan-action')) loanAction(event);
+
+        
     });
 
     addEventToDomNodelist('click', formSubmitButton, (event)=>{
@@ -101,18 +104,17 @@ const passwordReset = (formData) => {
 
 const modalCloseAction = (event) =>{
     const modal = event.target.parentNode;
-    const modalParent = modal.parentNode;
+    const modalParent = modal.closest('.overlay');
     modal.classList.remove('show');
-    if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.remove('show');
+    if(modalParent) modalParent.classList.remove('show');
 }
 
-const viewLoanAction = (event) => {
+const viewLoanAction = async (event) => {
     event.preventDefault();
     const loanId = event.target.dataset.loan;
     const repayments = Mock.data.repayments[loanId];
     const loanDetails = Mock.data.loanDetails[loanId];
-    render('repayments', repayments);
-    render('loan-details', loanDetails);
+    const html = await render('single-loan', {}, { repayments, loanDetails});
     document.querySelector('.full-overlay').classList.add('show');
 }
 
@@ -142,6 +144,17 @@ const sideBarAction = (event) => {
     const sideBar = document.querySelector('.sidebar');
     event.target.classList.toggle('close');
     sideBar.classList.toggle('show');
+
+}
+
+const loanAction = async (event) => {
+    event.preventDefault();
+    const actionBtn = document.querySelectorAll('.loan-action');
+    const action = event.target.dataset.action;
+    foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
+    const messageBox = await render('message', {});
+
+
 
 }
 

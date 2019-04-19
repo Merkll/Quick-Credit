@@ -1,7 +1,7 @@
 (function(){
     const templateHtml = `
     <div class="page-title">
-        <span>Loan <i>{{loanId}}</i></span>
+        <a href="./single-loan.html"><span>Loan <i>{{loanId}}</i></span></a>
         <span class="float-right color-grey">{{status}}</i></span>
     </div>
     <div class="details">
@@ -30,6 +30,8 @@
                             <input type="text" value="{{nextRepayment}}" disabled>
                     </div>
                 </div>
+                <button class="btn float-right overlay-btn loan-action" data-action="Approval">Approve</button>
+                <button class="btn float-right overlay-btn loan-action" data-action="Rejection">Reject</button>
         </div>
     </div>
  `;

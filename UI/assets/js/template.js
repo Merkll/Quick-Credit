@@ -29,7 +29,8 @@ const render = (()=>{
     }
 
     const replaceTrailingTags = (templateHtml) => {
-        const tagsRegularExp = new RegExp(/{{.*?}}/, 'gi');  
+        const tagsRegularExp = new RegExp(/{{.*?}}/, 'gi'); 
+        // if(templateHtml) 
         return templateHtml.replace(tagsRegularExp, "");
     }
 
@@ -70,28 +71,61 @@ const render = (()=>{
         }else{
             for (const [tag, value] of Object.entries(tags)){
                 if(isArray(value)){
-                    templateHtml = await multipleChildPopulate({templateHtml, childNodes:value, rootTag:tag});
+                    const childNodes = value;                   
+                    templateHtml = await multipleChildPopulate({templateHtml, childNodes, rootTag:tag});
+                }else if(isArray(value.childNodes)){
+                    const { childNodes, childComponent, childTag } = value;                   
+                    templateHtml = await multipleChildPopulate({templateHtml, childNodes, childComponent, childTag, rootTag:tag});
                 }else{
                     templateHtml = replaceTag(templateHtml, tag, value);
                 }
-            } 
+            }
         }
         return templateHtml.trim();
+    }
+
+    const templateHook = ({component, action, data = {}}) => {
+        if(component[action]){
+            data = (data[action]) ? data[action] : data
+            component[action](); component[action](data);
+        }
+       
+
+    }
+
+    const activateTemplateLoader = () => {
+        const loaderInDom = document.querySelector('.loader-overlay');
+        if(loaderInDom) {
+           return loaderInDom.classList.add('show');
+        }; //adds element in dom once
+        const loaderOverlay = document.createElement('div');
+        loaderOverlay.setAttribute('class', "overlay full-overlay bg-white loader-overlay show");
+        loaderOverlay.innerHTML =  `<div class="loader"></div>`;
+        document.body.appendChild(loaderOverlay);
+    }
+
+    const deactivateTemplateLoader = () => {
+        const loaderOverlay = document.querySelector('.loader-overlay');
+        loaderOverlay.classList.remove('show');
     }
 
     /**
      * Renders the template file
      * @param {String} template 
      */
-    const render = async (templateComponent, tags) => {
+    const render = async (templateComponent, tags, dataToPassHook = {}) => {
+        activateTemplateLoader();
        const { component, template: templateHtml } = await loadTemplateFile(templateComponent);
         if(component){
             const populatedTemplate = await populate({templateHtml, tags, component});
+            if(!populatedTemplate) return;
             const html = replaceTrailingTags(populatedTemplate);
             const { root, render: templateRenderFunction } = component;
             if(templateRenderFunction) return templateRenderFunction(html);
             const rootElement = document.getElementById(root);
             if(rootElement) rootElement.innerHTML = html; 
+            templateHook({component, action: 'afterRender', data: dataToPassHook});
+            deactivateTemplateLoader();
             return html;            
         }
     }

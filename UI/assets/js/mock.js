@@ -1,4 +1,10 @@
+
 const Mock = (function(){
+    const isAdmin = () => {
+        const url = window.location.href.split('/');
+        const sidebarMode = url[url.length - 2];
+        return sidebarMode == 'admin';
+    }
     const topMenu = (() =>{
         const url = window.location.href.split('/')
         const page = url[url.length -1];
@@ -12,6 +18,7 @@ const Mock = (function(){
                     }
                 ]
         };
+
         if(page == 'home.html') {
             template = {
                 childTag: 'links',
@@ -32,10 +39,48 @@ const Mock = (function(){
     })();
 
 
-    const sideBar = {
-        "accountName": "Mike John",
-        "inboxCount": 1
-    }
+    const sideBar = (() =>{
+        const admin = {
+            "accountName": "Mike John",
+            "inboxCount": 1,
+            "links": {
+                childTag: 'links',
+                childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
+                childNodes: [
+                        {
+                            text: "Loans",
+                            href: './loans.html',
+                        },
+                        {
+                            text: "Signup",
+                            href: '#signup',
+                        }
+                    ]
+            }
+        };
+
+        const user = {
+            "accountName": "Mike John",
+            "inboxCount": 1,
+            "links": {
+                childTag: 'links',
+                childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
+                childNodes: [
+                        {
+                            text: "Loans",
+                            href: './loans.html',
+                        },
+                        {
+                            text: "Apply",
+                            href: './application.html',
+                        }
+                    ]
+            }
+        }
+        const url = window.location.href.split('/');
+        const sidebarMode = url[url.length - 2];
+        return (sidebarMode == 'admin') ? admin : user;
+    })();
 
     const cardContainer = {
         childNodes: [
@@ -136,12 +181,14 @@ const Mock = (function(){
 
     return {
             mock: () => {
-                render('sidebar', sideBar)
-                render('top-menu', topMenu)
-                render('card-container', cardContainer)
-                render('message', messageCategoryDetails)
-                render('message-category', messageCategory )
-                render('message-single-category', messageCategoryDetails)
+                render('sidebar', sideBar);
+                render('top-menu', topMenu);
+                render('card-container', cardContainer);
+                render('message', messageCategoryDetails);
+                render('message-category', messageCategory );
+                render('message-single-category', messageCategoryDetails);
+                render('single-loan', {}, {repayments: repayments["#88828289"],
+                    loanDetails: loanDetails["#88828289"]});
             },
             data: {
                 repayments,

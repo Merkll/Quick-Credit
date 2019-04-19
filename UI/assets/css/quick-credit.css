@@ -58,9 +58,13 @@ body{
     position: static !important;
     margin: 10px;
 }
-.full-overlay .content .details * {
+.content .details * {
     color: firebrick;
     border-color: firebrick;
+}
+.content .details .btn {
+    color: white;
+    border-color: white;
 }
 .full-overlay .content .details label {
     font-size: 14px
@@ -71,6 +75,9 @@ body{
 }
 .bg-red{
     background-color: firebrick
+}
+.bg-white{
+    background-color: white;
 }
 .opacity-5{
     opacity: .5;
@@ -301,9 +308,7 @@ textarea {
     border-bottom: 1px solid firebrick;
     text-align: center;
 }
-.sidebar-col, .sidebar-col div{
-    /* height: 100%; */
-}
+
 .content{
     width: 100%;
     position: relative;
@@ -503,4 +508,14 @@ textarea {
 
 .icon.close::after{
     content: '\02613';
+}
+.loader{
+    border: 16px solid #f3f3f3;
+    /* border-radius: 50%; */
+    border: 10px solid firebrick;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: 50%;
+    left: 40%;
 }
