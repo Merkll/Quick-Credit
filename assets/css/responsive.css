@@ -10,6 +10,16 @@
         margin-bottom: 20px;
         margin-right: 20px;
     }
+    .sidebar{
+        display: block;
+        position: unset;
+    }
+    .sidebar-col, .sidebar-col div{
+        height: 100%;
+    }
+    .sidebar-icon{
+        display: none;
+    }
     .col-1{width: 8.33%}
     .col-2{width: 16.66%}
     .col-3{width: 24.99%}

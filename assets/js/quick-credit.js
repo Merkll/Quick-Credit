@@ -46,7 +46,7 @@ document.body.onload = () => {
         if(event.target.matches('.view-loan')) viewLoanAction(event);
         if(event.target.matches('.new-message')) newMessageAction(event);
         if(event.target.matches('.view-message')) viewMessageAction(event);
-
+        if(event.target.matches('.sidebar-icon i')) sideBarAction(event);
     });
 
     addEventToDomNodelist('click', formSubmitButton, (event)=>{
@@ -135,6 +135,14 @@ const viewMessageAction = (event) => {
     newButtonListItem.classList.add('active-category');
     const message = Mock.data.message[messageId];
     render('message', message);
+}
+
+const sideBarAction = (event) => {
+    event.preventDefault();
+    const sideBar = document.querySelector('.sidebar');
+    event.target.classList.toggle('close');
+    sideBar.classList.toggle('show');
+
 }
 
 const loanApplication = (formData) => {
