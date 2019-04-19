@@ -12,6 +12,7 @@ const Mock = (function(){
                     }
                 ]
         };
+
         if(page == 'home.html') {
             template = {
                 childTag: 'links',
@@ -32,10 +33,26 @@ const Mock = (function(){
     })();
 
 
-    const sideBar = {
-        "accountName": "Mike John",
-        "inboxCount": 1
-    }
+    const sideBar = (() =>{
+        return {
+            "accountName": "Mike John",
+            "inboxCount": 1,
+            "links": {
+                childTag: 'links',
+                childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
+                childNodes: [
+                        {
+                            text: "Login",
+                            href: '#login',
+                        },
+                        {
+                            text: "Signup",
+                            href: '#signup',
+                        }
+                    ]
+            }
+        }
+    })();
 
     const cardContainer = {
         childNodes: [
@@ -136,12 +153,12 @@ const Mock = (function(){
 
     return {
             mock: () => {
-                render('sidebar', sideBar)
-                render('top-menu', topMenu)
-                render('card-container', cardContainer)
-                render('message', messageCategoryDetails)
-                render('message-category', messageCategory )
-                render('message-single-category', messageCategoryDetails)
+                render('sidebar', sideBar);
+                // render('top-menu', topMenu);
+                // render('card-container', cardContainer);
+                // render('message', messageCategoryDetails);
+                // render('message-category', messageCategory );
+                // render('message-single-category', messageCategoryDetails);
             },
             data: {
                 repayments,

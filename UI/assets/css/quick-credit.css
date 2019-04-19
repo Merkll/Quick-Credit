@@ -301,9 +301,7 @@ textarea {
     border-bottom: 1px solid firebrick;
     text-align: center;
 }
-.sidebar-col, .sidebar-col div{
-    /* height: 100%; */
-}
+
 .content{
     width: 100%;
     position: relative;
