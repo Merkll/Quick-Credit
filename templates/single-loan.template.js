@@ -10,7 +10,6 @@
             </div>
             <div class="table-container" id="repayments-root"></div>
         </div>
-        <button class="btn float-right close-btn overlay-btn">OK</button>
     </div>
  `;
 

@@ -181,12 +181,12 @@ const Mock = (function(){
 
     return {
             mock: () => {
-                // render('sidebar', sideBar);
-                // render('top-menu', topMenu);
-                // render('card-container', cardContainer);
-                // render('message', messageCategoryDetails);
-                // render('message-category', messageCategory );
-                // render('message-single-category', messageCategoryDetails);
+                render('sidebar', sideBar);
+                render('top-menu', topMenu);
+                render('card-container', cardContainer);
+                render('message', messageCategoryDetails);
+                render('message-category', messageCategory );
+                render('message-single-category', messageCategoryDetails);
                 render('single-loan', {}, {repayments: repayments["#88828289"],
                     loanDetails: loanDetails["#88828289"]});
             },

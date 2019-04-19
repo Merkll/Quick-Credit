@@ -67,7 +67,7 @@ const render = (()=>{
         const { childComponent: componentChildComponent, childTag: componentChildTag } = component;
         const { childTag = componentChildTag, childNodes, childComponent = componentChildComponent } = tags;
         if(childTag && isArray(childNodes)) {
-            // templateHtml = await multipleChildPopulate({ templateHtml, childNodes, childTag, childComponent});
+            templateHtml = await multipleChildPopulate({ templateHtml, childNodes, childTag, childComponent});
         }else{
             for (const [tag, value] of Object.entries(tags)){
                 if(isArray(value)){

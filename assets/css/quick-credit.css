@@ -58,11 +58,11 @@ body{
     position: static !important;
     margin: 10px;
 }
-.full-overlay .content .details * {
+.content .details * {
     color: firebrick;
     border-color: firebrick;
 }
-.full-overlay .content .details .btn {
+.content .details .btn {
     color: white;
     border-color: white;
 }
@@ -518,7 +518,4 @@ textarea {
     position: relative;
     top: 50%;
     left: 40%;
-}
-.loader-overlay{
-
 }
