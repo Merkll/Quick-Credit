@@ -187,8 +187,6 @@ const Mock = (function(){
                 render('message', messageCategoryDetails);
                 render('message-category', messageCategory );
                 render('message-single-category', messageCategoryDetails);
-                // render('single-loan', {}, {repayments: repayments["#88828289"],
-                //     loanDetails: loanDetails["#88828289"]});
             },
             data: {
                 repayments,
