@@ -114,7 +114,6 @@ const viewLoanAction = async (event) => {
     const loanId = event.target.dataset.loan;
     const repayments = Mock.data.repayments[loanId];
     const loanDetails = Mock.data.loanDetails[loanId];
-    console.log(repayments);
     const html = await render('single-loan', {}, { repayments, loanDetails});
     document.querySelector('.full-overlay').classList.add('show');
 }

@@ -23,7 +23,6 @@
             const { repayments, loanDetails } = data;
             render('repayments', repayments);
             render('loan-details', loanDetails);
-            console.log(repayments)
         }
     };
     templates['single-loan'] = singleLoan;
