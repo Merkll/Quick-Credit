@@ -49,7 +49,7 @@ document.body.onload = () => {
         if(event.target.matches('.view-message')) viewMessageAction(event);
         if(event.target.matches('.sidebar-icon i')) sideBarAction(event);
         if(event.target.matches('.loan-action')) loanAction(event);
-
+        if(event.target.matches('.client-action')) clientAction(event);
         
     });
 
@@ -124,8 +124,6 @@ const viewClientAction = async (event) => {
     const clientId = event.target.dataset.client;
     const clientDetails = Mock.data.clients[clientId];
     const clientLoans = Mock.data.cardContainer(true);
-    console.log(clientLoans)
-    console.log(clientDetails)
     const html = await render('single-client', {}, { clientDetails, clientLoans});
     document.querySelector('.full-overlay').classList.add('show');
 }
@@ -164,6 +162,14 @@ const loanAction = async (event) => {
     const action = event.target.dataset.action;
     // foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
     render('alert', {content: `Loan ${action} Succesful` });
+}
+
+const clientAction = async (event) => {
+    event.preventDefault();
+    const actionBtn = document.querySelectorAll('.client-action');
+    const action = event.target.dataset.action;
+    // foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
+    render('alert', {content: `Client ${action} Succesful` });
 }
 
 const loanApplication = (formData) => {

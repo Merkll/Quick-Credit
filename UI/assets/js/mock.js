@@ -124,7 +124,7 @@ const Mock = (function(){
                     userEmail: "john@example.com"
                 },
                 {
-                    userId:  '#88828289',
+                    userId:  '#88828288',
                     status: 'Pending',
                     userJoinedDate: '31 Mar 2019',
                     userLoans: 1,
@@ -217,14 +217,36 @@ const Mock = (function(){
             status: 'Approved',
             userJoinedDate: '31 Mar 2019',
             userLoans: 1,
-            userEmail: "john@example.com"
+            userEmail: "john@example.com",
+            userFirstName: "Mark",
+            userLastName: "Paul",
+            userMobile: "081324590789",
+            userAddress: "lekki",
+            action: {
+                childTag: 'action',
+                childComponent: {type: 'literal', data:' <button class="btn float-right overlay-btn client-action" data-action="{{buttonAction}}">{{text}}</button>'},
+                childNodes: [
+                        {
+                            text: "Approve",
+                            buttonAction: 'approve'
+                        },
+                        {
+                            text: "Reject",
+                            buttonAction: 'approve'
+                        }
+                    ]
+            }
         },
-        '#88828289': {
-            userId:  '#88828289',
+        '#88828288': {
+            userId:  '#88828288',
             status: 'Pending',
             userJoinedDate: '31 Mar 2019',
             userLoans: 1,
-            userEmail: "mike@example.com"
+            userEmail: "mike@example.com",
+            userFirstName: "Mike",
+            userLastName: "John",
+            userMobile: "081324455789",
+            userAddress: "lekki"
         },
     }
     
@@ -261,6 +283,8 @@ const Mock = (function(){
                 render('message-single-category', messageCategoryDetails);
                 render('single-loan', {}, {repayments: repayments["#88828289"],
                     loanDetails: loanDetails["#88828289"]});
+                render('single-client', {}, { clientDetails: clients["#88828289"],
+                    clientLoans: cardContainer(true)});
             },
             data: {
                 repayments,
