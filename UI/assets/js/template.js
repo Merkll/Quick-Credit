@@ -121,10 +121,13 @@ const render = (()=>{
             if(!populatedTemplate) return;
             const html = replaceTrailingTags(populatedTemplate);
             const { root, render: templateRenderFunction } = component;
-            if(templateRenderFunction) return templateRenderFunction(html);
-            const rootElement = document.getElementById(root);
-            if(rootElement) rootElement.innerHTML = html; 
-            templateHook({component, action: 'afterRender', data: dataToPassHook});
+            if(templateRenderFunction) {
+                templateRenderFunction(html);
+            }else{
+                const rootElement = document.getElementById(root);
+                if(rootElement) rootElement.innerHTML = html; 
+                templateHook({component, action: 'afterRender', data: dataToPassHook});
+            }
             deactivateTemplateLoader();
             return html;            
         }
