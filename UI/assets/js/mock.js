@@ -5,6 +5,10 @@ const Mock = (function(){
         const sidebarMode = url[url.length - 2];
         return sidebarMode == 'admin';
     }
+    const getPage = () => {
+        const url = window.location.href.split('/');
+        return url[url.length - 2];
+    }
     const topMenu = (() =>{
         const url = window.location.href.split('/')
         const page = url[url.length -1];
@@ -81,33 +85,56 @@ const Mock = (function(){
                     ]
             }
         }
-        const url = window.location.href.split('/');
-        const sidebarMode = url[url.length - 2];
-        return (sidebarMode == 'admin') ? admin : user;
+        return (isAdmin()) ? admin : user;
     })();
 
-    const cardContainer = {
-        childNodes: [
-            {
-                loanId:  '#88828289',
-                status: 'Current',
-                applicationDate: '31 Mar 2019',
-                loanAmount: 6000,
-                loanTenor: 6,
-                loanBalance: 3000,
-                nextRepayment: '31 Mar 2019'
-            },
-            {
-                loanId:  '#88828288',
-                status: 'Repaid',
-                applicationDate: '30 Mar 2019',
-                loanAmount: 6000,
-                loanTenor: 6,
-                loanBalance: 3000,
-                nextRepayment: '31 Mar 2019'
-            },
-        ]
-    }
+    const cardContainer = (() => {
+        const loan = {
+            childNodes: [
+                {
+                    loanId:  '#88828289',
+                    status: 'Current',
+                    applicationDate: '31 Mar 2019',
+                    loanAmount: 6000,
+                    loanTenor: 6,
+                    loanBalance: 3000,
+                    nextRepayment: '31 Mar 2019'
+                },
+                {
+                    loanId:  '#88828288',
+                    status: 'Repaid',
+                    applicationDate: '30 Mar 2019',
+                    loanAmount: 6000,
+                    loanTenor: 6,
+                    loanBalance: 3000,
+                    nextRepayment: '31 Mar 2019'
+                },
+            ]
+        } 
+
+        const clients = {
+            childComponent: 'clients-card',
+            childTag: 'cards',
+            childNodes: [
+                {
+                    userId:  '#88828289',
+                    status: 'Approved',
+                    userJoinedDate: '31 Mar 2019',
+                    userLoans: 1,
+                    userEmail: "john@example.com"
+                },
+                {
+                    userId:  '#88828289',
+                    status: 'Pending',
+                    userJoinedDate: '31 Mar 2019',
+                    userLoans: 1,
+                    userEmail: "mike@example.com"
+                },
+            ]
+        } 
+
+        return clients;
+    })()
 
     const repayments = {
         "#88828288" : {
