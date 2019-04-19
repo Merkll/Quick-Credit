@@ -30,7 +30,7 @@ const render = (()=>{
 
     const replaceTrailingTags = (templateHtml) => {
         const tagsRegularExp = new RegExp(/{{.*?}}/, 'gi'); 
-        if(templateHtml) 
+        // if(templateHtml) 
         return templateHtml.replace(tagsRegularExp, "");
     }
 
@@ -67,7 +67,7 @@ const render = (()=>{
         const { childComponent: componentChildComponent, childTag: componentChildTag } = component;
         const { childTag = componentChildTag, childNodes, childComponent = componentChildComponent } = tags;
         if(childTag && isArray(childNodes)) {
-            templateHtml = await multipleChildPopulate({ templateHtml, childNodes, childTag, childComponent});
+            // templateHtml = await multipleChildPopulate({ templateHtml, childNodes, childTag, childComponent});
         }else{
             for (const [tag, value] of Object.entries(tags)){
                 if(isArray(value)){
@@ -79,7 +79,7 @@ const render = (()=>{
                 }else{
                     templateHtml = replaceTag(templateHtml, tag, value);
                 }
-            } 
+            }
         }
         return templateHtml.trim();
     }
@@ -118,6 +118,7 @@ const render = (()=>{
        const { component, template: templateHtml } = await loadTemplateFile(templateComponent);
         if(component){
             const populatedTemplate = await populate({templateHtml, tags, component});
+            if(!populatedTemplate) return;
             const html = replaceTrailingTags(populatedTemplate);
             const { root, render: templateRenderFunction } = component;
             if(templateRenderFunction) return templateRenderFunction(html);
