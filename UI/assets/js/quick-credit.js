@@ -104,9 +104,9 @@ const passwordReset = (formData) => {
 
 const modalCloseAction = (event) =>{
     const modal = event.target.parentNode;
-    const modalParent = modal.parentNode;
+    const modalParent = modal.closest('.overlay');
     modal.classList.remove('show');
-    if(modalParent && modalParent.classList.contains('overlay')) modalParent.classList.remove('show');
+    if(modalParent) modalParent.classList.remove('show');
 }
 
 const viewLoanAction = async (event) => {
