@@ -8,7 +8,7 @@ const Mock = (function(){
             childNodes: [
                     {
                         text: "Logout",
-                        href: '/home',
+                        href: './home.html',
                     }
                 ]
         };

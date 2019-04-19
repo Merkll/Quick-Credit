@@ -1,8 +1,8 @@
 (function(){
     const templateHtml = `
         <div class="notification">
-            <i class="close-btn">close</i>
-            <p class="message">
+        <i class="close-btn icon close"></i>
+        <p class="message">
                 {{content}}
             </p>
         </div>
