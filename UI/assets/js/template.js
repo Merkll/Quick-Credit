@@ -93,11 +93,28 @@ const render = (()=>{
 
     }
 
+    const activateTemplateLoader = () => {
+        const loaderInDom = document.querySelector('.loader-overlay');
+        if(loaderInDom) {
+           return loaderInDom.classList.add('show');
+        }; //adds element in dom once
+        const loaderOverlay = document.createElement('div');
+        loaderOverlay.setAttribute('class', "overlay full-overlay bg-white loader-overlay show");
+        loaderOverlay.innerHTML =  `<div class="loader"></div>`;
+        document.body.appendChild(loaderOverlay);
+    }
+
+    const deactivateTemplateLoader = () => {
+        const loaderOverlay = document.querySelector('.loader-overlay');
+        loaderOverlay.classList.remove('show');
+    }
+
     /**
      * Renders the template file
      * @param {String} template 
      */
     const render = async (templateComponent, tags, dataToPassHook = {}) => {
+        activateTemplateLoader();
        const { component, template: templateHtml } = await loadTemplateFile(templateComponent);
         if(component){
             const populatedTemplate = await populate({templateHtml, tags, component});
@@ -107,6 +124,7 @@ const render = (()=>{
             const rootElement = document.getElementById(root);
             if(rootElement) rootElement.innerHTML = html; 
             templateHook({component, action: 'afterRender', data: dataToPassHook});
+            deactivateTemplateLoader();
             return html;            
         }
     }
