@@ -30,8 +30,7 @@
                             <input type="text" value="{{nextRepayment}}" disabled>
                     </div>
                 </div>
-                <button class="btn float-right overlay-btn loan-action" data-action="Approval">Approve</button>
-                <button class="btn float-right overlay-btn loan-action" data-action="Rejection">Reject</button>
+                {{action}}
         </div>
     </div>
  `;

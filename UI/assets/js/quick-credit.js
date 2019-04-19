@@ -151,8 +151,8 @@ const loanAction = async (event) => {
     event.preventDefault();
     const actionBtn = document.querySelectorAll('.loan-action');
     const action = event.target.dataset.action;
-    foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
-    const messageBox = await render('message', {});
+    // foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
+    render('alert', {content: `Loan ${action} Succesful` });
 
 
 
