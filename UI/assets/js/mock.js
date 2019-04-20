@@ -6,11 +6,11 @@ const Mock = (function(){
         childNodes: [
                {
                     text: "Admin Pages",
-                    href: 'pages/admin-loans.html',
+                    href: './admin-loans.html',
                },
                {
                     text: "Client Pages",
-                    href: 'pages/loans.html',
+                    href: './loans.html',
                },
                 {
                     text: "Login",

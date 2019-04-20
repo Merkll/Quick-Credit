@@ -26,9 +26,9 @@ const foreachNodeInNodelist = (listOfNodes, callbackFunction) => {
 const initialiseTemplateEngine = () =>{
     const templateScript = document.createElement('script');
     const mockScript = document.createElement('script');
-    templateScript.src = '/UI/assets/js/template.js';
+    templateScript.src = 'assets/js/template.js';
     templateScript.id = "template-js";
-    mockScript.src = '/UI/assets/js/mock.js';
+    mockScript.src = 'assets/js/mock.js';
     document.body.insertBefore(templateScript, document.getElementById('main-js'));
     document.body.insertBefore(mockScript, document.getElementById('main-js'));
 
