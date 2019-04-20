@@ -6,7 +6,7 @@ const render = (()=>{
      * @param {Array} components
      * @param {String} templatePath
      */
-    const loadTemplateFiles = (components, templatePath = '/UI/templates/') =>{
+    const loadTemplateFiles = (components, templatePath = 'templates/') =>{
         if(!(components instanceof Array)) return;
         return components.map(async (template) => await loadTemplateFile(template, templatePath));
     }
@@ -18,7 +18,7 @@ const render = (()=>{
      * @param {String} templatePath
      */
 
-    const loadTemplateFile = (component, templatePath = '/UI/templates/') => {
+    const loadTemplateFile = (component, templatePath = 'templates/') => {
         if(templates[component]) return { component: templates[component], template: templates[component].template } ;
         if(component.type == 'literal') return {component: component.data, template: component.data };
         return new Promise((resolve, reject) =>{
@@ -103,13 +103,14 @@ const render = (()=>{
 
     const activateTemplateLoader = () => {
         const loaderInDom = document.querySelector('.loader-overlay');
+        const container = document.querySelector('.container');
         if(loaderInDom) {
            return loaderInDom.classList.add('show');
         }; //adds element in dom once
         const loaderOverlay = document.createElement('div');
         loaderOverlay.setAttribute('class', "overlay full-overlay bg-white loader-overlay show");
         loaderOverlay.innerHTML =  `<div class="loader"></div>`;
-        document.body.appendChild(loaderOverlay);
+        container.appendChild(loaderOverlay);
     }
 
     const deactivateTemplateLoader = () => {
