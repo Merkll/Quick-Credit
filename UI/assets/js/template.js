@@ -95,8 +95,9 @@ const render = (()=>{
 
     const templateHook = ({component, action, data = {}}) => {
         if(component[action]){
-            data = (data[action]) ? data[action] : data
-            component[action](); component[action](data);
+            const hookData = (data[action]) ? data[action] : data
+            const hookFunction = component[action];
+            if(hookFunction) hookFunction(hookData);
         }     
     }
 
