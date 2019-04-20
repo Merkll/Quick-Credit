@@ -64,10 +64,7 @@ document.body.onload = () => {
         if(functionToHandleForm) return functionToHandleForm(data);
     });
 
-
-    Mock.mock();
     pageSetup();
-
 }
 
 const calculateRate = (formData) => {
@@ -124,7 +121,7 @@ const viewClientAction = async (event) => {
     event.preventDefault();
     const clientId = event.target.dataset.client;
     const clientDetails = Mock.clientDetails[clientId];
-    const clientLoans = Mock.data.cardContainer(true);
+    const clientLoans = Mock.loans;
     const html = await render('single-client', {}, { clientDetails, clientLoans});
     document.querySelector('.full-overlay').classList.add('show');
 }
