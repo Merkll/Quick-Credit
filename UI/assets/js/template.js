@@ -1,16 +1,22 @@
 var templates = {};
 const render = (()=>{
-        
     /**
-     * Loads the temlate files as script tags in the dom.
+     * Loads the list of components js files as script tags in the dom.
      *  Since we do not have access to the file system, the templatefiles have to be provided as arrays
-     * @param {Array} templateFiles 
+     * @param {Array} components
      * @param {String} templatePath
      */
     const loadTemplateFiles = (components, templatePath = '/UI/templates/') =>{
         if(!(components instanceof Array)) return;
         return components.map(async (template) => await loadTemplateFile(template, templatePath));
     }
+
+    /**
+     * Loads a component js file as script tags in the dom.
+     *  Since we do not have access to the file system, the templatefiles have to be provided as arrays
+     * @param {string} component {the component must match with the file name of the component file without the .template suffix}
+     * @param {String} templatePath
+     */
 
     const loadTemplateFile = (component, templatePath = '/UI/templates/') => {
         if(templates[component]) return { component: templates[component], template: templates[component].template } ;
@@ -30,15 +36,18 @@ const render = (()=>{
 
     const replaceTrailingTags = (templateHtml) => {
         const tagsRegularExp = new RegExp(/{{.*?}}/, 'gi'); 
-        // if(templateHtml) 
         return templateHtml.replace(tagsRegularExp, "");
     }
 
     const replaceTag = (templateHtml, tag, value) => {
         const templateTag = `{{${tag}}}`;
-        return templateHtml.replace(new RegExp(templateTag, 'g'), `${value}${templateTag}`);
+        return templateHtml.replace(new RegExp(templateTag, 'g'), `${value}${templateTag}`); //appends original tag to handle multiple elements
     }
 
+    /**
+     * Handles component with multiple childNodes
+     * @param {Object}
+     */
     const multipleChildPopulate = async ({ templateHtml, childNodes, childTag, childTemplate, childComponent, rootTag}) => {
         for (const child of childNodes) {
             const { data, baseTemplate = childComponent } = child; //data takes precedence
@@ -88,9 +97,7 @@ const render = (()=>{
         if(component[action]){
             data = (data[action]) ? data[action] : data
             component[action](); component[action](data);
-        }
-       
-
+        }     
     }
 
     const activateTemplateLoader = () => {
@@ -114,7 +121,7 @@ const render = (()=>{
      * @param {String} template 
      */
     const render = async (templateComponent, tags, dataToPassHook = {}) => {
-        activateTemplateLoader();
+       activateTemplateLoader();
        const { component, template: templateHtml } = await loadTemplateFile(templateComponent);
         if(component){
             const populatedTemplate = await populate({templateHtml, tags, component});
@@ -135,4 +142,3 @@ const render = (()=>{
     }
     return render;
 })();
-

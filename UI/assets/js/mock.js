@@ -1,5 +1,29 @@
 
 const Mock = (function(){
+    const HomeTopMenu = {
+        childTag: 'links',
+        childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
+        childNodes: [
+                {
+                    text: "Login",
+                    href: '#login',
+                },
+                {
+                    text: "Signup",
+                    href: '#signup',
+                }
+            ]
+    };
+
+
+
+
+
+
+
+
+
+
     const isAdmin = () => {
         const url = window.location.href.split('/');
         const sidebarMode = url[url.length - 2];
@@ -291,7 +315,8 @@ const Mock = (function(){
                 loanDetails,
                 clients,
                 cardContainer,
-                message: messageCategoryDetails
+                message: messageCategoryDetails,
+                HomeTopMenu,
             }
         }
 }());

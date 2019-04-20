@@ -178,13 +178,9 @@ const loanApplication = (formData) => {
 
 
 
-const formActions = {
-    calculator: calculateRate,
-    login,
-    signup,
-    apply: loanApplication,
-    'password-reset': passwordReset
-}
+const formActions = { calculator: calculateRate, login, signup, apply: loanApplication, 'password-reset': passwordReset };
+
+
 
 
 
