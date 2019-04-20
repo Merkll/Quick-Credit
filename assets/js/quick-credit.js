@@ -66,6 +66,7 @@ document.body.onload = () => {
 
 
     Mock.mock();
+    pageSetup();
 
 }
 
@@ -122,7 +123,7 @@ const viewLoanAction = async (event) => {
 const viewClientAction = async (event) => {
     event.preventDefault();
     const clientId = event.target.dataset.client;
-    const clientDetails = Mock.data.clients[clientId];
+    const clientDetails = Mock.clientDetails[clientId];
     const clientLoans = Mock.data.cardContainer(true);
     const html = await render('single-client', {}, { clientDetails, clientLoans});
     document.querySelector('.full-overlay').classList.add('show');
@@ -145,7 +146,7 @@ const viewMessageAction = (event) => {
     const activeLinks = document.querySelector('.active-category');
     activeLinks.classList.remove('active-category');
     newButtonListItem.classList.add('active-category');
-    const message = Mock.data.message[messageId];
+    const message = Mock.message.details[messageId];
     render('message', message);
 }
 
@@ -162,7 +163,7 @@ const loanAction = async (event) => {
     const action = event.target.dataset.action;
     // foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
     render('alert', {content: `Loan ${action} Succesful` });
-}
+};
 
 const clientAction = async (event) => {
     event.preventDefault();
@@ -170,15 +171,106 @@ const clientAction = async (event) => {
     const action = event.target.dataset.action;
     // foreachNodeInNodelist(actionBtn, (node) => node.classList.add('hide'));
     render('alert', {content: `Client ${action} Succesful` });
-}
+};
 
 const loanApplication = (formData) => {
     render('alert', {content: `Loan application Successful`} );
-}
+};
 
 
 
 const formActions = { calculator: calculateRate, login, signup, apply: loanApplication, 'password-reset': passwordReset };
+
+
+//page rendering
+
+const pageSetup = () => {
+    const pageRenderer = {
+        'home': homePageRender,
+        'client-loans': clientLoanPageRender,
+        'client-inbox': clientInboxRender,
+        'application': applicationPageRender,
+        'password-reset': homePageRender,
+        'single-loan': singleLoanRender,
+        'admin-loans': adminLoansRender,
+        'single-client': singleClientRender,
+        'clients': clientRender
+
+    }
+    const currentPage = document.getElementsByTagName('body')[0].dataset.page;
+    const renderer = pageRenderer[currentPage];
+    if(renderer) return renderer();
+};
+
+const clientRender = () => {
+    const clients = Mock.clients;
+    const sidebar = Mock.adminSidebar;
+    const topMenu = Mock.clientTopMenu;
+    render('top-menu', topMenu);
+    render('card-container', clients);
+    render('sidebar', sidebar);
+}
+
+const singleClientRender = () => {
+    const clientDetails = Mock.clientDetails['#88828289'];
+    const clientLoans = Mock.loans;
+    const sidebar = Mock.adminSidebar;
+    const topMenu = Mock.clientTopMenu;
+    render('top-menu', topMenu);
+    render('single-client', {}, { clientDetails, clientLoans });
+    render('sidebar', sidebar);
+}
+
+const adminLoansRender = () => {
+    const loans = Mock.loans;
+    const sidebar = Mock.adminSidebar;
+    const topMenu = Mock.clientTopMenu;
+    render('top-menu', topMenu);
+    render('card-container', loans);
+    render('sidebar', sidebar);
+}
+
+const homePageRender = () => {
+    const topMenu = Mock.HomeTopMenu;
+    render('top-menu', topMenu);
+}
+const clientLoanPageRender = () => {
+    const loans = Mock.loans;
+    const sidebar = Mock.clientSidebar;
+    const topMenu = Mock.clientTopMenu;
+    render('top-menu', topMenu);
+    render('card-container', loans);
+    render('sidebar', sidebar);
+}
+
+const applicationPageRender = () => {
+    const sidebar = Mock.clientSidebar;
+    const topMenu = Mock.clientTopMenu;
+    render('top-menu', topMenu);
+    render('sidebar', sidebar);
+}
+
+const clientInboxRender = () => {
+    const sidebar = Mock.clientSidebar;
+    const { categories, details } = Mock.message;
+    const topMenu = Mock.clientTopMenu;
+    render('top-menu', topMenu);
+    render('sidebar', sidebar);
+    render('message', details);
+    render('message-category', categories );
+    // render('message-single-category', categories);
+}
+
+const singleLoanRender = () => {
+    const sidebar = Mock.clientSidebar;
+    const repayments = Mock.repayments["#88828289"];
+    const loanDetails = Mock.loanDetails["#88828289"];
+    const topMenu = Mock.clientTopMenu;
+    render('top-menu', topMenu);
+    render('sidebar', sidebar);
+    render('single-loan', {}, {repayments, loanDetails });
+}
+
 
 
 
