@@ -18,7 +18,6 @@
         template: templateHtml,
         afterRender: (data = {}) => {
             const { clientDetails = {}, clientLoans = {} } = data;
-            console.trace(clientDetails);
             clientLoans['root'] = 'clients-loans-root';
             render('client-details', clientDetails);
             render('card-container', clientLoans);
