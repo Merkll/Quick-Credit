@@ -6,7 +6,7 @@
         <div class="sidebar">
             <span class="account-name">Hi, {{accountName}}</span>
             {{links}}
-            <a href="./inbox.html">Inbox <i>({{inboxCount}})</i></a>
+            <a href="inbox.html">Inbox <i>({{inboxCount}})</i></a>
         </div>
     `;
 
