@@ -4,6 +4,14 @@ const Mock = (function(){
         childTag: 'links',
         childComponent: {type: 'literal', data:'<a href="{{href}}">{{text}}</a>'},
         childNodes: [
+               {
+                    text: "Admin Pages",
+                    href: 'pages/admin-loans.html',
+               },
+               {
+                    text: "Client Pages",
+                    href: 'pages/loans.html',
+               },
                 {
                     text: "Login",
                     href: '#login',
@@ -107,15 +115,11 @@ const Mock = (function(){
             childNodes: [
                     {
                         text: "Loans",
-                        href: './loans.html',
+                        href: './admin-loans.html',
                     },
                     {
                         text: "Clients",
-                        href: './clients.html',
-                    },
-                    {
-                        text: "Repayments",
-                        href: './repayments',
+                        href: './admin-clients.html',
                     }
                 ]
         }
