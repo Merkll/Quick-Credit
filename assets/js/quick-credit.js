@@ -111,8 +111,8 @@ const modalCloseAction = (event) =>{
 const viewLoanAction = async (event) => {
     event.preventDefault();
     const loanId = event.target.dataset.loan;
-    const repayments = Mock.data.repayments[loanId];
-    const loanDetails = Mock.data.loanDetails[loanId];
+    const repayments = Mock.repayments[loanId];
+    const loanDetails = Mock.loanDetails[loanId];
     const html = await render('single-loan', {}, { repayments, loanDetails});
     document.querySelector('.full-overlay').classList.add('show');
 }
