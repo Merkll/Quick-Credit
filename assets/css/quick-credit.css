@@ -16,13 +16,13 @@ body{
 .container{
     position: relative;
     width: 100%;
-    min-height: 100%;
-    /* margin-bottom: -30px; */
+    min-height: 100vh;
+    /* margin-bottom: -50px; */
     display: inline-block;
 }
 
 .footer{
-    /* margin-top: 50px; */
+    margin-top: 50px;
     /* height: 40px; */
     background-color: firebrick;
     color: white;
