@@ -369,7 +369,7 @@ textarea {
 }
 .card-header span:nth-child(1){
     float: left;
-    color: firebrick;
+    text-decoration: underline;
 }
 .card-header span:nth-child(2){
     float: right;

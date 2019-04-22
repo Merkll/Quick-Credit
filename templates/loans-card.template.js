@@ -2,7 +2,7 @@
     const templateHtml = `
     <div class="card">
         <div class="card-header">
-            <span>Loan: {{loanId}}</span>
+        <a href="./single-loan.html"><span>Loan: {{loanId}}</span></a>
             <span>{{loanStatus}}</span>
         </div>
         <div class="card-content">
