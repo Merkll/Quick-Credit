@@ -16,6 +16,7 @@
     }
     .sidebar-col, .sidebar-col div{
         height: 100%;
+        height: 200vh;
     }
     .sidebar-icon{
         display: none;
