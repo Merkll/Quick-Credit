@@ -143,7 +143,7 @@ body{
 
 a{
     color: firebrick;
-    text-decoration: none;
+    text-decoration: underline;
 }
 a:hover{
     color: red;
@@ -343,6 +343,10 @@ textarea {
     color: firebrick;
     font-size: 20px;
     font-weight: bold;
+}
+
+.page-title span:hover{
+    color: red;
 }
 .card-container{
     display: flex;
