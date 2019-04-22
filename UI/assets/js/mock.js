@@ -11,15 +11,7 @@ const Mock = (function(){
                {
                     text: "Client Pages",
                     href: './loans.html',
-               },
-                {
-                    text: "Login",
-                    href: '#login',
-                },
-                {
-                    text: "Signup",
-                    href: '#signup',
-                }
+               }
             ]
     };
 
