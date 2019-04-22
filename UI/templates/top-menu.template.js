@@ -12,7 +12,14 @@
     const topMenuTemplate = {
         root: 'top-menu-root',
         classNames: [],
-        template: templateHtml
+        template: templateHtml,
+        afterRender: async (data)=>{
+            const footerHtml = await render('footer', {});
+            const footerTemplateElement = document.createElement('template');
+            footerTemplateElement.innerHTML = footerHtml;
+            const footerNode = footerTemplateElement.content.childNodes[0];
+            document.body.appendChild(footerNode);            
+        }
     };
     templates['top-menu'] = topMenuTemplate;
 }());
