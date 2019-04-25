@@ -1,0 +1,33 @@
+{
+  "name": "quick-credit",
+  "version": "1.0.0",
+  "description": "An online lending platform that provides short term soft loans to individuals",
+  "main": "app.js",
+  "scripts": {
+    "test": "Mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Merkll/Quick-Credit.git"
+  },
+  "keywords": [
+    "Quick",
+    "credit"
+  ],
+  "author": "Toluwase",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Merkll/Quick-Credit/issues"
+  },
+  "homepage": "https://github.com/Merkll/Quick-Credit#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "mocha": "^6.1.4"
+  }
+}

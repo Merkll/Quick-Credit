@@ -5,15 +5,32 @@ text #f5ce42 */
     box-sizing: border-box;
 }
 body,html,.container{
-    height: 100%;
+    min-height: 100%;
 }
 body{
     background-color: white;
+    padding: 0px;
+    margin: 0px;
 }
+
 .container{
     position: relative;
     width: 100%;
+    min-height: 100vh;
+    /* margin-bottom: -50px; */
+    display: inline-block;
 }
+
+.footer{
+    margin-top: 50px;
+    /* height: 40px; */
+    background-color: firebrick;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 2px
+}
+
 .row{
     width: 100%;
     height: 100%;
@@ -143,7 +160,7 @@ body{
 
 a{
     color: firebrick;
-    text-decoration: none;
+    text-decoration: underline;
 }
 a:hover{
     color: red;
@@ -344,6 +361,10 @@ textarea {
     font-size: 20px;
     font-weight: bold;
 }
+
+.page-title span:hover{
+    color: red;
+}
 .card-container{
     display: flex;
     flex-direction: row;
@@ -365,7 +386,7 @@ textarea {
 }
 .card-header span:nth-child(1){
     float: left;
-    color: firebrick;
+    text-decoration: underline;
 }
 .card-header span:nth-child(2){
     float: right;
