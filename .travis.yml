@@ -1,17 +1,22 @@
-  language: node_js
-  node_js:
-  - "node"
-  install:
-    - npm install
-  script:
-    - npm run test
-  cache:
-    directories:
-      - "node_modules"
-      
-  after_success: npm run coveralls
-  # whitelist
-  branches:
-    only:
-      - master
-      - develop
+language: node_js
+node_js:
+- node
+install:
+- npm install
+script:
+- npm run test
+cache:
+  directories:
+  - node_modules
+after_success: npm run coveralls
+branches:
+  only:
+  - master
+  - develop
+deploy:
+  provider: heroku
+  api_key:
+    secure: mdibnismOlpnjG+MuXIRf54HNRLqgGHY/9pN+9lUh7iQzhAcqHDPDaIx1Z66E8tmWEtl8Xc/twu4+7TpmKv52Yv20yElt4vYybE03cHJ++WFoLOr4Biq71IKPxfHqnKez9BEXJ1ztgwhJEVKxyPg6/RnUFkEDXRd5WuA5uJovqKk8CrqnPVmLrjvuwTTBaZZMutvRnemAODQLl+grbtMWotpYjJp/Kop2alIzU+WaY8KAE8jkdHsxpS3LxtnsWVFp4jY7E10cd3E16lVutJhEOTURulyuopyPkMaBycKIh+P3ynVKwfieSP48uPaAmbOYE4WADzjtieYoUZX7xqlc5UyuUh0hXm0hxNuYrhUEtsNS3k7AeT4X573f4Wc14xadCELajX3xoEs+pMJMj5JGrZoRR1Oz9oIIFgttpk/aC/nXiD8ze0eUqwk+638SuXdDogJFXo6D6MzlwuYcqg3x5quhBHC6ikEdEWpv9h4ImKQoXtDXiWySeRsKvbAIt5XrstLuhf8oRD6Bh+pu7bNZyyM4yTtetx1kIsiG+rW5GyBb4Fd9qJPNjVpKb4hlPa/+tOrg+dHSzEBeVMtkHmmRBXIQI2wTYgBBOfpIN4QxtcR2AvbGJyVW/NSfK+ak5wp543mQyZT4jxbIEvpw4rqXWAbP+KsqNEbtO5RhNF5r8Q=
+  app:
+    master: quick-credit-production
+    develop: quick-credit-staging
