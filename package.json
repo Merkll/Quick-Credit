@@ -4,6 +4,7 @@
   "description": "An online lending platform that provides short term soft loans to individuals",
   "main": "app.js",
   "scripts": {
+    "start": "node app",
     "test": "nyc --reporter=text mocha",
     "coveralls": "nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js "
   },
