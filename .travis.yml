@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+ - "node"
+install:
+  - npm install
+script:
+  - npm run test
+ cache:
+  directories:
+    - "node_modules"
+
+# whitelist
+branches:
+  only:
+    - master
+    - develop
