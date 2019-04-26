@@ -127,9 +127,10 @@ module.exports = class Memdb {
     if (!(criteria instanceof Object)) throw new Error('Search Criteria should be an object of fields');
     const collectionData = this.collections[collection];
     if (!collectionData) return [];
-    return Object.entries(collectionData).map(([, details]) => {
+    return Object.entries(collectionData).map(([key, details]) => {
       if (Memdb.meetSearchCriteria(criteria, details)) {
-        return { ...details, ...value };
+        collectionData[key] = { ...details, ...value };
+        return collectionData[key];
       }
       return null;
     }).filter(details => !!details);
