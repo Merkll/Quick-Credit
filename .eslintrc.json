@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "mocha": true
     },
     "extends": "airbnb-base",
     "globals": {
@@ -13,6 +14,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-console": 0
+        "no-console": 0,
+        "eqeqeq": "off"
     }
 }
