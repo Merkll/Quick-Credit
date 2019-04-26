@@ -149,4 +149,73 @@ describe('Memdb', () => {
       expect(data).to.be.eql(userData);
     });
   });
+
+  context('meetSearchCriteria()', () => {
+    it('Should throw an error if criteria isnt specified', () => {
+      expect(() => MemDB.meetSearchCriteria()).to.throw();
+    });
+    it('Should return true with valid criteria and fiedl', () => {
+      const response = MemDB.meetSearchCriteria({ id: 4 }, { id: 4, title: 'Unknown' });
+      expect(response).to.be.true;
+    });
+
+    it('Should return false with invalid criteria and fiedl', () => {
+      const response = MemDB.meetSearchCriteria({ id: 8 }, { id: 4, title: 'Unknown' });
+      expect(response).to.be.false;
+    });
+  });
+  context('Quering Data from MemDB collection based on criteria', () => {
+    const collection = 'user-details';
+    const userData = [
+      {
+        id: 1,
+        firstName: 'Mike',
+        lastName: 'John',
+        occupation: 'Engineer',
+      },
+      {
+        id: 2,
+        firstName: 'Juliet',
+        lastName: 'Anderson',
+        occupation: 'Engineer',
+      },
+    ];
+
+    beforeEach(() => {
+      MemDBInstance.insert(collection, userData);
+    });
+
+    it('Should throw an error if collection is not given', () => {
+      expect(MemDBInstance.find).to.throw();
+    });
+
+    it('Should throw an error if criteria is not specified', () => {
+      expect(() => MemDBInstance.find(collection)).to.throw();
+    });
+
+    it('Should throw an error if criteria is not an object containing fields', () => {
+      expect(() => MemDBInstance.find(collection, 65)).to.throw();
+    });
+
+    it('Should return empty array if collection doesnt exist', () => {
+      const data = MemDBInstance.find('x-collection', { id: 1 });
+      expect(data).to.be.empty;
+    });
+
+    it('Should return Array of Data with criteria specifing id', () => {
+      const data = MemDBInstance.find(collection, { id: 1 });
+      expect(data).to.be.an.instanceof(Array);
+      expect(data[0]).to.be.eql(userData[0]);
+    });
+    it('Should return Array of Data without id in criteria', () => {
+      const data = MemDBInstance.find(collection, { firstName: 'Mike' });
+      expect(data).to.be.an.instanceof(Array);
+      expect(data[0]).to.be.eql(userData[0]);
+    });
+    it('Should return Empty Array of Data if criteria isnt valid', () => {
+      const data = MemDBInstance.find(collection, { firstName: 'Jane' });
+      expect(data).to.be.an.instanceof(Array);
+      expect(data).to.be.eql([]);
+    });
+  });
 });

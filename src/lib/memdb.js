@@ -51,4 +51,24 @@ module.exports = class Memdb {
     if (!collection) throw new Error('Collection Name Should be specified');
     return Object.values(this.collections[collection]);
   }
+
+  find(collection, criteria) {
+    if (!collection || !criteria) throw new Error('Collection Name And Search Criteria Should be specified');
+    if (!(criteria instanceof Object)) throw new Error('Search Criteria should be an object of fields');
+    const collectionData = this.collections[collection];
+    if (!collectionData) return [];
+    return Object.entries(collectionData).map(([, value]) => {
+      if (Memdb.meetSearchCriteria(criteria, value)) return value;
+      return null;
+    }).filter(data => !!data);
+  }
+
+  static meetSearchCriteria(criteria, field) {
+    let meetCriteria = true;
+    if ('id' in criteria && criteria.id == field.id) return true;
+    Object.entries(criteria).forEach(([key, value]) => {
+      if (!(key in field) || field[key] != value) meetCriteria = false;
+    });
+    return meetCriteria;
+  }
 };
