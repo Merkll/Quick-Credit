@@ -218,4 +218,76 @@ describe('Memdb', () => {
       expect(data).to.be.eql([]);
     });
   });
+
+  context('Updating Data from MemDB collection', () => {
+    const collection = 'user-details';
+    it('Should throw an error if collection isnt specified', () => {
+      expect(() => MemDBInstance.update()).to.throw();
+    });
+    it('Should throw an error if criteria isnt specified', () => {
+      expect(() => MemDBInstance.update(collection)).to.throw();
+    });
+    it('Should throw an error if criteria isnt an object', () => {
+      expect(() => MemDBInstance.update(collection, 9)).to.throw();
+    });
+    it('Should return empty array if collection doesnt exist', () => {
+      const data = MemDBInstance.update('x-collection', { id: 5 });
+      expect(data).to.be.an.instanceof(Array);
+      expect(data).to.be.empty;
+    });
+    it('Should return an array of updated Data', () => {
+      const data = MemDBInstance.update(collection, { id: 1 }, { firstName: 'Phillips' });
+      expect(data).to.be.an.instanceof(Array);
+      expect(data).to.not.be.empty;
+      expect(data[0].firstName).to.be.eql('Phillips');
+    });
+  });
+
+  context('getKeyOfDatathatMeetCriteria()', () => {
+    const data = [
+      {
+        id: 1,
+        title: 'Battle of Winterfell',
+        genre: 'adventure',
+      },
+      {
+        id: 3,
+        title: 'The battle',
+        genre: 'adventure',
+      },
+      {
+        id: 4,
+        title: 'The battle',
+        genre: 'action',
+      },
+    ];
+
+    const dataObject = {
+      1: {
+        id: 1,
+        title: 'Battle of Winterfell',
+        genre: 'adventure',
+      },
+      3: {
+        id: 3,
+        title: 'The battle',
+        genre: 'adventure',
+      },
+      4: {
+        id: 4,
+        title: 'The battle',
+        genre: 'action',
+      },
+    };
+
+    it('Should return Array of keys that meet criteria', () => {
+      const response = MemDB.getKeyOfDatathatMeetCriteria(data, { genre: 'adventure' });
+      expect(response).to.be.eql([1, 3]);
+    });
+
+    it('Should return Array of keys that meet criteria if collectionData instanceof Object', () => {
+      const response = MemDB.getKeyOfDatathatMeetCriteria(dataObject, { genre: 'adventure' });
+      expect(response).to.be.eql([1, 3]);
+    });
+  });
 });
