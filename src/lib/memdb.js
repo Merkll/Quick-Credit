@@ -143,4 +143,18 @@ module.exports = class Memdb {
       return null;
     }).filter(details => !!details);
   }
+
+  delete(collection, criteria) {
+    if (!collection || !criteria) throw new Error('Collection Name and criteria Should be specified');
+    if (!(criteria instanceof Object)) throw new Error('Search Criteria should be an object of fields');
+    const collectionData = this.collections[collection];
+    if (!collectionData) return [];
+    return Object.entries(collectionData).map(([key, details]) => {
+      if (Memdb.meetSearchCriteria(criteria, details)) {
+        collectionData[key] = null;
+        return details;
+      }
+      return null;
+    }).filter(details => !!details);
+  }
 };

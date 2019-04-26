@@ -290,4 +290,28 @@ describe('Memdb', () => {
       expect(response).to.be.eql([1, 3]);
     });
   });
+
+  context('Deleting Data from MemDB collection', () => {
+    const collection = 'user-details';
+    it('Should throw an error if collection isnt specified', () => {
+      expect(() => MemDBInstance.delete()).to.throw();
+    });
+    it('Should throw an error if criteria isnt specified', () => {
+      expect(() => MemDBInstance.delete(collection)).to.throw();
+    });
+    it('Should throw an error if criteria isnt an object', () => {
+      expect(() => MemDBInstance.delete(collection, 9)).to.throw();
+    });
+    it('Should return empty array if collection doesnt exist', () => {
+      const data = MemDBInstance.delete('x-collection', { id: 5 });
+      expect(data).to.be.an.instanceof(Array);
+      expect(data).to.be.empty;
+    });
+    it('Should return an array of deleted Data', () => {
+      const data = MemDBInstance.delete(collection, { id: 1 });
+      expect(data).to.be.an.instanceof(Array);
+      expect(data).to.not.be.empty;
+      expect(data[0].id).to.be.eql(1);
+    });
+  });
 });
