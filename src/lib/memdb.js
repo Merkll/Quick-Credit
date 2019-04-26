@@ -66,10 +66,11 @@ module.exports = class Memdb {
     if (this.collectionExist(collection) && !(data instanceof Object)) throw new Error('Insertion into a Non empty collection requires a data Object');
     if (!this.collectionExist(collection)) this.createCollection(collection);
     if (data instanceof Array) return this.bulkInsert(collection, data);
-    if (!(data instanceof Object)) this.collections[collection] = data;
+    let collectionData = this.getCollection(collection);
+    if (!(data instanceof Object)) collectionData = data;
     else {
       const { id = 55 } = data;
-      this.collections[collection][id] = data;
+      collectionData[id] = data;
     }
     return data;
   }
@@ -80,7 +81,7 @@ module.exports = class Memdb {
    */
   findAll(collection) {
     if (!collection) throw new Error('Collection Name Should be specified');
-    return Object.values(this.collections[collection]); // convert data Object to array
+    return Object.values(this.getCollection(collection)); // convert data Object to array
   }
 
   /**
@@ -91,7 +92,7 @@ module.exports = class Memdb {
   find(collection, criteria) {
     if (!collection || !criteria) throw new Error('Collection Name And Search Criteria Should be specified');
     if (!(criteria instanceof Object)) throw new Error('Search Criteria should be an object of fields');
-    const collectionData = this.collections[collection];
+    const collectionData = this.getCollection(collection);
     if (!collectionData) return [];
     return Object.entries(collectionData).map(([, value]) => {
       // check if search criteria is met
@@ -125,7 +126,7 @@ module.exports = class Memdb {
   update(collection, criteria, value = {}) {
     if (!collection || !criteria) throw new Error('Collection Name and criteria Should be specified');
     if (!(criteria instanceof Object)) throw new Error('Search Criteria should be an object of fields');
-    const collectionData = this.collections[collection];
+    const collectionData = this.getCollection(collection);
     if (!collectionData) return [];
     return Object.entries(collectionData).map(([key, details]) => {
       if (Memdb.meetSearchCriteria(criteria, details)) {
@@ -148,7 +149,7 @@ module.exports = class Memdb {
   delete(collection, criteria) {
     if (!collection || !criteria) throw new Error('Collection Name and criteria Should be specified');
     if (!(criteria instanceof Object)) throw new Error('Search Criteria should be an object of fields');
-    const collectionData = this.collections[collection];
+    const collectionData = this.getCollection(collection);
     if (!collectionData) return [];
     return Object.entries(collectionData).map(([key, details]) => {
       if (Memdb.meetSearchCriteria(criteria, details)) {
