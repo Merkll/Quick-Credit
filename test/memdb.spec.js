@@ -55,9 +55,10 @@ describe('Memdb', () => {
     });
 
     it('Should insert Data into collection if collection doesnt exist and data is not an object', () => {
-      const inserted = MemDBInstance.insert('new-collection', 555);
+      const data = 555;
+      const inserted = MemDBInstance.insert('new-collection', data);
       expect(inserted).to.not.be.null;
-      expect(inserted).to.be.an.instanceof(Object);
+      expect(data).to.be.eql(data);
     });
 
     it('Should insert Data into collection with id as key', () => {
@@ -82,16 +83,70 @@ describe('Memdb', () => {
       expect(collectionExistAfterInsertion).to.be.true;
     });
 
-    it('Should return object of MemDB', () => {
+    it('Should return object of inserted data', () => {
       const inserted = MemDBInstance.insert(collectionName, { id: 555 });
       expect(inserted).to.be.an.instanceof(Object);
-      expect(inserted).to.be.an.instanceof(MemDB);
+      expect(inserted).to.be.eql({ id: 555 });
     });
-    it('Should return object of MemDB with data property that contains inserted data', () => {
-      const inserted = MemDBInstance.insert(collectionName, { id: 555 });
-      expect(inserted).to.be.an.instanceof(Object);
-      expect(inserted).to.be.an.instanceof(MemDB);
-      expect(inserted.data).to.be.eql({ id: 555 });
+
+    it('Should insert Array of Data', () => {
+      const inserted = MemDBInstance.insert(collectionName, [{ id: 555 }, { id: 98 }]);
+      expect(inserted).to.be.eql([{ id: 555 }, { id: 98 }]);
+    });
+  });
+
+  context('Insert bulk Data(Array) of Data) Into MemDB collection #bulkInsert', () => {
+    it('Should throw an error on empty collection', () => {
+      expect(MemDBInstance.bulkInsert).to.throw();
+      expect(() => MemDBInstance.bulkInsert('bulk-collection')).to.throw();
+    });
+
+    it('Should throw an error on empty data', () => {
+      expect(() => MemDBInstance.bulkInsert('bulk-collection')).to.throw();
+    });
+    it('Should insert Data if data isnt an Array ', () => {
+      const inserted = MemDBInstance.bulkInsert('bulk-collection-non-array', 99);
+      expect(inserted).to.be.eql(99);
+    });
+    it('Should return array of inserted Data ', () => {
+      const inserted = MemDBInstance.bulkInsert('bulk-collection-array', [{ id: 55 }, { id: 77 }]);
+      expect(inserted).to.be.eql([{ id: 55 }, { id: 77 }]);
+    });
+  });
+  context('Quering All Data from MemDB collection', () => {
+    const collection = 'user-details';
+    const userData = [
+      {
+        id: 1,
+        firstName: 'Mike',
+        lastName: 'John',
+        occupation: 'Engineer',
+      },
+      {
+        id: 2,
+        firstName: 'Juliet',
+        lastName: 'Anderson',
+        occupation: 'Engineer',
+      },
+    ];
+
+    beforeEach(() => {
+      MemDBInstance.insert(collection, userData);
+    });
+
+    it('Should return an object', () => {
+      const data = MemDBInstance.findAll(collection);
+      expect(data).to.not.be.null;
+      expect(data).to.be.an.instanceof(Object);
+    });
+
+    it('Should throw an error if collection is not given', () => {
+      expect(MemDBInstance.findAll).to.throw();
+    });
+
+    it('Should return the data', () => {
+      const data = MemDBInstance.findAll(collection);
+      expect(data).to.be.eql(userData);
     });
   });
 });

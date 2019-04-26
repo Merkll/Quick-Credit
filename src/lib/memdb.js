@@ -28,16 +28,27 @@ module.exports = class Memdb {
     return !!this.collections[collectioName];
   }
 
+  bulkInsert(collection, data) {
+    if (!collection || !data) throw new Error('Collection Name And Data Should be specified');
+    if (!(data instanceof Array)) return this.insert(collection, data);
+    return data.map(detail => this.insert(collection, detail));
+  }
+
   insert(collection, data) {
     if (!collection || !data) throw new Error('Collection Name Should be specified');
     if (this.collectionExist(collection) && !(data instanceof Object)) throw new Error('Insertion into a Non empty collection requires a data Object');
     if (!this.collectionExist(collection)) this.createCollection(collection);
+    if (data instanceof Array) return this.bulkInsert(collection, data);
     if (!(data instanceof Object)) this.collections[collection] = data;
     else {
       const { id = 55 } = data;
       this.collections[collection][id] = data;
     }
-    this.data = data;
-    return this;
+    return data;
+  }
+
+  findAll(collection) {
+    if (!collection) throw new Error('Collection Name Should be specified');
+    return Object.values(this.collections[collection]);
   }
 };
