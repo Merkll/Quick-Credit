@@ -5,18 +5,19 @@
  *    *hasMany --
  *    *hasOne --
  *    *belongsTo --
- * 2. Query of all associated Models
+ * 2. Query of all associated Models --
  * 3. Search by Associated Models
- * 4. Hooks for afterSave, afterUpdate, afterDelete,
- *    afterFind, beforeSave, beforeUpdate, beforeDelete
+ * 4. Hooks for afterInsert, afterUpdate, afterDelete, --
+ *    afterFind, beforeInsert, beforeUpdate, beforeDelete
  */
 const MemDB = require('./index');
 
 module.exports = class Model {
-  constructor(modelName, db = MemDB) {
+  constructor(modelName, hooks = {}, db = MemDB) {
     this.modelName = modelName;
     this.associations = {};
     this.DB = db;
+    this.hooks = hooks;
     this.init();
   }
 
@@ -80,30 +81,37 @@ module.exports = class Model {
   findAll() {
     const collection = this.modelName;
     this.QueryData = this.DB.findAll(collection);
+    this.triggerHook('afterFind', this.QueryData);
     return this;
   }
 
   find(criteria = {}) {
     const collection = this.modelName;
     this.QueryData = this.DB.find(collection, criteria);
+    this.triggerHook('afterFind', this.QueryData);
     return this;
   }
 
   insert(data = []) {
     const collection = this.modelName;
-    this.QueryData = this.DB.insert(collection, data);
+    const transformedData = this.triggerHook('beforeInsert', data);
+    this.QueryData = this.DB.insert(collection, transformedData);
+    this.triggerHook('afterInsert', this.QueryData);
     return this;
   }
 
   delete(criteria = {}) {
     const collection = this.modelName;
     this.QueryData = this.DB.delete(collection, criteria);
+    this.triggerHook('afterDelete', this.QueryData);
     return this;
   }
 
   update(value = {}, criteria = {}) {
     const collection = this.modelName;
-    this.QueryData = this.DB.update(collection, criteria, value);
+    const transformedValue = this.triggerHook('beforeUpdate', value);
+    this.QueryData = this.DB.update(collection, criteria, transformedValue);
+    this.triggerHook('afterUpdate', this.QueryData);
     return this;
   }
 
@@ -159,5 +167,12 @@ module.exports = class Model {
       return associatedData[key];
     });
     return associatedData;
+  }
+
+  triggerHook(hook, data = {}) {
+    if (!hook) throw new Error('Hook to execute not specified');
+    const hookFunction = this.hooks[hook];
+    if (!hookFunction && typeof hookFunction !== 'function') return data;
+    return hookFunction(data);
   }
 };

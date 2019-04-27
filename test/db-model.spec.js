@@ -3,7 +3,9 @@ const { expect } = require('chai');
 const Model = require('../src/model/model');
 
 describe('Model', () => {
-  const ProductModel = new Model('Product');
+  const ProductModel = new Model('Product', {
+    afterInsert: data => data,
+  });
   const OrderModel = new Model('Order');
   const UserModel = new Model('User');
   before(() => {
@@ -373,6 +375,22 @@ describe('Model', () => {
     it('Should return Model instance with QueryData', () => {
       const associate = OrderModel.findAll().associate();
       expect(associate).to.be.an.instanceof(Model);
+    });
+  });
+
+  context('triggerHook', () => {
+    it('Should throw an error if hook isnt specified', () => {
+      expect(() => ProductModel.triggerHook()).to.throw();
+    });
+    it('Should return passed data is hook isnt defined', () => {
+      const data = ProductModel.triggerHook('non', {});
+      expect(data).to.be.eql(data);
+    });
+
+    it('Should return an object with valid hook', () => {
+      const data = ProductModel.triggerHook('afterInsert', {});
+      expect(data).to.not.be.null;
+      expect(data).to.be.an.instanceof(Object);
     });
   });
 });
