@@ -1,15 +1,17 @@
 /**
  * Base class inherited by all models
- * functionality to implement
- * 1. Model associations
- *    *hasMany --
- *    *hasOne --
- *    *belongsTo --
- * 2. Query of all associated Models --
- * 3. Search by Associated Models --
- * 4. Hooks for afterInsert, afterUpdate, afterDelete, --
- *    afterFind, beforeInsert, beforeUpdate, beforeDelete
+ * @constructor
+ * @param {string} modelName - Name to attach to the model.
+ * @param {Object} hooks - An object of hooks functions
+ * @param {object} db - database instance to use
+ * @example
+ * new Model('modelName',{
+ *  afterInsert: (data) => {}
+ * })
+ * Valid Hooks are beforeInsert, afterInsert, afterFind, beforeUpdate
+ * afterUpdate, afterDelete
  */
+
 const MemDB = require('./index');
 
 module.exports = class Model {
@@ -20,7 +22,7 @@ module.exports = class Model {
     // Maps modelName to the type of association so search can be faster
     this.DB = db;
     this.hooks = hooks;
-    this.init();
+    this.init(); // initialises the model
   }
 
   init() {
@@ -45,6 +47,11 @@ module.exports = class Model {
     return `${model.modelName}Id`;
   }
 
+  /**
+   * Sets association for a model
+   * @param {string} association  -type of association (hasMany, hasOne, belongsTo)
+   * @param {Object} model - Model to associate with
+   */
   setAssociation(association, model) {
     if (!association) throw new Error('Association isnt specified');
     if (!this.associations[association]) this.associations[association] = {};
@@ -54,28 +61,48 @@ module.exports = class Model {
     return this.associations[association];
   }
 
+  /**
+   * Gets models associated to a particular type of association
+   * @param {String} association - Type of Association to get (hasMany, hasOne, belongsTo)
+   */
   getAssociation(association) {
     if (!association) throw new Error('Association isnt specified');
     const associationName = association.toLowerCase();
     return this.associations[associationName] || {};
   }
 
+  /**
+   * Tests for the validity of a model before associating it
+   * @param {Object} associatedModel - Model Object to asssociate to
+   */
   static validateAssociation(associatedModel) {
     if (!associatedModel) throw new Error('Associated Model Not specified');
     if (!(associatedModel instanceof Model)) throw new Error('Associated Model should be an instance of Model');
     return !!associatedModel.modelName;
   }
 
+  /**
+   * HAndles definition of a hasMany assocation
+   * @param {Object} associatedModel -Model Object to asssociate to
+   */
   hasMany(associatedModel) {
     if (Model.validateAssociation(associatedModel)) this.setAssociation('hasmany', associatedModel);
     return this;
   }
 
+  /**
+   * HAndles definition of a hasOne assocation
+   * @param {Object} associatedModel -Model Object to asssociate to
+   */
   hasOne(associatedModel) {
     if (Model.validateAssociation(associatedModel)) this.setAssociation('hasone', associatedModel);
     return this;
   }
 
+  /**
+   * HAndles definition of a belongsTo assocation
+   * @param {Object} associatedModel -Model Object to asssociate to
+   */
   belongsTo(associatedModel) {
     if (Model.validateAssociation(associatedModel)) this.setAssociation('belongsto', associatedModel);
     return this;
@@ -172,6 +199,11 @@ module.exports = class Model {
     return associatedData;
   }
 
+  /**
+   * trigeers user supplied hooks once the stage to trigger such as been attained
+   * @param {String} hook -Name of the hook to trigger
+   * @param {Object} data - Data to pass to the hook
+   */
   triggerHook(hook, data = {}) {
     if (!hook) throw new Error('Hook to execute not specified');
     const hookFunction = this.hooks[hook];
@@ -186,13 +218,21 @@ module.exports = class Model {
     return associations[model][modelName];
   }
 
+  /**
+   * Serches for a model by using the data of its associated model as criteria
+   * @param {String} associatedModelName -name of the model to search
+   * @param {Object} criteria -search criteria
+   * @param {String} association -type of association between the models
+   */
   searchByAssociation(associatedModelName, criteria = {}, association) {
     if (!associatedModelName) throw new Error('Associated Model name not specified');
     let associatedModel;
+    // checks if association is supplied which makes search faster
     if (association) {
       associatedModel = this.getAssociation(association);
       associatedModel = associatedModel[associatedModelName];
     } else {
+      // if type of association isnt supplied it searches for the model
       associatedModel = this.searchForModelInAssociation(associatedModelName);
     }
     if (associatedModel) {
