@@ -6,7 +6,7 @@
  *    *hasOne --
  *    *belongsTo --
  * 2. Query of all associated Models --
- * 3. Search by Associated Models
+ * 3. Search by Associated Models --
  * 4. Hooks for afterInsert, afterUpdate, afterDelete, --
  *    afterFind, beforeInsert, beforeUpdate, beforeDelete
  */
@@ -16,6 +16,8 @@ module.exports = class Model {
   constructor(modelName, hooks = {}, db = MemDB) {
     this.modelName = modelName;
     this.associations = {};
+    this.modelAssociation = {};
+    // Maps modelName to the type of association so search can be faster
     this.DB = db;
     this.hooks = hooks;
     this.init();
@@ -48,6 +50,7 @@ module.exports = class Model {
     if (!this.associations[association]) this.associations[association] = {};
     const { modelName } = model;
     this.associations[association][modelName] = model;
+    this.modelAssociation[modelName] = association;
     return this.associations[association];
   }
 
@@ -174,5 +177,29 @@ module.exports = class Model {
     const hookFunction = this.hooks[hook];
     if (!hookFunction && typeof hookFunction !== 'function') return data;
     return hookFunction(data);
+  }
+
+  searchForModelInAssociation(modelName) {
+    if (!modelName) throw new Error('Model name must be specified');
+    const { associations, modelAssociation } = this;
+    const model = modelAssociation[modelName];
+    return associations[model][modelName];
+  }
+
+  searchByAssociation(associatedModelName, criteria = {}, association) {
+    if (!associatedModelName) throw new Error('Associated Model name not specified');
+    let associatedModel;
+    if (association) {
+      associatedModel = this.getAssociation(association);
+      associatedModel = associatedModel[associatedModelName];
+    } else {
+      associatedModel = this.searchForModelInAssociation(associatedModelName);
+    }
+    if (associatedModel) {
+      const { QueryData: [associatedData] } = associatedModel.find(criteria);
+      const modelId = associatedData[this.foreignKey];
+      this.QueryData = this.find({ id: modelId }).QueryData;
+    }
+    return this;
   }
 };

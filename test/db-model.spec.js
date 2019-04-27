@@ -393,4 +393,36 @@ describe('Model', () => {
       expect(data).to.be.an.instanceof(Object);
     });
   });
+
+  context('searchForModelInAssociation', () => {
+    it('Should throw an error if Model name is undefined', () => {
+      expect(() => ProductModel.searchForModelInAssociation()).to.throw();
+    });
+
+    it('Should return a model instance ', () => {
+      const data = OrderModel.searchForModelInAssociation('Product');
+      expect(data).to.be.eql(ProductModel);
+    });
+  });
+
+  context('searchByAssociation', () => {
+    it('Should throw an error if associated Model name is undefined', () => {
+      expect(() => ProductModel.searchByAssociation()).to.throw();
+    });
+
+    it('Should return a model instance ', () => {
+      const data = ProductModel.searchByAssociation('Order');
+      expect(data).to.be.eql(data);
+    });
+
+    it('Should return a model instance if association is specified', () => {
+      const data = ProductModel.searchByAssociation('Order', { id: 1 }, 'hasMany');
+      expect(data).to.be.eql(data);
+    });
+
+    it('Should return a model instance if associated model is not found', () => {
+      const data = ProductModel.searchByAssociation('Order-non', { id: 1 }, 'hasMany');
+      expect(data).to.be.eql(data);
+    });
+  });
 });
