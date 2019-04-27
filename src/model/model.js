@@ -4,21 +4,42 @@
  * 1. Model associations
  *    *hasMany --
  *    *hasOne --
- *    *belongsTo
+ *    *belongsTo --
  * 2. Query of all associated Models
  * 3. Search by Associated Models
  * 4. Hooks for afterSave, afterUpdate, afterDelete,
  *    afterFind, beforeSave, beforeUpdate, beforeDelete
  */
+const MemDB = require('./index');
 
 module.exports = class Model {
-  constructor(modelName) {
+  constructor(modelName, db = MemDB) {
     this.modelName = modelName;
     this.associations = {};
+    this.DB = db;
+    this.init();
+  }
+
+  init() {
+    if (!this.modelName) return {};
+    return this.DB.createCollection(this.modelName);
   }
 
   get Model() {
     return this;
+  }
+
+  get foreignKey() {
+    return `${this.modelName}Id`;
+  }
+
+  get data() {
+    return (this.QueryData) ? this.QueryData : {};
+  }
+
+  getKeys(model) {
+    if (model === this) return this.foreignKey;
+    return `${model.modelName}Id`;
   }
 
   setAssociation(association, model) {
@@ -31,7 +52,8 @@ module.exports = class Model {
 
   getAssociation(association) {
     if (!association) throw new Error('Association isnt specified');
-    return this.associations[association] || {};
+    const associationName = association.toLowerCase();
+    return this.associations[associationName] || {};
   }
 
   static validateAssociation(associatedModel) {
@@ -53,5 +75,89 @@ module.exports = class Model {
   belongsTo(associatedModel) {
     if (Model.validateAssociation(associatedModel)) this.setAssociation('belongsto', associatedModel);
     return this;
+  }
+
+  findAll() {
+    const collection = this.modelName;
+    this.QueryData = this.DB.findAll(collection);
+    return this;
+  }
+
+  find(criteria = {}) {
+    const collection = this.modelName;
+    this.QueryData = this.DB.find(collection, criteria);
+    return this;
+  }
+
+  insert(data = []) {
+    const collection = this.modelName;
+    this.QueryData = this.DB.insert(collection, data);
+    return this;
+  }
+
+  delete(criteria = {}) {
+    const collection = this.modelName;
+    this.QueryData = this.DB.delete(collection, criteria);
+    return this;
+  }
+
+  update(value = {}, criteria = {}) {
+    const collection = this.modelName;
+    this.QueryData = this.DB.update(collection, criteria, value);
+    return this;
+  }
+
+  associate() {
+    const { QueryData } = this;
+    // QueryData is an array of results returned from a query
+    // foreignKey is used for association with other collections
+    const assocationHandlers = {
+      hasmany: this.hasManyAssosciationHandler.bind(this),
+      hasone: this.hasOneAndBelongsToHandler.bind(this),
+      belongsto: this.hasOneAndBelongsToHandler.bind(this),
+    };
+    if (QueryData) {
+      this.QueryData = QueryData.map((data) => {
+        let associatedData = {};
+        Object.entries(this.associations).map(([key, value]) => {
+          const handler = assocationHandlers[key];
+          if (!handler) return null;
+          const associated = handler(value, data);
+          associatedData = { ...associatedData, ...associated };
+          return null;
+        });
+        return { ...data, ...associatedData };
+      });
+    }
+    return this;
+  }
+
+  hasManyAssosciationHandler(associations, data = {}) {
+    if (!associations) throw new Error('Association can not be undefined');
+    if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
+    const associatedData = {};
+    const { id } = data;
+    const criteria = {};
+    criteria[this.foreignKey] = id;
+    Object.entries(associations).map(([key, value]) => {
+      associatedData[key] = value.find(criteria).QueryData;
+      return associatedData[key];
+    });
+    return associatedData;
+  }
+
+  hasOneAndBelongsToHandler(associations, data = {}) {
+    if (!associations) throw new Error('Association can not be undefined');
+    if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
+    const associatedData = {};
+    Object.entries(associations).map(([key, value]) => {
+      const associationKey = this.getKeys(value);
+      const id = data[associationKey];
+      const criteria = { id };
+      const associated = value.find(criteria).QueryData;
+      [associatedData[key] = null] = associated;
+      return associatedData[key];
+    });
+    return associatedData;
   }
 };
