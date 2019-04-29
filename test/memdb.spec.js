@@ -39,6 +39,18 @@ describe('Memdb', () => {
     });
   });
 
+  context('primaryKey', () => {
+    it('Should return one if primary key doesnt exist', () => {
+      const key = MemDBInstance.getPrimaryKey('collectionName');
+      expect(key).to.be.eql(1);
+    });
+
+    it('Should increment primary key by 1 if key exists', () => {
+      const key = MemDBInstance.getPrimaryKey('collectionName');
+      expect(key).to.be.eql(2);
+    });
+  });
+
   context('Insert Data Into MemDB collection', () => {
     it('Should return object containing inserted Data', () => {
       const insertedCollection = MemDBInstance.insert(collectionName, { id: 555 });
