@@ -400,8 +400,8 @@ describe('Model', () => {
     });
 
     it('Should return a model instance ', () => {
-      const data = OrderModel.searchForModelInAssociation('Product');
-      expect(data).to.be.eql(ProductModel);
+      const { model } = OrderModel.searchForModelInAssociation('Product');
+      expect(model).to.be.eql(ProductModel);
     });
   });
 
@@ -411,8 +411,8 @@ describe('Model', () => {
     });
 
     it('Should return a model instance ', () => {
-      const data = ProductModel.searchByAssociation('Order');
-      expect(data).to.be.eql(data);
+      const { model } = ProductModel.searchByAssociation('Order');
+      expect(model).to.be.eql(model);
     });
 
     it('Should return a model instance if association is specified', () => {
@@ -423,6 +423,54 @@ describe('Model', () => {
     it('Should return a model instance if associated model is not found', () => {
       const data = ProductModel.searchByAssociation('Order-non', { id: 1 }, 'hasMany');
       expect(data).to.be.eql(data);
+    });
+
+    it('Should return empty data if search criteria isnt met ', () => {
+      const sample = new Model('Sample');
+      sample.insert([
+        {
+          subject: 'Subject',
+          item: 1,
+        },
+      ]);
+      ProductModel.hasMany(sample, { item: 'id' });
+      const { data } = ProductModel.searchByAssociation('Sample', { id: 1 }, 'hasMany');
+      expect(data).to.be.empty;
+    });
+
+    it('Should search based on reference', () => {
+      const sample = new Model('Sample');
+      sample.insert([
+        {
+          subject: 'Subject',
+          item: 1,
+        },
+      ]);
+      ProductModel.hasMany(sample, { item: 'id' });
+      const { data } = ProductModel.searchByAssociation('Sample', { item: 1 }, 'hasMany');
+      expect(data).to.not.be.empty;
+    });
+  });
+
+  context('getSearchReferenceKey', () => {
+    it('should return refrence key ', () => {
+      const reference = { item: 'id' };
+      const data = { item: 4 };
+      const refrenceKey = Model.getSearchReferenceKey(reference, data);
+      expect(refrenceKey).to.be.eql({ id: 4 });
+    });
+
+    it('should return null if key isnt in data ', () => {
+      const reference = { item: 'id' };
+      const data = { id: 4 };
+      const refrenceKey = Model.getSearchReferenceKey(reference, data);
+      expect(refrenceKey).to.be.null;
+    });
+    it('should return null reference is empty ', () => {
+      const reference = {};
+      const data = { id: 4 };
+      const refrenceKey = Model.getSearchReferenceKey(reference, data);
+      expect(refrenceKey).to.be.null;
     });
   });
 });
