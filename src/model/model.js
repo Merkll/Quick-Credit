@@ -269,6 +269,7 @@ module.exports = class Model {
     if (!referenceKeyValue) return null;
     const modelMappedKey = references[referenceKey];
     associationSearchCriteria[modelMappedKey] = referenceKeyValue;
+    console.log(associationSearchCriteria)
     return associationSearchCriteria;
   }
 };
