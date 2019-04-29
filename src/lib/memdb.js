@@ -80,7 +80,7 @@ module.exports = class Memdb {
       if (!id) {
         id = this.getPrimaryKey(collection);
       }
-      collectionData[id] = data;
+      collectionData[id] = { id, ...data };
     }
     return data;
   }
