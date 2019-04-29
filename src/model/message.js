@@ -18,7 +18,8 @@ module.exports = (Model) => {
   }, {});
 
   MessageModel.buildAssociation = (Models) => {
-    MessageModel.hasMany(Models.Loan);
+    MessageModel.hasMany(Models.Message);
+    MessageModel.belongsTo(Models.User);
   };
   return MessageModel;
 };

@@ -20,7 +20,8 @@ module.exports = (Model) => {
   }, {});
 
   LoanModel.buildAssociation = (Models) => {
-    LoanModel.hasMany(Models.Loan);
+    LoanModel.belongsTo(Models.User);
+    LoanModel.hasMany(Models.Repayment);
   };
   return LoanModel;
 };

@@ -14,7 +14,7 @@ module.exports = (Model) => {
   }, {});
 
   RepaymentModel.buildAssociation = (Models) => {
-    RepaymentModel.hasMany(Models.Loan);
+    RepaymentModel.belongsTo(Models.Loan);
   };
   return RepaymentModel;
 };

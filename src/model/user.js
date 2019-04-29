@@ -21,6 +21,7 @@ module.exports = (Model) => {
 
   UserModel.buildAssociation = (Models) => {
     UserModel.hasMany(Models.Loan);
+    UserModel.hasMany(Models.Message);
   };
   return UserModel;
 };
