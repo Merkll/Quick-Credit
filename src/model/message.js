@@ -19,13 +19,13 @@ module.exports = (Model) => {
 
   MessageModel.buildAssociation = (Models) => {
     MessageModel.hasMany(Models.Message, {
-      id: 'repliedTo',
+      repliedTo: 'id',
     });
     MessageModel.hasOne(Models.User, {
-      id: 'recipient',
+      recipient: 'id',
     });
     MessageModel.belongsTo(Models.User, {
-      id: 'sender',
+      sender: 'id',
     });
   };
   return MessageModel;

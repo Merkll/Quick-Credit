@@ -37,16 +37,19 @@ module.exports = class Model {
   }
 
   get foreignKey() {
-    return `${this.modelName}Id`;
+    const modelName = this.modelName.toLowerCase();
+    return `${modelName}Id`;
   }
 
   get data() {
     return (this.QueryData) ? this.QueryData : {};
   }
 
-  getKeys(model) {
-    if (model === this) return this.foreignKey;
-    return `${model.modelName}Id`;
+  getKeys(modelData) {
+    if (modelData === this) return this.foreignKey;
+    const { model } = modelData;
+    const modelName = model.modelName.toLowerCase();
+    return `${modelName}Id`;
   }
 
   /**
