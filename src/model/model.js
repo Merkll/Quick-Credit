@@ -26,6 +26,7 @@ module.exports = class Model {
 
   init() {
     if (!this.modelName) return {};
+    this.triggerHook('start', this);
     return this.DB.createCollection(this.modelName);
   }
 
