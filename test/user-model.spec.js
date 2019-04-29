@@ -3,9 +3,10 @@ const { expect } = require('chai');
 const faker = require('faker');
 const User = require('../src/model/user');
 
+let UserData;
 describe('User Model', () => {
   before(() => {
-    const UserData = Array(10).fill(0).map(() => ({
+    UserData = Array(10).fill(0).map(() => ({
       email: faker.internet.email(),
       firstName: faker.name.findName(),
       lastName: faker.name.lastName(),
@@ -20,8 +21,9 @@ describe('User Model', () => {
 
 
   context('Model Initialization', () => {
-    it('Should create a MemDB collection', () => {
-      console.log(User.findAll().data);
+    it('Should return UserData', () => {
+      const { data } = User.findAll();
+      expect(data).to.be.eql(UserData);
     });
   });
 });
