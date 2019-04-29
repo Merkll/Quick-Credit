@@ -6,7 +6,8 @@ const { Message } = require('../src/model/');
 let MessageData;
 describe('Message Model', () => {
   before(() => {
-    MessageData = Array(10).fill(0).map(() => ({
+    MessageData = Array(10).fill(0).map((data, index) => ({
+      id: index + 1,
       createdOn: new Date(),
       sender: faker.random.number(),
       repliedTo: faker.random.number(),

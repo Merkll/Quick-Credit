@@ -47,7 +47,7 @@ module.exports = class Model {
 
   getKeys(modelData) {
     if (modelData === this) return this.foreignKey;
-    const { model } = modelData;
+    const { model = modelData } = modelData;
     const modelName = model.modelName.toLowerCase();
     return `${modelName}Id`;
   }
@@ -180,11 +180,14 @@ module.exports = class Model {
     if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
     const associatedData = {};
     const { id } = data;
-    let criteria = {};
-    criteria[this.foreignKey] = id;
-    Object.entries(associations).map(([key, value]) => {
+    const searchCriteria = {};
+    searchCriteria[this.foreignKey] = id;
+    Object.entries(associations).map(([searchKey, value]) => {
       const { model, references } = value;
-      criteria = Model.getSearchReferenceKey(references, data) || criteria;
+      const {
+        criteria = searchCriteria,
+        key = searchKey,
+      } = Model.getSearchReferenceKey(references, data);
       associatedData[key] = model.find(criteria).QueryData;
       return associatedData[key];
     });
@@ -195,12 +198,15 @@ module.exports = class Model {
     if (!associations) throw new Error('Association can not be undefined');
     if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
     const associatedData = {};
-    Object.entries(associations).map(([key, value]) => {
+    Object.entries(associations).map(([searchKey, value]) => {
       const associationKey = this.getKeys(value);
       const id = data[associationKey];
-      let criteria = { id };
+      const searchCriteria = { id };
       const { model, references } = value;
-      criteria = Model.getSearchReferenceKey(references, data) || criteria;
+      const {
+        criteria = searchCriteria,
+        key = searchKey,
+      } = Model.getSearchReferenceKey(references, data);
       const associated = model.find(criteria).QueryData;
       [associatedData[key] = null] = associated;
       return associatedData[key];
@@ -248,7 +254,9 @@ module.exports = class Model {
       const { model, references } = associatedModel;
       const { QueryData: [associatedData = {}] } = model.find(criteria);
       const modelkey = associatedData[this.foreignKey];
-      let associationSearchCriteria = Model.getSearchReferenceKey(references, associatedData);
+      let {
+        criteria: associationSearchCriteria,
+      } = Model.getSearchReferenceKey(references, associatedData);
       if (!associationSearchCriteria) associationSearchCriteria = { id: modelkey };
       this.QueryData = this.find(associationSearchCriteria).QueryData;
     }
@@ -264,12 +272,11 @@ module.exports = class Model {
   static getSearchReferenceKey(references, data) {
     const associationSearchCriteria = {};
     const referenceKey = Object.keys(references)[0];
-    if (!referenceKey) return null;
+    if (!referenceKey) return {};
     const referenceKeyValue = data[referenceKey];
-    if (!referenceKeyValue) return null;
+    if (!referenceKeyValue) return {};
     const modelMappedKey = references[referenceKey];
     associationSearchCriteria[modelMappedKey] = referenceKeyValue;
-    console.log(associationSearchCriteria)
-    return associationSearchCriteria;
+    return { criteria: associationSearchCriteria, key: referenceKey };
   }
 };

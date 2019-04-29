@@ -76,7 +76,7 @@ describe('Model', () => {
 
     it('Should get ForeignKey', () => {
       expect(ModelInstance.foreignKey).to.not.be.null;
-      expect(ModelInstance.foreignKey).to.be.eql('ModelId');
+      expect(ModelInstance.foreignKey).to.be.eql('modelId');
     });
   });
 
@@ -96,13 +96,13 @@ describe('Model', () => {
     it('Should return key for a model', () => {
       const key = ProductModel.getKeys(OrderModel);
       expect(key).to.not.be.null;
-      expect(key).to.be.eql('OrderId');
+      expect(key).to.be.eql('orderId');
     });
 
     it('Should return foreignkey if model is same asthe instance', () => {
       const key = ProductModel.getKeys(ProductModel);
       expect(key).to.not.be.null;
-      expect(key).to.be.eql('ProductId');
+      expect(key).to.be.eql('productId');
     });
 
     it('Should return empty Object if modelName is undefined', () => {
@@ -120,7 +120,7 @@ describe('Model', () => {
 
     it('Should get ForeignKey', () => {
       expect(ModelInstance.foreignKey).to.not.be.null;
-      expect(ModelInstance.foreignKey).to.be.eql('ModelId');
+      expect(ModelInstance.foreignKey).to.be.eql('modelId');
     });
   });
 
@@ -320,7 +320,7 @@ describe('Model', () => {
     });
     it('Should return an object of associated data', () => {
       const association = ProductModel.getAssociation('hasMany');
-      const associate = ProductModel.hasManyAssosciationHandler(association, { ProductId: 1 });
+      const associate = ProductModel.hasManyAssosciationHandler(association, { productId: 1 });
       expect(associate).to.be.an.instanceof(Object);
     });
   });
@@ -427,13 +427,7 @@ describe('Model', () => {
 
     it('Should return empty data if search criteria isnt met ', () => {
       const sample = new Model('Sample');
-      sample.insert([
-        {
-          subject: 'Subject',
-          item: 1,
-        },
-      ]);
-      ProductModel.hasMany(sample, { item: 'id' });
+      ProductModel.hasMany(sample, { id: 'item' });
       const { data } = ProductModel.searchByAssociation('Sample', { id: 1 }, 'hasMany');
       expect(data).to.be.empty;
     });
@@ -456,21 +450,21 @@ describe('Model', () => {
     it('should return refrence key ', () => {
       const reference = { item: 'id' };
       const data = { item: 4 };
-      const refrenceKey = Model.getSearchReferenceKey(reference, data);
-      expect(refrenceKey).to.be.eql({ id: 4 });
+      const { criteria } = Model.getSearchReferenceKey(reference, data);
+      expect(criteria).to.be.eql({ id: 4 });
     });
 
-    it('should return null if key isnt in data ', () => {
+    it('should return empty object if key isnt in data ', () => {
       const reference = { item: 'id' };
       const data = { id: 4 };
       const refrenceKey = Model.getSearchReferenceKey(reference, data);
-      expect(refrenceKey).to.be.null;
+      expect(refrenceKey).to.be.empty;
     });
-    it('should return null reference is empty ', () => {
+    it('should return empty object if reference is empty ', () => {
       const reference = {};
       const data = { id: 4 };
       const refrenceKey = Model.getSearchReferenceKey(reference, data);
-      expect(refrenceKey).to.be.null;
+      expect(refrenceKey).to.be.empty;
     });
   });
 });

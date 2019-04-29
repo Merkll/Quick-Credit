@@ -6,8 +6,9 @@ const { Loan } = require('../src/model/');
 let LoanData;
 describe('Loan Model', () => {
   before(() => {
-    LoanData = Array(10).fill(0).map(() => ({
+    LoanData = Array(10).fill(0).map((data, index) => ({
       user: faker.internet.email(),
+      id: index + 1,
       CreatedOn: new Date(),
       status: 'pending',
       repaid: faker.random.boolean(),

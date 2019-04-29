@@ -6,7 +6,8 @@ const { User } = require('../src/model/');
 let UserData;
 describe('User Model', () => {
   before(() => {
-    UserData = Array(10).fill(0).map(() => ({
+    UserData = Array(10).fill(0).map((data, index) => ({
+      id: index + 1,
       email: faker.internet.email(),
       firstName: faker.name.findName(),
       lastName: faker.name.lastName(),
