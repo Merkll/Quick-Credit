@@ -1,8 +1,8 @@
 const Model = require('./model');
 
 class Repayment extends Model {
-  constructor(modelName, schema, hooks, db) {
-    super(modelName, hooks, db);
+  constructor(modelName, schema, hooks) {
+    super(modelName, hooks);
     this.schema = schema;
   }
 }

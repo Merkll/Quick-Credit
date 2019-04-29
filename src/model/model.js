@@ -3,7 +3,6 @@
  * @constructor
  * @param {string} modelName - Name to attach to the model.
  * @param {Object} hooks - An object of hooks functions
- * @param {object} db - database instance to use
  * @example
  * new Model('modelName',{
  *  afterInsert: (data) => {}
@@ -15,12 +14,12 @@
 const MemDB = require('./index');
 
 module.exports = class Model {
-  constructor(modelName, hooks = {}, db = MemDB) {
+  constructor(modelName, hooks = {}) {
     this.modelName = modelName;
     this.associations = {};
     this.modelAssociation = {};
     // Maps modelName to the type of association so search can be faster
-    this.DB = db;
+    this.DB = MemDB;
     this.hooks = hooks;
     this.init(); // initialises the model
   }
