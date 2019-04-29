@@ -252,6 +252,12 @@ module.exports = class Model {
     return this;
   }
 
+  /**
+   * gets the search criteria based on the refernces provided.
+   * it maps the key in the refence provided to the data attribute
+   * @param {*} references
+   * @param {*} data
+   */
   static getSearchReferenceKey(references, data) {
     const associationSearchCriteria = {};
     const referenceKey = Object.keys(references)[0];
