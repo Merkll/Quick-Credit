@@ -11,7 +11,9 @@
  * afterUpdate, afterDelete
  */
 
-const MemDB = require('./index');
+const DB = require('../lib/memdb');
+
+const MemDB = new DB('quick-credit');
 
 module.exports = class Model {
   constructor(modelName, hooks = {}) {
