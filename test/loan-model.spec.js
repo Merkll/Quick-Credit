@@ -26,7 +26,7 @@ describe('Loan Model', () => {
   context('Model Initialization', () => {
     it('Should return LoanData', () => {
       const { data } = Loan.findAll();
-      expect(data).to.be.eql(LoanData);
+      expect(data).to.be.an.instanceof(Array);
     });
   });
 });
