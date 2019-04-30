@@ -7,6 +7,7 @@ module.exports = class Memdb {
     this.dbName = dbName;
     this.collections = {}; // tables present in the database
     this.indexes = {};
+    this.primaryKey = {}; // Handles giving primary key for aa record in a collection
   }
 
   // getter for the database name
@@ -22,6 +23,12 @@ module.exports = class Memdb {
   getCollection(collectionName) {
     if (!collectionName) throw new Error('Collection Name not Specified');
     return this.collections[collectionName];
+  }
+
+  getPrimaryKey(collection) {
+    if (!this.primaryKey[collection]) this.primaryKey[collection] = 1;
+    else this.primaryKey[collection] += 1;
+    return this.primaryKey[collection];
   }
 
   /**
@@ -69,8 +76,11 @@ module.exports = class Memdb {
     let collectionData = this.getCollection(collection);
     if (!(data instanceof Object)) collectionData = data;
     else {
-      const { id = 55 } = data;
-      collectionData[id] = data;
+      let { id } = data;
+      if (!id) {
+        id = this.getPrimaryKey(collection);
+      }
+      collectionData[id] = { id, ...data };
     }
     return data;
   }

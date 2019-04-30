@@ -3,7 +3,6 @@
  * @constructor
  * @param {string} modelName - Name to attach to the model.
  * @param {Object} hooks - An object of hooks functions
- * @param {object} db - database instance to use
  * @example
  * new Model('modelName',{
  *  afterInsert: (data) => {}
@@ -12,21 +11,24 @@
  * afterUpdate, afterDelete
  */
 
-const MemDB = require('./index');
+const DB = require('../lib/memdb');
+
+const MemDB = new DB('quick-credit');
 
 module.exports = class Model {
-  constructor(modelName, hooks = {}, db = MemDB) {
+  constructor(modelName, hooks = {}) {
     this.modelName = modelName;
     this.associations = {};
     this.modelAssociation = {};
     // Maps modelName to the type of association so search can be faster
-    this.DB = db;
+    this.DB = MemDB;
     this.hooks = hooks;
     this.init(); // initialises the model
   }
 
   init() {
     if (!this.modelName) return {};
+    this.triggerHook('start', this);
     return this.DB.createCollection(this.modelName);
   }
 
@@ -35,16 +37,19 @@ module.exports = class Model {
   }
 
   get foreignKey() {
-    return `${this.modelName}Id`;
+    const modelName = this.modelName.toLowerCase();
+    return `${modelName}Id`;
   }
 
   get data() {
     return (this.QueryData) ? this.QueryData : {};
   }
 
-  getKeys(model) {
-    if (model === this) return this.foreignKey;
-    return `${model.modelName}Id`;
+  getKeys(modelData) {
+    if (modelData === this) return this.foreignKey;
+    const { model = modelData } = modelData;
+    const modelName = model.modelName.toLowerCase();
+    return `${modelName}Id`;
   }
 
   /**
@@ -52,11 +57,11 @@ module.exports = class Model {
    * @param {string} association  -type of association (hasMany, hasOne, belongsTo)
    * @param {Object} model - Model to associate with
    */
-  setAssociation(association, model) {
+  setAssociation(association, model, references = {}) {
     if (!association) throw new Error('Association isnt specified');
     if (!this.associations[association]) this.associations[association] = {};
     const { modelName } = model;
-    this.associations[association][modelName] = model;
+    this.associations[association][modelName] = { model, references };
     this.modelAssociation[modelName] = association;
     return this.associations[association];
   }
@@ -85,8 +90,8 @@ module.exports = class Model {
    * HAndles definition of a hasMany assocation
    * @param {Object} associatedModel -Model Object to asssociate to
    */
-  hasMany(associatedModel) {
-    if (Model.validateAssociation(associatedModel)) this.setAssociation('hasmany', associatedModel);
+  hasMany(associatedModel, references) {
+    if (Model.validateAssociation(associatedModel)) this.setAssociation('hasmany', associatedModel, references);
     return this;
   }
 
@@ -94,8 +99,8 @@ module.exports = class Model {
    * HAndles definition of a hasOne assocation
    * @param {Object} associatedModel -Model Object to asssociate to
    */
-  hasOne(associatedModel) {
-    if (Model.validateAssociation(associatedModel)) this.setAssociation('hasone', associatedModel);
+  hasOne(associatedModel, references) {
+    if (Model.validateAssociation(associatedModel)) this.setAssociation('hasone', associatedModel, references);
     return this;
   }
 
@@ -103,8 +108,8 @@ module.exports = class Model {
    * HAndles definition of a belongsTo assocation
    * @param {Object} associatedModel -Model Object to asssociate to
    */
-  belongsTo(associatedModel) {
-    if (Model.validateAssociation(associatedModel)) this.setAssociation('belongsto', associatedModel);
+  belongsTo(associatedModel, references) {
+    if (Model.validateAssociation(associatedModel)) this.setAssociation('belongsto', associatedModel, references);
     return this;
   }
 
@@ -175,10 +180,15 @@ module.exports = class Model {
     if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
     const associatedData = {};
     const { id } = data;
-    const criteria = {};
-    criteria[this.foreignKey] = id;
-    Object.entries(associations).map(([key, value]) => {
-      associatedData[key] = value.find(criteria).QueryData;
+    const searchCriteria = {};
+    searchCriteria[this.foreignKey] = id;
+    Object.entries(associations).map(([searchKey, value]) => {
+      const { model, references } = value;
+      const {
+        criteria = searchCriteria,
+        key = searchKey,
+      } = Model.getSearchReferenceKey(references, data);
+      associatedData[key] = model.find(criteria).QueryData;
       return associatedData[key];
     });
     return associatedData;
@@ -188,11 +198,16 @@ module.exports = class Model {
     if (!associations) throw new Error('Association can not be undefined');
     if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
     const associatedData = {};
-    Object.entries(associations).map(([key, value]) => {
+    Object.entries(associations).map(([searchKey, value]) => {
       const associationKey = this.getKeys(value);
       const id = data[associationKey];
-      const criteria = { id };
-      const associated = value.find(criteria).QueryData;
+      const searchCriteria = { id };
+      const { model, references } = value;
+      const {
+        criteria = searchCriteria,
+        key = searchKey,
+      } = Model.getSearchReferenceKey(references, data);
+      const associated = model.find(criteria).QueryData;
       [associatedData[key] = null] = associated;
       return associatedData[key];
     });
@@ -211,11 +226,11 @@ module.exports = class Model {
     return hookFunction(data);
   }
 
-  searchForModelInAssociation(modelName) {
-    if (!modelName) throw new Error('Model name must be specified');
+  searchForModelInAssociation(modelToSearch) {
+    if (!modelToSearch) throw new Error('Model name must be specified');
     const { associations, modelAssociation } = this;
-    const model = modelAssociation[modelName];
-    return associations[model][modelName];
+    const modelName = modelAssociation[modelToSearch];
+    return associations[modelName][modelToSearch];
   }
 
   /**
@@ -236,10 +251,32 @@ module.exports = class Model {
       associatedModel = this.searchForModelInAssociation(associatedModelName);
     }
     if (associatedModel) {
-      const { QueryData: [associatedData] } = associatedModel.find(criteria);
-      const modelId = associatedData[this.foreignKey];
-      this.QueryData = this.find({ id: modelId }).QueryData;
+      const { model, references } = associatedModel;
+      const { QueryData: [associatedData = {}] } = model.find(criteria);
+      const modelkey = associatedData[this.foreignKey];
+      let {
+        criteria: associationSearchCriteria,
+      } = Model.getSearchReferenceKey(references, associatedData);
+      if (!associationSearchCriteria) associationSearchCriteria = { id: modelkey };
+      this.QueryData = this.find(associationSearchCriteria).QueryData;
     }
     return this;
+  }
+
+  /**
+   * gets the search criteria based on the refernces provided.
+   * it maps the key in the refence provided to the data attribute
+   * @param {*} references
+   * @param {*} data
+   */
+  static getSearchReferenceKey(references, data) {
+    const associationSearchCriteria = {};
+    const referenceKey = Object.keys(references)[0];
+    if (!referenceKey) return {};
+    const referenceKeyValue = data[referenceKey];
+    if (!referenceKeyValue) return {};
+    const modelMappedKey = references[referenceKey];
+    associationSearchCriteria[modelMappedKey] = referenceKeyValue;
+    return { criteria: associationSearchCriteria, key: referenceKey };
   }
 };
