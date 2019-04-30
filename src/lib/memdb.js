@@ -74,7 +74,7 @@ module.exports = class Memdb {
     if (!this.collectionExist(collection)) this.createCollection(collection);
     if (data instanceof Array) return this.bulkInsert(collection, data);
     let collectionData = this.getCollection(collection);
-    let insertedData;
+    let insertedData = data;
     if (!(data instanceof Object)) collectionData = data;
     else {
       let { id } = data;
