@@ -1,7 +1,7 @@
 const uuid = require('uuid/v4');
 const { User, Auth } = require('../model');
 
-exports.Signin = ({ email, password }) => {
+const Signin = ({ email, password }) => {
   if (!email || !password) throw new Error('Email and Password required for autjentication');
   const authData = User.find({ email, password }).data[0];
   if (!authData) return { code: 205, message: 'Invalid Email or Password' };
@@ -10,3 +10,15 @@ exports.Signin = ({ email, password }) => {
   Auth.insert({ id: email, token, user });
   return { token, ...authData };
 };
+
+const Signup = (userDetails) => {
+  if (!userDetails) throw new Error('User Details is required');
+  const { email, password } = userDetails;
+  const userExist = !!(User.find({ email }).data[0]);
+  if (userExist) return { code: 201, message: 'User exists' };
+  User.insert(userDetails);
+  return Signin({ email, password });
+};
+
+exports.Signin = Signin;
+exports.Signup = Signup;

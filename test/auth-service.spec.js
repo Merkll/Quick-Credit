@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const { expect } = require('chai');
 const faker = require('faker');
-const { Signin } = require('../src/services/auth');
+const { Signin, Signup } = require('../src/services/auth');
 const { User } = require('../src/model');
 
 describe('Auth Service', () => {
@@ -31,6 +31,31 @@ describe('Auth Service', () => {
     it('Should return an auth token on authentication', () => {
       const data = Signin({ email, password });
       expect(data.token).to.not.be.undefined;
+    });
+  });
+
+  context('Signup', () => {
+    const userData = {
+      email: faker.internet.email(),
+      firstName: faker.name.findName(),
+      lastName: faker.name.lastName(),
+      password: faker.random.uuid(),
+      address: faker.address.streetAddress(),
+      status: 'unverified',
+      isAdmin: faker.random.boolean(),
+    };
+
+    it('Should throw error if email and password is undefined', () => {
+      expect(() => Signup()).to.throw();
+    });
+    it('Should return object if userDetails is defined', () => {
+      const data = Signup(userData);
+      expect(data).to.be.an.instanceof(Object);
+    });
+    it('Should return an error Object if user email exist', () => {
+      const data = Signup(userData);
+      expect(data).to.be.an.instanceof(Object);
+      expect(data.code).to.be.eql(201);
     });
   });
 });
