@@ -26,7 +26,11 @@ describe('Auth Service', () => {
     it('Should return an Object of user data if user exist', () => {
       const data = Signin({ email, password });
       expect(data).to.be.an.instanceof(Object);
-      expect(data.email).to.be.be.eql(email);
+      expect(data.email).to.be.eql(email);
+    });
+    it('Should return an auth token on authentication', () => {
+      const data = Signin({ email, password });
+      expect(data.token).to.not.be.undefined;
     });
   });
 });

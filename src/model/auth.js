@@ -11,11 +11,11 @@ module.exports = (Model) => {
   const AuthModel = new Auth('Auth', {
     token: 'uuid',
     email: 'String',
-    userId: 'integer',
+    user: 'integer',
   }, {});
 
   AuthModel.buildAssociation = (Models) => {
-    AuthModel.belongsTo(Models.User, { email: 'email' });
+    AuthModel.belongsTo(Models.User, { user: 'id' });
   };
   return AuthModel;
 };
