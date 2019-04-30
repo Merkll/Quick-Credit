@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const { expect } = require('chai');
 const faker = require('faker');
-const { Signin, Signup } = require('../src/services/auth');
+const { Signin, Signup, validateToken } = require('../src/services/auth');
 const { User } = require('../src/model');
 
 describe('Auth Service', () => {
@@ -56,6 +56,35 @@ describe('Auth Service', () => {
       const data = Signup(userData);
       expect(data).to.be.an.instanceof(Object);
       expect(data.code).to.be.eql(201);
+    });
+  });
+
+  context('validateToken', () => {
+    let userToken;
+    before(() => {
+      const userData = {
+        email: faker.internet.email(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.lastName(),
+        password: faker.random.uuid(),
+        address: faker.address.streetAddress(),
+        status: 'unverified',
+        isAdmin: faker.random.boolean(),
+      };
+      const { token } = Signup(userData);
+      userToken = token;
+    });
+
+    it('Should return an error Object if token is invalid', () => {
+      const data = validateToken(faker.random.uuid());
+      expect(data).to.be.an.instanceof(Object);
+      expect(data.code).to.be.eql(217);
+    });
+
+    it('Should return token data if token is valid', () => {
+      const data = validateToken(userToken);
+      expect(data).to.be.an.instanceof(Object);
+      expect(data.token).to.be.eql(userToken);
     });
   });
 });

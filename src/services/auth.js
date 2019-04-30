@@ -20,5 +20,11 @@ const Signup = (userDetails) => {
   return Signin({ email, password });
 };
 
+exports.validateToken = (token) => {
+  const data = Auth.find({ token }).data[0];
+  if (!data) return { code: 217, message: 'Cannot retrieve a user for the specified token.' };
+  return data;
+};
+
 exports.Signin = Signin;
 exports.Signup = Signup;
