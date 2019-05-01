@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/Merkll/Quick-Credit#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
