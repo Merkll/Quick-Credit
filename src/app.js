@@ -17,4 +17,4 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-app.listen(port, () => process.stdout.write(`Server started on port ${port}`));
+module.exports = app.listen(port, () => process.stdout.write(`Server started on port ${port}`));
