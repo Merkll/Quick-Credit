@@ -20,18 +20,16 @@ module.exports = (Model) => {
     isAdmin: 'Boolean',
   }, {
     beforeInsert: (data) => {
-      const details = data;
-      if (data instanceof Array) {
-        return details.map((detail) => {
-          const userDetails = detail;
-          const hash = bcrypt.hashSync(userDetails.password, 10);
-          userDetails.password = hash;
-          return userDetails;
-        });
-      }
-      const hash = bcrypt.hashSync(details.password, 10);
-      details.password = hash;
-      return details;
+      let details = data;
+      if (!(details instanceof Array)) details = [details];
+      return details.map((detail) => {
+        const userDetails = detail;
+        const hash = bcrypt.hashSync(userDetails.password, 10);
+        userDetails.password = hash;
+        userDetails.status = 'unverified';
+        userDetails.isAdmin = false;
+        return userDetails;
+      });
     },
   });
 
