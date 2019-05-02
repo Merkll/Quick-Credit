@@ -9,7 +9,6 @@ exports.signup = (req, res) => {
     throw new InvalidRequestBodyError('Post Body required');
   }
   const data = Signup(requestBody);
-  console.log(data);
   const response = new Response(data, 201);
   res.status(201).send(response);
 };
