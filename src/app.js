@@ -12,7 +12,8 @@ app.use('/api', apiRoute);
 
 // default error handler
 app.use((err, req, res, next) => {
-  res.status(500).send(err);
+  if (err.status) res.status(err.status).send(err);
+  else res.status(500).send(err);
   next(err);
 });
 

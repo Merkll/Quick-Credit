@@ -40,3 +40,9 @@ exports.AuthorizationError = class extends ApplicationError {
     super(message || 'You are not authorized to perform that action', 403);
   }
 };
+
+exports.MethodNotAllowedError = class extends ApplicationError {
+  constructor(message) {
+    super(message || 'Request Method Not allowed for this resource', 405);
+  }
+};
