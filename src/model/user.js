@@ -1,4 +1,5 @@
-// const Model = require('./model');
+const bcrypt = require('bcrypt');
+
 
 module.exports = (Model) => {
   class User extends Model {
@@ -17,7 +18,14 @@ module.exports = (Model) => {
     address: 'String',
     status: 'String',
     isAdmin: 'Boolean',
-  }, {});
+  }, {
+    beforeInsert: (data) => {
+      const details = data;
+      const hash = bcrypt.hashSync(details.password, 10);
+      details.password = hash;
+      return details;
+    },
+  });
 
   UserModel.buildAssociation = (Models) => {
     UserModel.hasMany(Models.Loan);
