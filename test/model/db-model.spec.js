@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 const { expect } = require('chai');
-const Model = require('../src/model/model');
+const Model = require('../../src/model/model');
 
 describe('Model', () => {
   const ProductModel = new Model('Product', {

@@ -7,8 +7,8 @@ const {
   getAllUsers,
   getUnverifiedUsers,
   getVerifiedUsers,
-} = require('../src/services/user');
-const { User } = require('../src/model');
+} = require('../../src/services/user');
+const { User } = require('../../src/model');
 
 describe('User Service', () => {
   context('verify', () => {

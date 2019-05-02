@@ -1,8 +1,11 @@
 const router = require('express').Router();
+const { MethodNotAllowedError } = require('../../lib/error');
+const { signup } = require('./controllers/auth');
 
-router.route('/')
-  .get((req, res) => {
-    res.send('Hello World from API v1');
+router.route('/auth/signup')
+  .post(signup)
+  .all(() => {
+    throw new MethodNotAllowedError();
   });
 
 module.exports = router;

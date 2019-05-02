@@ -7,7 +7,7 @@ class ApplicationError extends Error {
   constructor(error, status) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.status = status || 500;
+    this.status = status;
     this.error = error;
   }
 }
@@ -38,5 +38,17 @@ exports.AuthenticationError = class extends ApplicationError {
 exports.AuthorizationError = class extends ApplicationError {
   constructor(message) {
     super(message || 'You are not authorized to perform that action', 403);
+  }
+};
+
+exports.MethodNotAllowedError = class extends ApplicationError {
+  constructor(message) {
+    super(message || 'Request Method Not allowed for this resource', 405);
+  }
+};
+
+exports.InvalidRequestBodyError = class extends ApplicationError {
+  constructor(message) {
+    super(message || 'Invalid Request Body', 422);
   }
 };

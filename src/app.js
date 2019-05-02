@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const apiRoute = require('./api');
+const ErrorHandler = require('./middleware/error-handler');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -11,9 +12,6 @@ app.use('/api', apiRoute);
 
 
 // default error handler
-app.use((err, req, res, next) => {
-  res.status(500).send(err);
-  next(err);
-});
+app.use(ErrorHandler);
 
-app.listen(port, () => process.stdout.write(`Server started on port ${port}`));
+module.exports = app.listen(port, () => process.stdout.write(`Server started on port ${port}`));

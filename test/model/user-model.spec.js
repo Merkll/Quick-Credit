@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const { expect } = require('chai');
 const faker = require('faker');
-const { User } = require('../src/model/');
+const { User } = require('../../src/model');
 
 let UserData;
 describe('User Model', () => {

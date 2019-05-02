@@ -1,10 +1,14 @@
 const uuid = require('uuid/v4');
+const bcrypt = require('bcrypt');
+
 const { User, Auth } = require('../model');
 
 const Signin = ({ email, password }) => {
   if (!email || !password) throw new Error('Email and Password required for autjentication');
-  const authData = User.find({ email, password }).data[0];
-  if (!authData) return { code: 205, message: 'Invalid Email or Password' };
+  const authData = User.find({ email }).data[0];
+  if (!authData) return { code: 205, message: 'User Email doesnt exist' };
+  const isValid = bcrypt.compareSync(password, authData.password);
+  if (!isValid) return { code: 205, message: 'Password and email doesnt match' };
   const token = uuid();
   const user = authData.id;
   Auth.insert({ id: email, token, user });
