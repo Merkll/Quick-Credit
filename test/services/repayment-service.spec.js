@@ -4,8 +4,8 @@ const faker = require('faker');
 const {
   createRepayment,
   getLoanRepayments,
-} = require('../src/services/repayment');
-const { Loan, Repayment } = require('../src/model');
+} = require('../../src/services/repayment');
+const { Loan, Repayment } = require('../../src/model');
 
 describe('Repayment Service', () => {
   context('Create repayment', () => {

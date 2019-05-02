@@ -8,8 +8,8 @@ const {
   getAllLoans,
   newLoan,
   changeLoanStatus,
-} = require('../src/services/loan');
-const { Loan } = require('../src/model');
+} = require('../../src/services/loan');
+const { Loan } = require('../../src/model');
 
 describe('Loan Service', () => {
   context('get specific loan', () => {

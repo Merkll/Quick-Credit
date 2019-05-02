@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-expressions */
 const { expect } = require('chai');
 const faker = require('faker');
-const { Signin, Signup, validateToken } = require('../src/services/auth');
-const { User } = require('../src/model');
+const { Signin, Signup, validateToken } = require('../../src/services/auth');
+const { User } = require('../../src/model');
 
 describe('Auth Service', () => {
   context('Signin', () => {
