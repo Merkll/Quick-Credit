@@ -1,6 +1,7 @@
 
 const { InvalidRequestBodyError } = require('../../../lib/error');
 const { Signup } = require('../../../services/auth');
+const Response = require('../../../lib/response');
 
 exports.signup = (req, res) => {
   const requestBody = req.body;
@@ -8,5 +9,6 @@ exports.signup = (req, res) => {
     throw new InvalidRequestBodyError('Post Body required');
   }
   const data = Signup(requestBody);
-  res.status(201).send(data);
+  const response = new Response(data, 201);
+  res.status(201).send(response);
 };

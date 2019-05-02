@@ -37,11 +37,11 @@ describe('Signup API', () => {
       expect(status).to.be.eql(422);
     });
     it('Should return status 201', async () => {
-      const { status, body } = await request
+      const { status, body: { data } } = await request
         .post(url)
         .send(userData);
       expect(status).to.be.eql(201);
-      expect(body.email).to.be.eqls(userData.email);
+      expect(data.email).to.be.eqls(userData.email);
     });
   });
 });
