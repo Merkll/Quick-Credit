@@ -46,3 +46,9 @@ exports.MethodNotAllowedError = class extends ApplicationError {
     super(message || 'Request Method Not allowed for this resource', 405);
   }
 };
+
+exports.InvalidRequestBodyError = class extends ApplicationError {
+  constructor(message) {
+    super(message || 'Invalid Request Body', 422);
+  }
+};

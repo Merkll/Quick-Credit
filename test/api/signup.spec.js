@@ -22,8 +22,14 @@ describe('Signup API', () => {
     });
   });
   context('post request', () => {
-    it('Should return status 201', async () => {
+    it('Should return status 422', async () => {
       const { status } = await request.post(url);
+      expect(status).to.be.eql(422);
+    });
+    it('Should return status 401', async () => {
+      const { status } = await request
+        .post(url)
+        .send({ name: 'name' });
       expect(status).to.be.eql(201);
     });
   });

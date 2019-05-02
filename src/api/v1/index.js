@@ -1,10 +1,9 @@
 const router = require('express').Router();
 const { MethodNotAllowedError } = require('../../lib/error');
+const { signup } = require('./controllers/auth');
 
 router.route('/auth/signup')
-  .post((req, res) => {
-    res.status(201).send('Hello World from API v1');
-  })
+  .post(signup)
   .all(() => {
     throw new MethodNotAllowedError();
   });

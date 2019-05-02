@@ -9,6 +9,7 @@ const {
   UserExists,
   AuthenticationError,
   AuthorizationError,
+  InvalidRequestBodyError,
 } = require('../src/lib/error');
 
 describe('Http Errors', () => {
@@ -95,6 +96,21 @@ describe('Http Errors', () => {
     });
     it('Should return status and default mesage', async () => {
       const { error, status } = new ResourceNotFoundError();
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.not.be.undefined;
+    });
+  });
+
+  context('InvalidRequestBodyError', () => {
+    const statusCode = 422;
+    it('Should return status and supplied message', async () => {
+      const message = 'Resource Not found';
+      const { error, status } = new InvalidRequestBodyError(message);
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.be.eql(message);
+    });
+    it('Should return status and default mesage', async () => {
+      const { error, status } = new InvalidRequestBodyError();
       expect(status).to.be.eqls(statusCode);
       expect(error).to.not.be.undefined;
     });
