@@ -28,6 +28,12 @@ describe('Auth Service', () => {
       expect(data).to.be.an.instanceof(Object);
       expect(data.email).to.be.eql(email);
     });
+
+    it('Should return an error Object if password doesnt match', () => {
+      const data = Signin({ email, password: 'password' });
+      expect(data).to.be.an.instanceof(Object);
+      expect(data.code).to.be.eql(205);
+    });
     it('Should return an auth token on authentication', () => {
       const data = Signin({ email, password });
       expect(data.token).to.not.be.undefined;

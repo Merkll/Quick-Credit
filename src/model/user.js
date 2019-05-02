@@ -21,6 +21,14 @@ module.exports = (Model) => {
   }, {
     beforeInsert: (data) => {
       const details = data;
+      if (data instanceof Array) {
+        return details.map((detail) => {
+          const userDetails = detail;
+          const hash = bcrypt.hashSync(userDetails.password, 10);
+          userDetails.password = hash;
+          return userDetails;
+        });
+      }
       const hash = bcrypt.hashSync(details.password, 10);
       details.password = hash;
       return details;
