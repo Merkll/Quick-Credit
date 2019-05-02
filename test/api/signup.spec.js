@@ -43,5 +43,12 @@ describe('Signup API', () => {
       expect(status).to.be.eql(201);
       expect(data.email).to.be.eqls(userData.email);
     });
+
+    it('Should return status 400 if user exists', async () => {
+      const { status } = await request
+        .post(url)
+        .send(userData);
+      expect(status).to.be.eql(400);
+    });
   });
 });

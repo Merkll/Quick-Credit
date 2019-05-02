@@ -1,5 +1,5 @@
 
-const { InvalidRequestBodyError } = require('../../../lib/error');
+const { InvalidRequestBodyError, UserExists } = require('../../../lib/error');
 const { Signup } = require('../../../services/auth');
 const Response = require('../../../lib/response');
 
@@ -9,6 +9,7 @@ exports.signup = (req, res) => {
     throw new InvalidRequestBodyError('Post Body required');
   }
   const data = Signup(requestBody);
+  if (data.code == 201) throw new UserExists();
   const response = new Response(data, 201);
   res.status(201).send(response);
 };
