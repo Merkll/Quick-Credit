@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const chaiHttp = require('chai-http');
+const faker = require('faker');
 const app = require('../../src/app');
 
 chai.use(chaiAsPromised);
@@ -15,6 +16,15 @@ after(() => {
 
 describe('Signup API', () => {
   const url = '/api/v1/auth/signup';
+  const userData = {
+    email: faker.internet.email(),
+    firstName: faker.name.findName(),
+    lastName: faker.name.lastName(),
+    password: faker.random.uuid(),
+    address: faker.address.streetAddress(),
+    status: 'unverified',
+    isAdmin: faker.random.boolean(),
+  };
   context('non suppported methods', () => {
     it('Should return error 405 with get request', async () => {
       const { body: { status } } = await request.get(url);
@@ -26,11 +36,12 @@ describe('Signup API', () => {
       const { status } = await request.post(url);
       expect(status).to.be.eql(422);
     });
-    it('Should return status 401', async () => {
-      const { status } = await request
+    it('Should return status 201', async () => {
+      const { status, body } = await request
         .post(url)
-        .send({ name: 'name' });
+        .send(userData);
       expect(status).to.be.eql(201);
+      expect(body.email).to.be.eqls(userData.email);
     });
   });
 });
