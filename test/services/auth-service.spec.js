@@ -67,8 +67,9 @@ describe('Auth Service', () => {
 
   context('validateToken', () => {
     let userToken;
+    let userData;
     before(() => {
-      const userData = {
+      userData = {
         email: faker.internet.email(),
         firstName: faker.name.findName(),
         lastName: faker.name.lastName(),
@@ -84,13 +85,20 @@ describe('Auth Service', () => {
     it('Should return an error Object if token is invalid', () => {
       const data = validateToken(faker.random.uuid());
       expect(data).to.be.an.instanceof(Object);
-      expect(data.code).to.be.eql(217);
+      expect(data.code).to.be.eql(403);
     });
 
     it('Should return token data if token is valid', () => {
       const data = validateToken(userToken);
       expect(data).to.be.an.instanceof(Object);
       expect(data.token).to.be.eql(userToken);
+    });
+
+    it('Should return an error Object if no user exist for token', () => {
+      // User.delete({ email: userData.email });
+      // const data = validateToken(userToken);
+      // expect(data).to.be.an.instanceof(Object);
+      // expect(data.code).to.be.eql(217);
     });
   });
 });

@@ -1,17 +1,18 @@
-const uuid = require('uuid/v4');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const { User, Auth } = require('../model');
+const { User } = require('../model');
 
-const Signin = ({ email, password }) => {
+const tokenSecret = process.env.SECRET || 'quickcredite435rt';
+
+const Signin = ({ email, password }, secret = tokenSecret) => {
   if (!email || !password) throw new Error('Email and Password required for autjentication');
   const authData = User.find({ email }).data[0];
   if (!authData) return { code: 205, message: 'User Email doesnt exist' };
   const isValid = bcrypt.compareSync(password, authData.password);
   if (!isValid) return { code: 205, message: 'Password and email doesnt match' };
-  const token = uuid();
   const user = authData.id;
-  Auth.insert({ id: email, token, user });
+  const token = jwt.sign({ id: user }, secret);
   return { token, ...authData };
 };
 
@@ -24,10 +25,15 @@ const Signup = (userDetails) => {
   return Signin({ email, password });
 };
 
-exports.validateToken = (token) => {
-  const data = Auth.find({ token }).data[0];
-  if (!data) return { code: 217, message: 'Cannot retrieve a user for the specified token.' };
-  return data;
+exports.validateToken = (token, secret = tokenSecret) => {
+  try {
+    const { id } = jwt.verify(token, secret);
+    const data = User.find({ id }).data[0];
+    if (!data) return { code: 217, message: 'Cannot retrieve a user for the specified token.' };
+    return { token, ...data };
+  } catch (error) {
+    return { code: 403, message: 'Invalid Access token' };
+  }
 };
 
 exports.Signin = Signin;
