@@ -165,7 +165,7 @@ module.exports = class Memdb {
     if (!collectionData) return [];
     return Object.entries(collectionData).map(([key, details]) => {
       if (Memdb.meetSearchCriteria(criteria, details)) {
-        collectionData[key] = null;
+        collectionData[key] = {};
         return details;
       }
       return null;
