@@ -95,10 +95,10 @@ describe('Auth Service', () => {
     });
 
     it('Should return an error Object if no user exist for token', () => {
-      // User.delete({ email: userData.email });
-      // const data = validateToken(userToken);
-      // expect(data).to.be.an.instanceof(Object);
-      // expect(data.code).to.be.eql(217);
+      User.delete({ email: userData.email });
+      const data = validateToken(userToken);
+      expect(data).to.be.an.instanceof(Object);
+      expect(data.code).to.be.eql(217);
     });
   });
 });
