@@ -2,8 +2,14 @@ const router = require('express').Router();
 const { MethodNotAllowedError } = require('../../lib/error');
 const { signup, signin } = require('./controllers/auth');
 const { verify } = require('./controllers/user');
-const { getLoan, getAllLoans, applyForLoan, loanStatus } = require('./controllers/loan');
-const { getLoanRepayments } = require('./controllers/repayment');
+const {
+  getLoan,
+  getAllLoans,
+  applyForLoan,
+  loanStatus,
+} = require('./controllers/loan');
+
+const { getLoanRepayments, postLoanRepayment } = require('./controllers/repayment');
 
 router.route('/auth/signup')
   .post(signup)
@@ -32,6 +38,7 @@ router.route('/loans/:loan')
 
 router.route('/loans/:loan/repayments')
   .get(getLoanRepayments)
+  .post(postLoanRepayment)
   .all(() => {
     throw new MethodNotAllowedError();
   });
