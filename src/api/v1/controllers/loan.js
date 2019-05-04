@@ -1,7 +1,7 @@
 const {
   NotFoundError,
 } = require('../../../lib/error');
-const { 
+const {
   getLoan,
   getAllLoans,
   getCurrentLoans,
@@ -21,6 +21,7 @@ exports.getAllLoans = (req, res) => {
   const { status, repaid } = req.query;
   let data;
   if (status == 'approved' && repaid === 'false') data = getCurrentLoans();
+  else if (status == 'approved' && repaid === 'true') data = getRepaidLoans();
   else data = getAllLoans();
   const response = new Response(data);
   res.status(response.status).send(response);
