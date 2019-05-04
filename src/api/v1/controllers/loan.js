@@ -1,11 +1,13 @@
 const {
   NotFoundError,
+  InvalidRequestBodyError,
 } = require('../../../lib/error');
 const {
   getLoan,
   getAllLoans,
   getCurrentLoans,
   getRepaidLoans,
+  newLoan,
 } = require('../../../services/loan');
 const Response = require('../../../lib/response');
 
@@ -24,5 +26,15 @@ exports.getAllLoans = (req, res) => {
   else if (status == 'approved' && repaid === 'true') data = getRepaidLoans();
   else data = getAllLoans();
   const response = new Response(data);
+  res.status(response.status).send(response);
+};
+
+exports.applyForLoan = (req, res) => {
+  const requestBody = req.body;
+  if (!requestBody || Object.keys(requestBody).length == 0) {
+    throw new InvalidRequestBodyError('Post Body required');
+  }
+  const data = newLoan(requestBody);
+  const response = new Response(data, 201);
   res.status(response.status).send(response);
 };

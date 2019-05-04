@@ -57,7 +57,7 @@ describe('Loans', () => {
   context('Query all Loans', () => {
     const loanUrl = '/api/v1/loans';
     it('Should return error 405 with non-get request', async () => {
-      const { status } = await request.post(loanUrl);
+      const { status } = await request.patch(loanUrl);
       expect(status).to.be.eql(405);
     });
 
@@ -69,7 +69,7 @@ describe('Loans', () => {
   context('Query current Loans', () => {
     const loanUrl = '/api/v1/loans?status=approved&repaid=false';
     it('Should return error 405 with non-get request', async () => {
-      const { status } = await request.post(loanUrl);
+      const { status } = await request.patch(loanUrl);
       expect(status).to.be.eql(405);
     });
 
@@ -81,13 +81,33 @@ describe('Loans', () => {
   context('Query repaid Loans', () => {
     const loanUrl = '/api/v1/loans?status=approved&repaid=true';
     it('Should return error 405 with non-get request', async () => {
-      const { status } = await request.post(loanUrl);
+      const { status } = await request.patch(loanUrl);
       expect(status).to.be.eql(405);
     });
 
     it('Should return status 200 with get request', async () => {
       const { status } = await request.get(loanUrl);
       expect(status).to.be.eql(200);
+    });
+  });
+  context('Loan application', () => {
+    const loanUrl = '/api/v1/loans';
+    it('Should return error 405 with non-get request', async () => {
+      const { status } = await request.put(loanUrl);
+      expect(status).to.be.eql(405);
+    });
+
+    it('Should return status 201 with get request', async () => {
+      const { status } = await request
+        .post(loanUrl)
+        .send(loanData[2]);
+      expect(status).to.be.eql(201);
+    });
+
+    it('Should return error object if request body is invalid', async () => {
+      const { status } = await request
+        .post(loanUrl);
+      expect(status).to.be.eql(422);
     });
   });
 });
