@@ -8,6 +8,7 @@ const {
   getCurrentLoans,
   getRepaidLoans,
   newLoan,
+  changeLoanStatus,
 } = require('../../../services/loan');
 const Response = require('../../../lib/response');
 
@@ -36,5 +37,15 @@ exports.applyForLoan = (req, res) => {
   }
   const data = newLoan(requestBody);
   const response = new Response(data, 201);
+  res.status(response.status).send(response);
+};
+
+exports.loanStatus = (req, res) => {
+  const { status } = req.body;
+  const { loan } = req.params;
+  if (!(status === 'approved' || status === 'rejected')) throw new InvalidRequestBodyError('Invalid request Body');
+  const data = changeLoanStatus({ loan, status });
+  if (!data) throw new NotFoundError('loan with that id not found');
+  const response = new Response(data, 200);
   res.status(response.status).send(response);
 };

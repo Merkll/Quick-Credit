@@ -110,4 +110,31 @@ describe('Loans', () => {
       expect(status).to.be.eql(422);
     });
   });
+
+  context('Loan Approval', () => {
+    it('Should return error 405 with non-patch request', async () => {
+      const { status } = await request.post(url);
+      expect(status).to.be.eql(405);
+    });
+
+    it('Should return status 201 with patch request', async () => {
+      const { status } = await request
+        .patch(url)
+        .send({ status: 'approved' });
+      expect(status).to.be.eql(200);
+    });
+
+    it('Should return status 201 with patch request', async () => {
+      const { status } = await request
+        .patch(url)
+        .send({ status: 'unknown' });
+      expect(status).to.be.eql(422);
+    });
+    it('Should return status 404 if loan doesnt exist', async () => {
+      const { status } = await request
+        .patch('/api/v1/loans/45')
+        .send({ status: 'approved' });
+      expect(status).to.be.eql(404);
+    });
+  });
 });
