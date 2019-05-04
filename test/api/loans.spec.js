@@ -78,4 +78,16 @@ describe('Loans', () => {
       expect(status).to.be.eql(200);
     });
   });
+  context('Query repaid Loans', () => {
+    const loanUrl = '/api/v1/loans?status=approved&repaid=true';
+    it('Should return error 405 with non-get request', async () => {
+      const { status } = await request.post(loanUrl);
+      expect(status).to.be.eql(405);
+    });
+
+    it('Should return status 200 with get request', async () => {
+      const { status } = await request.get(loanUrl);
+      expect(status).to.be.eql(200);
+    });
+  });
 });
