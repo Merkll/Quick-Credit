@@ -53,4 +53,17 @@ describe('Loans', () => {
       expect(status).to.be.eql(404);
     });
   });
+
+  context('Query all Loans', () => {
+    const loanUrl = '/api/v1/loans';
+    it('Should return error 405 with non-get request', async () => {
+      const { status } = await request.post(loanUrl);
+      expect(status).to.be.eql(405);
+    });
+
+    it('Should return status 200 with get request', async () => {
+      const { status } = await request.get(loanUrl);
+      expect(status).to.be.eql(200);
+    });
+  });
 });
