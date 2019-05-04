@@ -1,7 +1,12 @@
 const {
   NotFoundError,
 } = require('../../../lib/error');
-const { getLoan, getAllLoans } = require('../../../services/loan');
+const { 
+  getLoan,
+  getAllLoans,
+  getCurrentLoans,
+  getRepaidLoans,
+} = require('../../../services/loan');
 const Response = require('../../../lib/response');
 
 exports.getLoan = (req, res) => {
@@ -13,8 +18,10 @@ exports.getLoan = (req, res) => {
 };
 
 exports.getAllLoans = (req, res) => {
-  const data = getAllLoans();
+  const { status, repaid } = req.query;
+  let data;
+  if (status == 'approved' && repaid === 'false') data = getCurrentLoans();
+  else data = getAllLoans();
   const response = new Response(data);
-  console.log(response);
   res.status(response.status).send(response);
 };

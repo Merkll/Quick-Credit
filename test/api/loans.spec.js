@@ -24,7 +24,7 @@ describe('Loans', () => {
       user: faker.internet.email(),
       id: index + 1,
       CreatedOn: new Date(),
-      status: 'pending',
+      status: index % 2 === 0 ? 'approved' : 'pending',
       repaid: faker.random.boolean(),
       tenor: faker.random.number({ max: 12 }),
       amount: faker.random.number({ min: 2000 }),
@@ -56,6 +56,18 @@ describe('Loans', () => {
 
   context('Query all Loans', () => {
     const loanUrl = '/api/v1/loans';
+    it('Should return error 405 with non-get request', async () => {
+      const { status } = await request.post(loanUrl);
+      expect(status).to.be.eql(405);
+    });
+
+    it('Should return status 200 with get request', async () => {
+      const { status } = await request.get(loanUrl);
+      expect(status).to.be.eql(200);
+    });
+  });
+  context('Query current Loans', () => {
+    const loanUrl = '/api/v1/loans?status=approved&repaid=false';
     it('Should return error 405 with non-get request', async () => {
       const { status } = await request.post(loanUrl);
       expect(status).to.be.eql(405);
