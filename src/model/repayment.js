@@ -1,3 +1,5 @@
+const { FieldTypes } = require('../lib/schema-validator');
+
 module.exports = (Model) => {
   class Repayment extends Model {
     constructor(modelName, schema, hooks) {
@@ -6,10 +8,10 @@ module.exports = (Model) => {
   }
 
   const RepaymentModel = new Repayment('Repayment', {
-    id: 'integer',
-    CreatedOn: 'DateTine',
-    loanId: 'integer',
-    amount: 'float',
+    id: FieldTypes.Integer,
+    createdOn: FieldTypes.Date,
+    loanId: FieldTypes.Integer,
+    amount: FieldTypes.Number,
   }, {});
 
   RepaymentModel.buildAssociation = (Models) => {

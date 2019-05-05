@@ -1,4 +1,4 @@
-// const Model = require('./model');
+const { FieldTypes } = require('../lib/schema-validator');
 
 module.exports = (Model) => {
   class Auth extends Model {
@@ -8,9 +8,9 @@ module.exports = (Model) => {
   }
 
   const AuthModel = new Auth('Auth', {
-    token: 'uuid',
-    email: 'String',
-    user: 'integer',
+    token: FieldTypes.String,
+    email: FieldTypes.String,
+    user: FieldTypes.Integer,
   }, {});
 
   AuthModel.buildAssociation = (Models) => {

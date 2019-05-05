@@ -10,6 +10,7 @@ exports.getRepaidLoans = () => Loan.find({ status: 'approved', repaid: true }).d
 exports.getAllLoans = () => Loan.findAll().data;
 exports.newLoan = (loanDetails) => {
   if (!loanDetails) throw new Error('Loan details cant be empty');
+  if (!Loan.validateSchema(loanDetails)) return { error: 'Invalid Loan Details' };
   const details = Loan.insert(loanDetails).data;
   return details;
 };

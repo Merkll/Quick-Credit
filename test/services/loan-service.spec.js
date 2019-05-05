@@ -94,7 +94,7 @@ describe('Loan Service', () => {
       CreatedOn: new Date(),
       status: 'pending',
       repaid: faker.random.boolean(),
-      tenor: faker.random.number({ max: 12 }),
+      tenor: 12,
       amount: faker.random.number({ min: 2000 }),
       paymentInstallment: faker.random.number({ min: 2000 }),
       balance: faker.random.number({ min: 2000 }),
@@ -108,6 +108,12 @@ describe('Loan Service', () => {
     it('Should return object of loan details', () => {
       const data = newLoan(loanData);
       expect(data).to.be.an.instanceof(Object);
+    });
+
+    it('Should return an error object if loan details is invalid', () => {
+      const data = newLoan({ ...loanData, invalid: 'invalid' });
+      expect(data).to.be.an.instanceof(Object);
+      expect(data.error).to.not.be.null;
     });
   });
 

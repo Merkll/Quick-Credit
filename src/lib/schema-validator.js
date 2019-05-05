@@ -17,6 +17,8 @@ const FieldTypes = {};
 FieldTypes.Integer = field => typeof field === 'number' && field % 1 === 0;
 FieldTypes.String = field => typeof field === 'string';
 FieldTypes.Boolean = field => typeof field === 'boolean' || (field === 'true' || field === 'false');
+FieldTypes.Number = field => typeof field === 'number';
+FieldTypes.Date = field => field instanceof Date;
 
 module.exports = {
   Validator,

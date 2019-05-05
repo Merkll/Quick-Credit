@@ -93,5 +93,13 @@ describe('Schema validator', () => {
       expect(FieldTypes.Integer(true)).to.be.false;
       expect(FieldTypes.Integer('34')).to.be.false;
     });
+    it('Should check Date', () => {
+      expect(FieldTypes.Date(new Date())).to.be.true;
+      expect(FieldTypes.Date('34')).to.be.false;
+    });
+    it('Should check Number', () => {
+      expect(FieldTypes.Number(40)).to.be.true;
+      expect(FieldTypes.Number(13000.8)).to.be.true;
+    });
   });
 });

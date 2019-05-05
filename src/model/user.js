@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { FieldTypes } = require('../lib/schema-validator');
 
 
 module.exports = (Model) => {
@@ -9,14 +10,14 @@ module.exports = (Model) => {
   }
 
   const UserModel = new User('User', {
-    id: 'integer',
-    email: 'String',
-    firstName: 'String',
-    lastName: 'String',
-    password: 'String',
-    address: 'String',
-    status: 'String',
-    isAdmin: 'Boolean',
+    id: FieldTypes.Integer,
+    email: FieldTypes.String,
+    firstName: FieldTypes.String,
+    lastName: FieldTypes.String,
+    password: FieldTypes.String,
+    address: FieldTypes.String,
+    status: FieldTypes.String,
+    isAdmin: FieldTypes.Boolean,
   }, {
     beforeInsert: (data) => {
       let details = data;
