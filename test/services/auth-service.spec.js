@@ -63,6 +63,11 @@ describe('Auth Service', () => {
       expect(data).to.be.an.instanceof(Object);
       expect(data.code).to.be.eql(201);
     });
+    it('Should return an error Object if user details isnt valid', () => {
+      const data = Signup({ ...userData, invalid: 'invalid' });
+      expect(data).to.be.an.instanceof(Object);
+      expect(data.error).to.not.be.null;
+    });
   });
 
   context('validateToken', () => {

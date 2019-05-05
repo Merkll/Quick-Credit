@@ -18,6 +18,7 @@ const Signin = ({ email, password }, secret = tokenSecret) => {
 
 const Signup = (userDetails) => {
   if (!userDetails) throw new Error('User Details is required');
+  if (!User.validateSchema(userDetails)) return { error: 'Invalid Loan Details' };
   const { email, password } = userDetails;
   const userExist = !!(User.find({ email }).data[0]);
   if (userExist) return { code: 201, message: 'User exists' };

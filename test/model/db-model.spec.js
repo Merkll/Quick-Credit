@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 const { expect } = require('chai');
 const Model = require('../../src/model/model');
+const { FieldTypes } = require('../../src/lib/schema-validator');
 
 describe('Model', () => {
   const ProductModel = new Model('Product', {
@@ -465,6 +466,21 @@ describe('Model', () => {
       const data = { id: 4 };
       const refrenceKey = Model.getSearchReferenceKey(reference, data);
       expect(refrenceKey).to.be.empty;
+    });
+  });
+
+  context('validateSchema', () => {
+    it('should return true for valid data ', () => {
+      const ShemaModel = new Model('schema');
+      ShemaModel.schema = {
+        name: FieldTypes.String,
+        age: FieldTypes.Integer,
+      };
+      const isValid = ShemaModel.validateSchema({
+        name: 'John',
+        age: 45,
+      });
+      expect(isValid).to.be.true;
     });
   });
 });

@@ -12,17 +12,19 @@
  */
 
 const DB = require('../lib/memdb');
+const { Validator } = require('../lib/schema-validator');
 
 const MemDB = new DB('quick-credit');
 
 module.exports = class Model {
-  constructor(modelName, hooks = {}) {
+  constructor(modelName, hooks = {}, schema) {
     this.modelName = modelName;
     this.associations = {};
     this.modelAssociation = {};
     // Maps modelName to the type of association so search can be faster
     this.DB = MemDB;
     this.hooks = hooks;
+    this.schema = schema;
     this.init(); // initialises the model
   }
 
@@ -125,6 +127,10 @@ module.exports = class Model {
     this.QueryData = this.DB.find(collection, criteria);
     this.triggerHook('afterFind', this.QueryData);
     return this;
+  }
+
+  validateSchema(fields) {
+    return new Validator(this.schema).validate(fields);
   }
 
   insert(data = []) {

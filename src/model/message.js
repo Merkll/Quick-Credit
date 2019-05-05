@@ -1,20 +1,21 @@
+const { FieldTypes } = require('../lib/schema-validator');
+
 module.exports = (Model) => {
   class Message extends Model {
     constructor(modelName, schema, hooks) {
-      super(modelName, hooks);
-      this.schema = schema;
+      super(modelName, hooks, schema);
     }
   }
 
   const MessageModel = new Message('Message', {
-    id: 'integer',
-    createdOn: 'DateTime',
-    sender: 'Integer',
-    repliedTo: 'Integer',
-    recipient: 'Integer',
-    body: 'String',
-    subject: 'String',
-    excerpt: 'String',
+    id: FieldTypes.Integer,
+    createdOn: FieldTypes.Date,
+    sender: FieldTypes.Integer,
+    repliedTo: FieldTypes.Integer,
+    recipient: FieldTypes.Integer,
+    body: FieldTypes.String,
+    subject: FieldTypes.String,
+    excerpt: FieldTypes.String,
   }, {});
 
   MessageModel.buildAssociation = (Models) => {
