@@ -1,8 +1,7 @@
 module.exports = (Model) => {
   class Repayment extends Model {
     constructor(modelName, schema, hooks) {
-      super(modelName, hooks);
-      this.schema = schema;
+      super(modelName, hooks, schema);
     }
   }
 

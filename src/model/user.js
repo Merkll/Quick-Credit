@@ -4,8 +4,7 @@ const bcrypt = require('bcrypt');
 module.exports = (Model) => {
   class User extends Model {
     constructor(modelName, schema, hooks) {
-      super(modelName, hooks);
-      this.schema = schema;
+      super(modelName, hooks, schema);
     }
   }
 

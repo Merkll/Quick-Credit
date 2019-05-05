@@ -1,6 +1,5 @@
 const {
   NotFoundError,
-  InvalidRequestBodyError,
 } = require('../../../lib/error');
 const {
   getLoanRepayments,
