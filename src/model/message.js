@@ -16,7 +16,22 @@ module.exports = (Model) => {
     body: FieldTypes.String,
     subject: FieldTypes.String,
     excerpt: FieldTypes.String,
-  }, {});
+  }, {
+    beforeInsert: (data) => {
+      let details = data;
+      if (!(details instanceof Array)) details = [details];
+      return details.map((detail) => {
+        const messageData = detail;
+        messageData.createdOn = new Date();
+        return messageData;
+      });
+    },
+    beforeUpdate: (data) => {
+      const details = data;
+      details.updatedOn = new Date();
+      return details;
+    },
+  });
 
   MessageModel.buildAssociation = (Models) => {
     MessageModel.hasMany(Models.Message, {

@@ -18,7 +18,24 @@ module.exports = (Model) => {
     paymentInstallment: FieldTypes.Number,
     balance: FieldTypes.Number,
     interest: FieldTypes.Number,
-  }, {});
+  }, {
+    beforeInsert: (data) => {
+      let details = data;
+      if (!(details instanceof Array)) details = [details];
+      return details.map((detail) => {
+        const loanData = detail;
+        loanData.interest = loanData.amount * 0.05;
+        loanData.paymentInstallment = (loanData.amount + loanData.interest) / loanData.tenor;
+        loanData.createdOn = new Date();
+        return loanData;
+      });
+    },
+    beforeUpdate: (data) => {
+      const details = data;
+      details.updatedOn = new Date();
+      return details;
+    },
+  });
 
   LoanModel.buildAssociation = (Models) => {
     LoanModel.belongsTo(Models.User);

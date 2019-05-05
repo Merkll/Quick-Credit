@@ -11,6 +11,7 @@ module.exports = (Model) => {
 
   const UserModel = new User('User', {
     id: FieldTypes.Integer,
+    createdOn: FieldTypes.Date,
     email: FieldTypes.String,
     firstName: FieldTypes.String,
     lastName: FieldTypes.String,
@@ -27,9 +28,16 @@ module.exports = (Model) => {
         const hash = bcrypt.hashSync(userDetails.password, 10);
         userDetails.password = hash;
         userDetails.status = 'unverified';
-        userDetails.isAdmin = false;
+        userDetails.isAdmin = userDetails.isAdmin || false;
+        userDetails.createdOn = new Date();
         return userDetails;
       });
+    },
+    beforeUpdate: (data) => {
+      const details = data;
+      details.updatedOn = new Date();
+      if (details.password) details.password = bcrypt.hashSync(details.password, 10);
+      return details;
     },
   });
 

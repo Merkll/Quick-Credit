@@ -45,10 +45,11 @@ describe('Auth Service', () => {
       email: faker.internet.email(),
       firstName: faker.name.findName(),
       lastName: faker.name.lastName(),
-      password: faker.random.uuid(),
+      password: 'password',
       address: faker.address.streetAddress(),
       status: 'unverified',
       isAdmin: faker.random.boolean(),
+      createdOn: new Date(),
     };
 
     it('Should throw error if email and password is undefined', () => {
@@ -64,7 +65,7 @@ describe('Auth Service', () => {
       expect(data.code).to.be.eql(201);
     });
     it('Should return an error Object if user details isnt valid', () => {
-      const data = Signup({ ...userData, invalid: 'invalid' });
+      const data = Signup({ ...userData, invalid: 'invalid', email: faker.internet.email() });
       expect(data).to.be.an.instanceof(Object);
       expect(data.error).to.not.be.null;
     });
