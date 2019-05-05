@@ -1,3 +1,7 @@
+/**
+ * A validator class to check if a data conform to the defined schema
+ */
+
 class Validator {
   constructor(schema) {
     this.schema = schema;
@@ -13,6 +17,8 @@ class Validator {
     return !entryToValidate.some(field => !this.validate(field));
   }
 }
+
+/** Defines major types and their validation functions */
 const FieldTypes = {};
 FieldTypes.Integer = field => typeof field === 'number' && field % 1 === 0;
 FieldTypes.String = field => typeof field === 'string';
