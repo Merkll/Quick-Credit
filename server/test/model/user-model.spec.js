@@ -40,7 +40,6 @@ describe('User Model', () => {
       const data = User.update({
         password: 'newpassword',
       }, { id }).data[0];
-      console.log(data);
       expect(data.id).to.be.eql(id);
     });
   });

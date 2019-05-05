@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /**
  * MemDB is an In memory Database class
  * DataBase insertion Requires a primary key if multiple data are to be inserted into a collection
