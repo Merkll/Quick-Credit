@@ -23,4 +23,26 @@ describe('Repayment Model', () => {
       expect(data).to.be.eql(RepaymentData);
     });
   });
+
+  context('Repayment update', () => {
+    it('Should return RepaymentData', () => {
+      const { id } = RepaymentData[4];
+      const data = Repayment.update({
+        amount: 400,
+      }, { id }).data[0];
+      expect(data.id).to.be.eql(id);
+    });
+  });
+
+  context('Repayment insert non array data', () => {
+    it('Should return RepaymentData', () => {
+      const data = Repayment.insert({
+        id: 66,
+        createdOn: new Date(),
+        loanId: faker.random.number({ max: 12 }),
+        amount: faker.random.number({ min: 2000 }),
+      }).data[0];
+      expect(data.id).to.be.eql(66);
+    });
+  });
 });

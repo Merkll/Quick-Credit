@@ -12,7 +12,22 @@ module.exports = (Model) => {
     createdOn: FieldTypes.Date,
     loanId: FieldTypes.Integer,
     amount: FieldTypes.Number,
-  }, {});
+  }, {
+    beforeInsert: (data) => {
+      let details = data;
+      if (!(details instanceof Array)) details = [details];
+      return details.map((detail) => {
+        const repaymentData = detail;
+        repaymentData.createdOn = new Date();
+        return repaymentData;
+      });
+    },
+    beforeUpdate: (data) => {
+      const details = data;
+      details.updatedOn = new Date();
+      return details;
+    },
+  });
 
   RepaymentModel.buildAssociation = (Models) => {
     RepaymentModel.belongsTo(Models.Loan);

@@ -27,4 +27,21 @@ describe('User Model', () => {
       expect(data).to.be.eql(UserData);
     });
   });
+  context('user update', () => {
+    it('Should return UserData', () => {
+      const { id } = UserData[4];
+      const data = User.update({
+        address: faker.address.streetAddress(),
+      }, { id }).data[0];
+      expect(data.id).to.be.eql(id);
+    });
+    it('Should update password', () => {
+      const { id } = UserData[4];
+      const data = User.update({
+        password: 'newpassword',
+      }, { id }).data[0];
+      console.log(data);
+      expect(data.id).to.be.eql(id);
+    });
+  });
 });

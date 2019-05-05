@@ -27,4 +27,30 @@ describe('Message Model', () => {
       expect(data).to.be.eql(MessageData);
     });
   });
+
+  context('Message update', () => {
+    it('Should return MessageData', () => {
+      const { id } = MessageData[4];
+      const data = Message.update({
+        body: '400',
+      }, { id }).data[0];
+      expect(data.id).to.be.eql(id);
+    });
+  });
+
+  context('Message insert non array data', () => {
+    it('Should return MessageData', () => {
+      const data = Message.insert({
+        id: 50,
+        createdOn: new Date(),
+        sender: faker.random.number(),
+        repliedTo: faker.random.number(),
+        recipient: faker.random.number(),
+        body: faker.lorem.sentences(),
+        subject: faker.lorem.sentence(),
+        excerpt: faker.lorem.sentence(),
+      }).data[0];
+      expect(data.id).to.be.eql(50);
+    });
+  });
 });
