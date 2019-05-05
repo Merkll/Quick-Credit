@@ -21,7 +21,7 @@ describe('Auth Service', () => {
     it('Should return an error Object if user doesnt exist', () => {
       const data = Signin({ email: 'email', password });
       expect(data).to.be.an.instanceof(Object);
-      expect(data.code).to.be.eql(205);
+      expect(data.error).to.not.be.undefined;
     });
     it('Should return an Object of user data if user exist', () => {
       const data = Signin({ email, password });
@@ -32,7 +32,7 @@ describe('Auth Service', () => {
     it('Should return an error Object if password doesnt match', () => {
       const data = Signin({ email, password: 'password' });
       expect(data).to.be.an.instanceof(Object);
-      expect(data.code).to.be.eql(205);
+      expect(data.error).to.not.be.undefined;
     });
     it('Should return an auth token on authentication', () => {
       const data = Signin({ email, password });
@@ -62,7 +62,7 @@ describe('Auth Service', () => {
     it('Should return an error Object if user email exist', () => {
       const data = Signup(userData);
       expect(data).to.be.an.instanceof(Object);
-      expect(data.code).to.be.eql(201);
+      expect(data.error).to.not.be.undefined;
     });
     it('Should return an error Object if user details isnt valid', () => {
       const data = Signup({ ...userData, invalid: 'invalid', email: faker.internet.email() });
@@ -91,7 +91,7 @@ describe('Auth Service', () => {
     it('Should return an error Object if token is invalid', () => {
       const data = validateToken(faker.random.uuid());
       expect(data).to.be.an.instanceof(Object);
-      expect(data.code).to.be.eql(403);
+      expect(data.error).to.not.be.undefined;
     });
 
     it('Should return token data if token is valid', () => {
@@ -104,7 +104,7 @@ describe('Auth Service', () => {
       User.delete({ email: userData.email });
       const data = validateToken(userToken);
       expect(data).to.be.an.instanceof(Object);
-      expect(data.code).to.be.eql(217);
+      expect(data.error).to.not.be.undefined;
     });
   });
 });

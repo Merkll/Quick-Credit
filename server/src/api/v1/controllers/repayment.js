@@ -17,7 +17,7 @@ exports.getLoanRepayments = (req, res) => {
   const data = getLoanRepayments(loan);
   if (data.length === 0) throw new NotFoundError('No repayment for that loan found');
   const response = new Response(data);
-  res.status(response.status).send(response);
+  res.status(response.status).json(response);
 };
 
 exports.postLoanRepayment = (req, res) => {
@@ -26,5 +26,5 @@ exports.postLoanRepayment = (req, res) => {
   if (!loanDetails) throw new NotFoundError('loan with that id not found');
   const data = createRepayment(loan);
   const response = new Response(data);
-  res.status(response.status).send(response);
+  res.status(response.status).json(response);
 };

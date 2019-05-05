@@ -9,22 +9,22 @@ const Response = require('../../../lib/response');
 
 exports.signup = (req, res) => {
   const requestBody = req.body;
-  if (!requestBody || Object.keys(requestBody).length == 0) {
+  if (!requestBody || Object.keys(requestBody).length === 0) {
     throw new InvalidRequestBodyError('Post Body required');
   }
   const data = Signup(requestBody);
-  if (data.code == 201) throw new UserExists();
+  if (data.error) throw new UserExists(data.error);
   const response = new Response(data, 201);
-  res.status(201).send(response);
+  res.status(201).json(response);
 };
 
 exports.signin = (req, res) => {
   const requestBody = req.body;
-  if (!requestBody || Object.keys(requestBody).length == 0) {
+  if (!requestBody || Object.keys(requestBody).length === 0) {
     throw new InvalidRequestBodyError('Post Body required');
   }
   const data = Signin(requestBody);
-  if (data.code == 205) throw new AuthenticationError('Invalid login credentials');
+  if (data.error) throw new AuthenticationError(data.error);
   const response = new Response(data, 200);
-  res.status(200).send(response);
+  res.status(200).json(response);
 };

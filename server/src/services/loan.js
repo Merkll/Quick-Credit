@@ -16,6 +16,6 @@ exports.newLoan = (loanDetails) => {
 };
 
 exports.changeLoanStatus = ({ loan, status }) => {
-  if (status !== 'approved' && status !== 'rejected') return { code: 601, message: 'Status should either be "approved" or "rejected"' };
+  if (status !== 'approved' && status !== 'rejected') return { error: 'Status should either be "approved" or "rejected"' };
   return Loan.update({ status }, { id: loan }).data[0];
 };

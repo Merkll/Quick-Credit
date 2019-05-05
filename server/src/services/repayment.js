@@ -5,7 +5,7 @@ exports.createRepayment = (loan) => {
   const loanDetails = Loan.find({ id: loan }).data[0];
   const { balance, paymentInstallment } = loanDetails;
   const repaymentDetails = {
-    amount: (paymentInstallment - balance > 0) ? paymentInstallment : balance,
+    amount: (balance - paymentInstallment <= 0) ? balance : paymentInstallment,
     loanId: loan,
   };
   return Repayment.insert(repaymentDetails).data;
