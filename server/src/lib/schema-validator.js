@@ -2,7 +2,7 @@
  * A validator class to check if a data conform to the defined schema
  */
 
-class Validator {
+export class Validator {
   constructor(schema) {
     this.schema = schema;
   }
@@ -19,14 +19,15 @@ class Validator {
 }
 
 /** Defines major types and their validation functions */
-const FieldTypes = {};
-FieldTypes.Integer = field => typeof field === 'number' && field % 1 === 0;
-FieldTypes.String = field => typeof field === 'string';
-FieldTypes.Boolean = field => typeof field === 'boolean' || (field === 'true' || field === 'false');
-FieldTypes.Number = field => typeof field === 'number';
-FieldTypes.Date = field => field instanceof Date;
-
-module.exports = {
-  Validator,
-  FieldTypes,
+export const FieldTypes = {
+  Integer: field => typeof field === 'number' && field % 1 === 0,
+  String: field => typeof field === 'string',
+  Boolean: field => typeof field === 'boolean' || (field === 'true' || field === 'false'),
+  Number: field => typeof field === 'number',
+  Date: field => field instanceof Date,
 };
+
+// export default {
+//   Validator,
+//   FieldTypes,
+// };

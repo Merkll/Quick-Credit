@@ -1,13 +1,9 @@
 
-const {
-  InvalidRequestBodyError,
-  UserExists,
-  AuthenticationError,
-} = require('../../../lib/error');
-const { Signup, Signin } = require('../../../services/auth');
-const Response = require('../../../lib/response');
+import { InvalidRequestBodyError, UserExists, AuthenticationError } from '../../../lib/error';
+import { Signup, Signin } from '../../../services/auth';
+import Response from '../../../lib/response';
 
-exports.signup = (req, res) => {
+export const signup = (req, res) => {
   const requestBody = req.body;
   if (!requestBody || Object.keys(requestBody).length === 0) {
     throw new InvalidRequestBodyError('Post Body required');
@@ -18,7 +14,7 @@ exports.signup = (req, res) => {
   res.status(201).json(response);
 };
 
-exports.signin = (req, res) => {
+export const signin = (req, res) => {
   const requestBody = req.body;
   if (!requestBody || Object.keys(requestBody).length === 0) {
     throw new InvalidRequestBodyError('Post Body required');

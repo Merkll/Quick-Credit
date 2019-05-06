@@ -1,8 +1,10 @@
+/* eslint-disable import/named */
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const faker = require('faker');
-const { Signin, Signup, validateToken } = require('../../src/services/auth');
-const { User } = require('../../src/model');
+import { expect } from 'chai';
+
+import faker from 'faker';
+import { Signin, Signup, validateToken } from '../../src/services/auth';
+import { User } from '../../src/model';
 
 describe('Auth Service', () => {
   context('Signin', () => {

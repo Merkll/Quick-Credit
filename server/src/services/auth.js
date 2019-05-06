@@ -1,14 +1,15 @@
+/* eslint-disable import/named */
 /**
  * Business login for all authentication based actions
  */
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
 
-const { User } = require('../model');
+import jwt from 'jsonwebtoken';
+import { User } from '../model';
 
 const tokenSecret = process.env.SECRET || 'quickcredite435rt';
 
-const Signin = ({ email, password }, secret = tokenSecret) => {
+export const Signin = ({ email, password }) => {
   if (!email || !password) throw new Error('Email and Password required for autjentication');
 
   const authData = User.find({ email }).data[0];
@@ -18,11 +19,11 @@ const Signin = ({ email, password }, secret = tokenSecret) => {
   if (!isValid) return { error: 'Password and email doesnt match' };
 
   const { id, isAdmin } = authData;
-  const token = jwt.sign({ id, isAdmin, email }, secret);
+  const token = jwt.sign({ id, isAdmin, email }, tokenSecret);
   return { token, ...authData };
 };
 
-const Signup = (userDetails) => {
+export const Signup = (userDetails) => {
   if (!userDetails) throw new Error('User Details is required');
 
   const { email, password } = userDetails;
@@ -35,9 +36,9 @@ const Signup = (userDetails) => {
   return Signin({ email, password });
 };
 
-exports.validateToken = (token, secret = tokenSecret) => {
+export const validateToken = (token) => {
   try {
-    const { id } = jwt.verify(token, secret);
+    const { id } = jwt.verify(token, tokenSecret);
 
     const data = User.find({ id }).data[0];
     if (!data) return { error: 'Cannot retrieve a user for the specified token.' };
@@ -47,6 +48,3 @@ exports.validateToken = (token, secret = tokenSecret) => {
     return { error: 'Invalid Access token' };
   }
 };
-
-exports.Signin = Signin;
-exports.Signup = Signup;

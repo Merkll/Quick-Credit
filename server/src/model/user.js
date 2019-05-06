@@ -1,8 +1,8 @@
-const bcrypt = require('bcrypt');
-const { FieldTypes } = require('../lib/schema-validator');
+import bcrypt from 'bcrypt';
+import { FieldTypes } from '../lib/schema-validator';
 
 
-module.exports = (Model) => {
+export default (Model) => {
   class User extends Model {
     constructor(modelName, schema, hooks) {
       super(modelName, hooks, schema);

@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-expressions */
-const chai = require('chai');
-
-const { expect } = chai;
-const ErrorHandler = require('../../src/middleware/error-handler');
+import { expect } from 'chai';
+import ErrorHandler from '../../src/middleware/error-handler';
 
 describe('ErrorHandler', () => {
   let req;
@@ -16,7 +14,7 @@ describe('ErrorHandler', () => {
         return res;
       },
       send: (data) => {
-        this.data = data;
+        res.data = data;
       },
     };
     next = () => {};

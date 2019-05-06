@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-expressions */
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-const chaiHttp = require('chai-http');
-const faker = require('faker');
-const app = require('../../src/app');
+import chai from 'chai';
+
+import chaiAsPromised from 'chai-as-promised';
+import chaiHttp from 'chai-http';
+import faker from 'faker';
+import app from '../../src/app';
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);

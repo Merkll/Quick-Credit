@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const MemDB = require('../src/lib/memdb');
+import { expect } from 'chai';
+
+import MemDB from '../src/lib/memdb';
 
 describe('Memdb', () => {
   const dbName = 'test-db';

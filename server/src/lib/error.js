@@ -12,42 +12,43 @@ class ApplicationError extends Error {
   }
 }
 
-exports.ResourceNotFoundError = class extends ApplicationError {
+export const ResourceNotFoundError = class extends ApplicationError {
   constructor(message) {
     super(message || 'Resource requested doesnt exist', 404);
   }
 };
-exports.NotFoundError = class extends ApplicationError {
+
+export const NotFoundError = class extends ApplicationError {
   constructor(message) {
     super(message || 'No Record found matching that criteria', 404);
   }
 };
 
-exports.UserExists = class extends ApplicationError {
+export const UserExists = class extends ApplicationError {
   constructor(message) {
     super(message || 'User with that email already exist', 400);
   }
 };
 
-exports.AuthenticationError = class extends ApplicationError {
+export const AuthenticationError = class extends ApplicationError {
   constructor(message) {
     super(message || 'Could not authenticate you', 401);
   }
 };
 
-exports.AuthorizationError = class extends ApplicationError {
+export const AuthorizationError = class extends ApplicationError {
   constructor(message) {
     super(message || 'You are not authorized to perform that action', 403);
   }
 };
 
-exports.MethodNotAllowedError = class extends ApplicationError {
+export const MethodNotAllowedError = class extends ApplicationError {
   constructor(message) {
     super(message || 'Request Method Not allowed for this resource', 405);
   }
 };
 
-exports.InvalidRequestBodyError = class extends ApplicationError {
+export const InvalidRequestBodyError = class extends ApplicationError {
   constructor(message) {
     super(message || 'Invalid Request Body', 422);
   }

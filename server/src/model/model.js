@@ -11,12 +11,13 @@
  * afterUpdate, afterDelete
  */
 
-const DB = require('../lib/memdb');
-const { Validator } = require('../lib/schema-validator');
+import DB from '../lib/memdb';
+
+import { Validator } from '../lib/schema-validator';
 
 const MemDB = new DB('quick-credit');
 
-module.exports = class Model {
+export default class Model {
   constructor(modelName, hooks = {}, schema) {
     this.modelName = modelName;
     this.associations = {};
@@ -285,4 +286,4 @@ module.exports = class Model {
     associationSearchCriteria[modelMappedKey] = referenceKeyValue;
     return { criteria: associationSearchCriteria, key: referenceKey };
   }
-};
+}

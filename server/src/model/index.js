@@ -6,9 +6,10 @@
  * to ensure availability of all models and prevent cyclic dpendencies
  */
 
-const fs = require('fs');
-const path = require('path');
-const Model = require('./model');
+import fs from 'fs';
+
+import path from 'path';
+import Model from './model';
 
 const basename = path.basename(__filename);
 const exempted = ['model.js'];
@@ -19,7 +20,7 @@ const requireModels = () => {
     .filter(file => !exempted.includes(file) && file !== basename)
   // ensures current file and model.js isnt loaded
     .forEach((file) => {
-      const model = require(path.join(__dirname, file))(Model);
+      const model = require(path.join(__dirname, file)).default(Model);
       // loads each model file
       models[model.modelName] = model;
     });

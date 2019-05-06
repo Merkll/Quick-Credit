@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-expressions */
-const chai = require('chai');
+import chai from 'chai';
 
 const { expect } = chai;
-const Response = require('../src/lib/response');
+import Response from '../src/lib/response';
 
 describe('Http Response', () => {
   it('Should return status and supplied data', async () => {

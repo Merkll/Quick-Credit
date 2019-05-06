@@ -1,36 +1,29 @@
-const {
-  NotFoundError,
-  InvalidRequestBodyError,
-} = require('../../../lib/error');
-const {
-  getLoan,
-  getAllLoans,
-  getCurrentLoans,
-  getRepaidLoans,
-  newLoan,
-  changeLoanStatus,
-} = require('../../../services/loan');
-const Response = require('../../../lib/response');
+import { NotFoundError, InvalidRequestBodyError } from '../../../lib/error';
+import { 
+  getLoan as getLoanService, getAllLoans as getAllLoansService, 
+  getCurrentLoans, getRepaidLoans, newLoan, changeLoanStatus, 
+} from '../../../services/loan';
+import Response from '../../../lib/response';
 
-exports.getLoan = (req, res) => {
+export const getLoan = (req, res) => {
   const { loan } = req.params;
-  const data = getLoan(loan);
+  const data = getLoanService(loan);
   if (!data) throw new NotFoundError('loan with that id not found');
   const response = new Response(data);
   res.status(response.status).json(response);
 };
 
-exports.getAllLoans = (req, res) => {
+export const getAllLoans = (req, res) => {
   const { status, repaid } = req.query;
   let data;
   if (status === 'approved' && repaid === 'false') data = getCurrentLoans();
   else if (status === 'approved' && repaid === 'true') data = getRepaidLoans();
-  else data = getAllLoans();
+  else data = getAllLoansService();
   const response = new Response(data);
   res.status(response.status).json(response);
 };
 
-exports.applyForLoan = (req, res) => {
+export const applyForLoan = (req, res) => {
   const requestBody = req.body;
   if (!requestBody || Object.keys(requestBody).length === 0) {
     throw new InvalidRequestBodyError('Post Body required');
@@ -40,7 +33,7 @@ exports.applyForLoan = (req, res) => {
   res.status(response.status).json(response);
 };
 
-exports.loanStatus = (req, res) => {
+export const loanStatus = (req, res) => {
   const { status } = req.body;
   const { loan } = req.params;
   if (!(status === 'approved' || status === 'rejected')) throw new InvalidRequestBodyError('Invalid request Body');

@@ -4,8 +4,11 @@
   "description": "An online lending platform that provides short term soft loans to individuals",
   "main": "app.js",
   "scripts": {
-    "start": "node server/src/app",
-    "test": "nyc --reporter=text mocha ./server --recursive",
+    "start": "DEBUG=http node server/dist/app",
+    "start:dev": "nodemon --exec babel-node server/src/app.js",
+    "prestart": "npm run build",
+    "build": "babel server/src/ -d server/dist/",
+    "test": "nyc --reporter=text mocha ./server/test/ --recursive -r @babel/register -r @babel/polyfill",
     "coveralls": "nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js "
   },
   "repository": {
@@ -25,11 +28,19 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
+    "debug": "^4.1.1",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-http": "^4.3.0",

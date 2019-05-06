@@ -1,15 +1,16 @@
-const { User } = require('../model');
+import { User } from '../model';
 
-exports.verify = (email) => {
+export const verify = (email) => {
   if (!email) throw new Error('Email is undefined');
   return User.update({ status: 'verified' }, { email }).data[0];
 };
 
-exports.getUser = (email) => {
+export const getUser = (email) => {
   if (!email) throw new Error('Email is undefined');
   return User.find({ email }).data[0];
 };
-exports.filterUsers = ({ status }) => User.find({ status }).data;
-exports.getAllUsers = () => User.findAll().data;
-exports.getVerifiedUsers = () => User.find({ status: 'verified' }).data;
-exports.getUnverifiedUsers = () => User.find({ status: 'unverified' }).data;
+
+export const filterUsers = ({ status }) => User.find({ status }).data;
+export const getAllUsers = () => User.findAll().data;
+export const getVerifiedUsers = () => User.find({ status: 'verified' }).data;
+export const getUnverifiedUsers = () => User.find({ status: 'unverified' }).data;

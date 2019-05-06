@@ -1,6 +1,6 @@
-const { FieldTypes } = require('../lib/schema-validator');
+import { FieldTypes } from '../lib/schema-validator';
 
-module.exports = (Model) => {
+export default (Model) => {
   class Message extends Model {
     constructor(modelName, schema, hooks) {
       super(modelName, hooks, schema);
