@@ -1,7 +1,9 @@
+/* eslint-disable import/named */
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const faker = require('faker');
-const { User } = require('../../src/model');
+import { expect } from 'chai';
+
+import faker from 'faker';
+import { User } from '../../src/model';
 
 let UserData;
 describe('User Model', () => {

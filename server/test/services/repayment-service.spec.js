@@ -1,11 +1,9 @@
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const faker = require('faker');
-const {
-  createRepayment,
-  getLoanRepayments,
-} = require('../../src/services/repayment');
-const { Loan, Repayment } = require('../../src/model');
+import { expect } from 'chai';
+
+import faker from 'faker';
+import { createRepayment, getLoanRepayments } from '../../src/services/repayment';
+import { Loan, Repayment } from '../../src/model';
 
 describe('Repayment Service', () => {
   context('Create repayment', () => {

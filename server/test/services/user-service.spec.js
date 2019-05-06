@@ -1,14 +1,9 @@
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const faker = require('faker');
-const {
-  verify,
-  getUser,
-  getAllUsers,
-  getUnverifiedUsers,
-  getVerifiedUsers,
-} = require('../../src/services/user');
-const { User } = require('../../src/model');
+import { expect } from 'chai';
+
+import faker from 'faker';
+import { verify, getUser, getAllUsers, getUnverifiedUsers, getVerifiedUsers } from '../../src/services/user';
+import { User } from '../../src/model';
 
 describe('User Service', () => {
   context('verify', () => {

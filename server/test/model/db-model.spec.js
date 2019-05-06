@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const Model = require('../../src/model/model');
-const { FieldTypes } = require('../../src/lib/schema-validator');
+import { expect } from 'chai';
+
+import Model from '../../src/model/model';
+import { FieldTypes } from '../../src/lib/schema-validator';
 
 describe('Model', () => {
   const ProductModel = new Model('Product', {

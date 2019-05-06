@@ -1,15 +1,12 @@
+/* eslint-disable import/named */
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const faker = require('faker');
-const {
-  getLoan,
-  getCurrentLoans,
-  getRepaidLoans,
-  getAllLoans,
-  newLoan,
-  changeLoanStatus,
-} = require('../../src/services/loan');
-const { Loan } = require('../../src/model');
+import { expect } from 'chai';
+
+import faker from 'faker';
+import { 
+  getLoan, getCurrentLoans, getRepaidLoans, getAllLoans, newLoan, changeLoanStatus, 
+} from '../../src/services/loan';
+import { Loan } from '../../src/model';
 
 describe('Loan Service', () => {
   context('get specific loan', () => {

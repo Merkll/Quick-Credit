@@ -1,15 +1,14 @@
-const router = require('express').Router();
-const { MethodNotAllowedError } = require('../../lib/error');
-const { signup, signin } = require('./controllers/auth');
-const { verify, getUsers, getUser } = require('./controllers/user');
-const {
-  getLoan,
-  getAllLoans,
-  applyForLoan,
-  loanStatus,
-} = require('./controllers/loan');
+import { Router } from 'express';
+import { MethodNotAllowedError } from '../../lib/error';
+import { signup, signin } from './controllers/auth';
+import { verify, getUsers, getUser } from './controllers/user';
+import { 
+  getLoan, getAllLoans, applyForLoan, loanStatus, 
+} from './controllers/loan';
+import { getLoanRepayments, postLoanRepayment } from './controllers/repayment';
 
-const { getLoanRepayments, postLoanRepayment } = require('./controllers/repayment');
+const router = Router();
+
 
 router.route('/auth/signup')
   .post(signup)
@@ -62,4 +61,4 @@ router.route('/users/:email')
     throw new MethodNotAllowedError();
   });
 
-module.exports = router;
+export default router;

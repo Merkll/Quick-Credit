@@ -1,6 +1,6 @@
-const { Loan, Repayment } = require('../model');
+import { Loan, Repayment } from '../model';
 
-exports.createRepayment = (loan) => {
+export const createRepayment = (loan) => {
   if (!loan) throw new Error('Loan to query not specified');
   const loanDetails = Loan.find({ id: loan }).data[0];
   const { balance, paymentInstallment } = loanDetails;
@@ -16,7 +16,7 @@ exports.createRepayment = (loan) => {
   return data;
 };
 
-exports.getLoanRepayments = (loan) => {
+export const getLoanRepayments = (loan) => {
   if (!loan) throw new Error('Loan to query not specified');
   return Repayment.find({ loanId: loan }).data;
 };

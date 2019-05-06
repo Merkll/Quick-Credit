@@ -3,7 +3,7 @@
  * MemDB is an In memory Database class
  * DataBase insertion Requires a primary key if multiple data are to be inserted into a collection
  */
-module.exports = class Memdb {
+export default class Memdb {
   constructor(dbName) {
     this.dbName = dbName;
     this.collections = {}; // tables present in the database

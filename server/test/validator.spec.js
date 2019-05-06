@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
-const { expect } = require('chai');
-const { Validator, FieldTypes } = require('../src/lib/schema-validator');
+import { expect } from 'chai';
+
+import { Validator, FieldTypes } from '../src/lib/schema-validator';
 
 describe('Schema validator', () => {
   context('Schema validation', () => {

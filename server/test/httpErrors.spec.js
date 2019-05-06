@@ -1,16 +1,8 @@
 /* eslint-disable no-unused-expressions */
-const chai = require('chai');
+import chai from 'chai';
 
 const { expect } = chai;
-const {
-  MethodNotAllowedError,
-  ResourceNotFoundError,
-  NotFoundError,
-  UserExists,
-  AuthenticationError,
-  AuthorizationError,
-  InvalidRequestBodyError,
-} = require('../src/lib/error');
+import { MethodNotAllowedError, ResourceNotFoundError, NotFoundError, UserExists, AuthenticationError, AuthorizationError, InvalidRequestBodyError } from '../src/lib/error';
 
 describe('Http Errors', () => {
   context('method not allowed', () => {
