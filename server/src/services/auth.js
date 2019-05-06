@@ -29,7 +29,7 @@ const Signup = (userDetails) => {
   const userExist = !!(User.find({ email }).data[0]);
 
   if (userExist) return { error: 'User With that email already exists' };
-  if (!User.validateSchema(userDetails)) return { error: 'Invalid Loan Details' };
+  if (!User.validateSchema(userDetails)) return { error: 'Invalid User Details' };
 
   User.insert(userDetails);
   return Signin({ email, password });
