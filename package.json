@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node server/src/app",
-    "test": "nyc --reporter=text mocha server/ --recursive",
+    "test": "nyc --reporter=text mocha ./server --recursive",
     "coveralls": "nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js "
   },
   "repository": {
