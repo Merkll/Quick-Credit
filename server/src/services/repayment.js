@@ -8,7 +8,12 @@ exports.createRepayment = (loan) => {
     amount: (balance - paymentInstallment <= 0) ? balance : paymentInstallment,
     loanId: loan,
   };
-  return Repayment.insert(repaymentDetails).data;
+  const { data } = Repayment.insert(repaymentDetails);
+  const loanBalance = balance - repaymentDetails.amount;
+  let repaid = false;
+  if (loanBalance === 0) repaid = true;
+  Loan.update({ balance: loanBalance, repaid }, { id: loan });
+  return data;
 };
 
 exports.getLoanRepayments = (loan) => {

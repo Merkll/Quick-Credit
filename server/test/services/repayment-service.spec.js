@@ -34,6 +34,18 @@ describe('Repayment Service', () => {
         balance: 4000,
         interest: faker.random.number({ min: 2000 }),
       },
+      {
+        id: 32,
+        user: faker.internet.email(),
+        CreatedOn: new Date(),
+        status: 'pending',
+        repaid: faker.random.boolean(),
+        tenor: 1,
+        amount: faker.random.number({ min: 3000 }),
+        paymentInstallment: 5000,
+        balance: 4000,
+        interest: faker.random.number({ min: 2000 }),
+      },
     ];
     Loan.insert(loanData);
     it('Should throw error if loan is undefined', () => {
@@ -45,6 +57,10 @@ describe('Repayment Service', () => {
     });
     it('Should return repayment details', () => {
       const data = createRepayment(31);
+      expect(data).to.be.an.instanceof(Object);
+    });
+    it('Should return repayment details', () => {
+      const data = createRepayment(32);
       expect(data).to.be.an.instanceof(Object);
     });
   });

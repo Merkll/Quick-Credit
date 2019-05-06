@@ -18,15 +18,19 @@ module.exports = (Model) => {
     paymentInstallment: FieldTypes.Number,
     balance: FieldTypes.Number,
     interest: FieldTypes.Number,
+    purpose: FieldTypes.String,
   }, {
     beforeInsert: (data) => {
       let details = data;
       if (!(details instanceof Array)) details = [details];
       return details.map((detail) => {
         const loanData = detail;
-        loanData.interest = loanData.amount * 0.05;
-        loanData.paymentInstallment = (loanData.amount + loanData.interest) / loanData.tenor;
+        const interest = loanData.amount * 0.05;
+        loanData.interest = parseFloat(interest.toFixed(2));
+        const installment = (loanData.amount + loanData.interest) / loanData.tenor;
+        loanData.paymentInstallment = parseFloat(installment.toFixed(2));
         loanData.createdOn = new Date();
+        loanData.balance = loanData.amount + loanData.interest;
         return loanData;
       });
     },
