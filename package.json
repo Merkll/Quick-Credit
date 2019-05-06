@@ -6,7 +6,6 @@
   "scripts": {
     "start": "DEBUG=http node server/dist/app",
     "start:dev": "nodemon --exec babel-node server/src/app.js",
-    "prestart": "npm run build",
     "build": "babel server/src/ -d server/dist/",
     "test": "nyc --reporter=text mocha ./server/test/ --recursive -r @babel/register -r @babel/polyfill",
     "coveralls": "nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js "
