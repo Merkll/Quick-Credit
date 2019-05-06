@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { MethodNotAllowedError } = require('../../lib/error');
 const { signup, signin } = require('./controllers/auth');
-const { verify, getUsers } = require('./controllers/user');
+const { verify, getUsers, getUser } = require('./controllers/user');
 const {
   getLoan,
   getAllLoans,
@@ -23,7 +23,7 @@ router.route('/auth/signin')
     throw new MethodNotAllowedError();
   });
 
-router.route('/user/:email/verify')
+router.route('/users/:email/verify')
   .patch(verify)
   .all(() => {
     throw new MethodNotAllowedError();
@@ -52,6 +52,12 @@ router.route('/loans')
 
 router.route('/users')
   .get(getUsers)
+  .all(() => {
+    throw new MethodNotAllowedError();
+  });
+
+router.route('/users/:email')
+  .get(getUser)
   .all(() => {
     throw new MethodNotAllowedError();
   });

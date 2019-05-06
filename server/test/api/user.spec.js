@@ -16,6 +16,7 @@ after(() => {
 });
 
 describe('User API', () => {
+  let userUrl;
   before(async () => {
     const userData = {
       email: faker.internet.email(),
@@ -26,6 +27,7 @@ describe('User API', () => {
       status: 'unverified',
       isAdmin: faker.random.boolean(),
     };
+    userUrl = `/api/v1/users/${userData.email}`;
     await request
       .post('/api/v1/auth/signup')
       .send(userData);
@@ -46,6 +48,22 @@ describe('User API', () => {
       const { status, body: { data } } = await request.get(`${url}?status=verified`);
       expect(status).to.be.eql(200);
       expect(data).to.not.be.undefined;
+    });
+  });
+
+  context('Query single user', () => {
+    it('Should return error 405 with non get request', async () => {
+      const { status } = await request.post(userUrl);
+      expect(status).to.be.eql(405);
+    });
+    it('Should return data object', async () => {
+      const { status, body: { data } } = await request.get(userUrl);
+      expect(status).to.be.eql(200);
+      expect(data).to.not.be.undefined;
+    });
+    it('Should return error object if email oesnt exist', async () => {
+      const { status } = await request.get('/api/v1/users/email');
+      expect(status).to.be.eql(404);
     });
   });
 });

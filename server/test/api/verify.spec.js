@@ -26,7 +26,7 @@ describe('verify client API', () => {
       status: 'unverified',
       isAdmin: faker.random.boolean(),
     };
-    verificationUrl = `/api/v1/user/${userData.email}/verify`;
+    verificationUrl = `/api/v1/users/${userData.email}/verify`;
     await request
       .post('/api/v1/auth/signup')
       .send(userData);
@@ -40,7 +40,7 @@ describe('verify client API', () => {
   });
   context('patch request', () => {
     it('Should return status 404 if email doesnt exist', async () => {
-      const { body: { status } } = await request.patch('/api/v1/user/email/verify');
+      const { body: { status } } = await request.patch('/api/v1/users/email/verify');
       expect(status).to.be.eql(404);
     });
     it('Should return status 200', async () => {
