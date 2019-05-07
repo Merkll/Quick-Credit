@@ -1,0 +1,1596 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Quick Credit Staging API",
+      "url": "https://quick-credit-staging.herokuapp.com/api/v1"
+    },
+    {
+      "description": "Quick Credit Production API",
+      "url": "https://quick-credit-production.herokuapp.com/api/v1"
+    }
+  ],
+  "info": {
+    "description": "Quick Credit API. an online lending platform that provides short term soft loans to individuals",
+    "version": "1",
+    "title": "Quick Credit",
+    "contact": {
+      "email": "dev@quick-credit.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Loan",
+      "description": "API's that handles all loan related actions"
+    },
+    {
+      "name": "Client",
+      "description": "API's that handles all client related actions"
+    },
+    {
+      "name": "Auth",
+      "description": "Handles user signin and signup"
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Signup User to the platform",
+        "operationId": "signup",
+        "description": "Creates a new user based on the supplied credentials",
+        "responses": {
+          "201": {
+            "description": "User signup was succesfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 201
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      ],
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/TypeId"
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "User with that email address exist",
+                      "enum": [
+                        "User with that email address exist",
+                        "Invalid User details"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 422
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Post body required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "description": "User Details"
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "signin User to the platform",
+        "operationId": "signin",
+        "description": "Authenticates existing user",
+        "responses": {
+          "200": {
+            "description": "User authenticated succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      ],
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "$ref": "#/components/schemas/TypeId"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "User doesnt exist for that email",
+                      "enum": [
+                        "User doesnt exist for that email",
+                        "password and email doenst match"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 422
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Post body required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "john@exmaple.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          },
+          "description": "User Credentials"
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Gets  all users and filter based on criteria if present",
+        "operationId": "users",
+        "description": "Gets  all users and filter based on criteria if present",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "verified",
+                "unverified"
+              ]
+            },
+            "description": "Parameter to filter based on the user status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query Successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user-email}": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Gets  a specific user details",
+        "operationId": "singleUser",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user-email",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "johndoe@exmaple.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query Successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/User"
+                          }
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "USer with that email doesnt exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user-email}/verify": {
+      "patch": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Marks a client as Verified",
+        "operationId": "verify",
+        "description": "Marks a client as Verified",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user-email",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "johndoe@exmaple.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User verification succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      ],
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/TypeId"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "User with that email address doesnt exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/loans/{loan-id}": {
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Gets a specific loan application",
+        "operationId": "specificLoan",
+        "description": "Authenticates existing user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "loan-id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 32
+            },
+            "description": "Id of the loan to query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Loan query successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Loan"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Loan with that id not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Approve or reject a loan application. Specify the status in the request’s body.",
+        "operationId": "loanApproval",
+        "description": "Approve or reject a loan application. Specify the status in the request’s body.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "loan-id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 32
+            },
+            "description": "Id of the loan to query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Loan Approval / Rejection successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Loan"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Loan with that id not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 422
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid request Body"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "approved",
+                      "rejected"
+                    ],
+                    "example": "approved"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Loan Status"
+        }
+      }
+    },
+    "/loans": {
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Gets  all loans and filter based on criteria if present",
+        "operationId": "loans",
+        "description": "Gets  all loans and filter based on criteria if present",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "approved",
+                "pending",
+                "rejected"
+              ],
+              "example": "approved"
+            },
+            "description": "Parameter to filter based on the loan status"
+          },
+          {
+            "in": "query",
+            "name": "repaid",
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true,
+                false
+              ],
+              "example": true
+            },
+            "description": "Parameter to filter based on whether loan is repaid or not"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query Successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Loan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "creates new Loan Application",
+        "operationId": "newLoan",
+        "description": "creates new Loan Application",
+        "responses": {
+          "201": {
+            "description": "Loan application Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 201
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Loan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 422
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Post body required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "string",
+                    "example": "john@exmaple.com"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 50000
+                  },
+                  "tenor": {
+                    "type": "integer",
+                    "example": 5
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "example": "Rent payment"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Signin User"
+        }
+      }
+    },
+    "/loans/{loan-id}/repayments": {
+      "get": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Gets loan repayments",
+        "operationId": "repayments",
+        "description": "Gets loan repayments",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "loan-id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 32
+            },
+            "description": "Id of the loan whose repayment to query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Query Successfull",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Repayment"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 401
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "You are not Authorized to perform this action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Specified Resource is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Loan"
+        ],
+        "summary": "Create a loan repayment record.",
+        "operationId": "loanRepayment",
+        "description": "Create a loan repayment record.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "loan-id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 32
+            },
+            "description": "Id of the loan to create loan repayment"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Loan repayment created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 201
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Repayment"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 404
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Loan with that id not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "address",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "unverified"
+            ]
+          },
+          "isAdmin": {
+            "type": "boolean",
+            "enum": [
+              true,
+              false
+            ]
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "Loan": {
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "amount",
+          "tenor"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "user": {
+            "type": "string",
+            "description": "Email of user that requested for the loan"
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected"
+            ]
+          },
+          "repaid": {
+            "type": "boolean",
+            "enum": [
+              true,
+              false
+            ]
+          },
+          "tenor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "description": "Specifies the period for repayment. Maximum of 12 months"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float"
+          },
+          "paymentInstallment": {
+            "type": "number",
+            "format": "float",
+            "description": "Monthly installment payment (amount + interest) / tenor"
+          },
+          "balance": {
+            "type": "number",
+            "format": "float"
+          },
+          "interest": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "Repayment": {
+        "type": "object",
+        "required": [
+          "id",
+          "loanId",
+          "amount"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "loanId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float",
+            "description": "Amount repaid"
+          },
+          "monthlyInstallment": {
+            "type": "number",
+            "format": "float",
+            "description": "Amount repaid"
+          }
+        }
+      },
+      "TypeId": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "Message": {
+        "type": "object",
+        "required": [
+          "id",
+          "subject",
+          "body",
+          "sender",
+          "recipient"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sender": {
+            "type": "string",
+            "description": "Id of the sender of the message"
+          },
+          "repliedTo": {
+            "type": "string",
+            "description": "Id of the message it replied to if any"
+          },
+          "recipient": {
+            "type": "string",
+            "description": "Id of the recipient of the message"
+          },
+          "body": {
+            "type": "string",
+            "description": "Content of the message"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject of the message"
+          },
+          "excerpt": {
+            "type": "string",
+            "description": "Excerpt of message to use for message listing"
+          }
+        }
+      }
+    }
+  }
+}
