@@ -13,6 +13,7 @@ app.use(morgan(':method :url :status :response-time ms'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api', apiRoute);
+
 app.all('*', (req, res) => {
   res.status(404).json({ status: 404, error: 'Resource not available' });
 });

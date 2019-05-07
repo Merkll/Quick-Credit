@@ -13,6 +13,10 @@ var _debug = _interopRequireDefault(require("debug"));
 
 var _morgan = _interopRequireDefault(require("morgan"));
 
+var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
+
+var _quickCredit = _interopRequireDefault(require("../docs/quick-credit.json"));
+
 var _api = _interopRequireDefault(require("./api"));
 
 var _errorHandler = _interopRequireDefault(require("./middleware/error-handler"));
@@ -28,6 +32,7 @@ app.use(_bodyParser["default"].urlencoded({
 }));
 app.use(_bodyParser["default"].json());
 app.use('/api', _api["default"]);
+app.use('/docs', _swaggerUiExpress["default"].serve, _swaggerUiExpress["default"].setup(_quickCredit["default"]));
 app.all('*', function (req, res) {
   res.status(404).json({
     status: 404,

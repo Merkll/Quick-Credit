@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../../../docs/quick-credit.json';
 import { MethodNotAllowedError } from '../../lib/error';
 import { signup, signin } from './controllers/auth';
 import { verify, getUsers, getUser } from './controllers/user';
@@ -9,6 +11,7 @@ import { getLoanRepayments, postLoanRepayment } from './controllers/repayment';
 
 const router = Router();
 
+router.use('/docs', swaggerUi.serve).get('/docs', swaggerUi.setup(swaggerDocument));
 
 router.route('/auth/signup')
   .post(signup)
