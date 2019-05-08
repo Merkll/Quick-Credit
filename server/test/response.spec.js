@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import chai from 'chai';
-
-const { expect } = chai;
+import { expect } from 'chai';
 import Response from '../src/lib/response';
 
 describe('Http Response', () => {

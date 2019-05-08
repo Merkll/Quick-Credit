@@ -26,7 +26,7 @@ describe('User Model', () => {
   context('Model Initialization', () => {
     it('Should return UserData', () => {
       const { data } = User.findAll();
-      expect(data).to.be.eql(UserData);
+      expect(...data).to.contain(...UserData);
     });
   });
   context('user update', () => {

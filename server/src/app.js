@@ -4,6 +4,7 @@ import Debug from 'debug';
 import morgan from 'morgan';
 import apiRoute from './api';
 import ErrorHandler from './middleware/error-handler';
+import Mock from './lib/mock';
 
 const debug = Debug('http');
 
@@ -22,4 +23,7 @@ app.all('*', (req, res) => {
 // default error handler
 app.use(ErrorHandler);
 
-export default app.listen(port, () => debug(`Server started on port ${port}`));
+export default app.listen(port, () => {
+  debug(`Server started on port ${port}`);
+  Mock();
+});
