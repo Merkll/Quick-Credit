@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
 
@@ -21,7 +22,7 @@ describe('Repayment Model', () => {
   context('Model Initialization', () => {
     it('Should return RepaymentData', () => {
       const { data } = Repayment.findAll();
-      expect(data).to.be.eql(RepaymentData);
+      expect(...data).to.contain(...RepaymentData);
     });
   });
 
