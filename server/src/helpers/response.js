@@ -6,4 +6,4 @@ export default class {
     this.status = status;
     this.data = data;
   }
-};
+}

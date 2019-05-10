@@ -2,10 +2,8 @@
 /**
  * Business login for all authentication based actions
  */
-import bcrypt from 'bcrypt';
-
-import jwt from 'jsonwebtoken';
 import { User } from '../model';
+import { generateToken, verifyToken, validateHash } from '../helpers/auth';
 
 const tokenSecret = process.env.SECRET || 'quickcredite435rt';
 
@@ -15,11 +13,11 @@ export const Signin = ({ email, password }) => {
   const authData = User.find({ email }).data[0];
   if (!authData) return { error: 'User Email doesnt exist' };
 
-  const isValid = bcrypt.compareSync(password, authData.password);
+  const isValid = validateHash(password, authData.password);
   if (!isValid) return { error: 'Password and email doesnt match' };
 
   const { id, isAdmin } = authData;
-  const token = jwt.sign({ id, isAdmin, email }, tokenSecret);
+  const token = generateToken({ id, isAdmin, email });
   return { token, ...authData };
 };
 
@@ -37,14 +35,9 @@ export const Signup = (userDetails) => {
 };
 
 export const validateToken = (token) => {
-  try {
-    const { id } = jwt.verify(token, tokenSecret);
-
-    const data = User.find({ id }).data[0];
-    if (!data) return { error: 'Cannot retrieve a user for the specified token.' };
-
-    return { token, ...data };
-  } catch (error) {
-    return { error: 'Invalid Access token' };
-  }
+  const { id } = verifyToken(token, tokenSecret);
+  if (!id) return { error: 'token could not be verified.' };
+  const data = User.find({ id }).data[0];
+  if (!data) return { error: 'Cannot retrieve a user for the specified token.' };
+  return { token, ...data };
 };

@@ -1,0 +1,3 @@
+{
+  "nonSecureRoutes": ["/docs", "/auth/signup", "/auth/signin"]
+}

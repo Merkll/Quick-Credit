@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
-import Response from '../src/lib/response';
+import Response from '../../src/helpers/response';
 
 describe('Http Response', () => {
   it('Should return status and supplied data', async () => {
