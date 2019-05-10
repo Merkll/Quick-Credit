@@ -1,5 +1,6 @@
-(function(){
-    const templateHtml = `
+/* eslint-disable no-param-reassign */
+((global) => {
+  const templateHtml = `
     <tr>
         <td>{{paymentId}}</td>
         <td>{{paymentDate}}</td>
@@ -9,10 +10,10 @@
  `;
 
 
-    const repaymentsTableRow = {
-        root: 'repayments-table-row-root',
-        classNames: [],
-        template: templateHtml
-    };
-    templates['repayments-table-row'] = repaymentsTableRow;
-}());
+  const repaymentsTableRow = {
+    root: 'repayments-table-row-root',
+    classNames: [],
+    template: templateHtml
+  };
+  global.templates['repayments-table-row'] = repaymentsTableRow;
+})(this);

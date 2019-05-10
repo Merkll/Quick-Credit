@@ -1,5 +1,6 @@
-(function(){
-    const templateHtml = `
+/* eslint-disable no-param-reassign */
+((global) => {
+  const templateHtml = `
     <div class="table-container">
         <table class="repayment-table">
                 <thead>
@@ -18,12 +19,12 @@
  `;
 
 
-    const repayments = {
-        root: 'repayments-root',
-        classNames: [],
-        template: templateHtml,
-        childComponent: 'repayments-table-row',
-        childTag: 'repayments'
-    };
-    templates['repayments'] = repayments;
-}());
+  const repayments = {
+    root: 'repayments-root',
+    classNames: [],
+    template: templateHtml,
+    childComponent: 'repayments-table-row',
+    childTag: 'repayments'
+  };
+  global.templates.repayments = repayments;
+})(this);
