@@ -1,13 +1,11 @@
-import { NotFoundError, InvalidRequestBodyError } from '../../../lib/error';
-import { 
-  getLoan as getLoanService, getAllLoans as getAllLoansService, 
-  getCurrentLoans, getRepaidLoans, newLoan, changeLoanStatus, 
-} from '../../../services/loan';
-import Response from '../../../lib/response';
+import { LoanService } from '../services/index';
+
+import { NotFoundError, InvalidRequestBodyError } from '../helpers/error';
+import Response from '../helpers/response';
 
 export const getLoan = (req, res) => {
   const { loan } = req.params;
-  const data = getLoanService(loan);
+  const data = LoanService.getLoan(loan);
   if (!data) throw new NotFoundError('loan with that id not found');
   const response = new Response(data);
   res.status(response.status).json(response);
@@ -16,9 +14,9 @@ export const getLoan = (req, res) => {
 export const getAllLoans = (req, res) => {
   const { status, repaid } = req.query;
   let data;
-  if (status === 'approved' && repaid === 'false') data = getCurrentLoans();
-  else if (status === 'approved' && repaid === 'true') data = getRepaidLoans();
-  else data = getAllLoansService();
+  if (status === 'approved' && repaid === 'false') data = LoanService.getCurrentLoans();
+  else if (status === 'approved' && repaid === 'true') data = LoanService.getRepaidLoans();
+  else data = LoanService.getAllLoans();
   const response = new Response(data);
   res.status(response.status).json(response);
 };
@@ -28,7 +26,7 @@ export const applyForLoan = (req, res) => {
   if (!requestBody || Object.keys(requestBody).length === 0) {
     throw new InvalidRequestBodyError('Post Body required');
   }
-  const data = newLoan(requestBody);
+  const data = LoanService.newLoan(requestBody);
   const response = new Response(data, 201);
   res.status(response.status).json(response);
 };
@@ -37,7 +35,7 @@ export const loanStatus = (req, res) => {
   const { status } = req.body;
   const { loan } = req.params;
   if (!(status === 'approved' || status === 'rejected')) throw new InvalidRequestBodyError('Invalid request Body');
-  const data = changeLoanStatus({ loan, status });
+  const data = LoanService.changeLoanStatus({ loan, status });
   if (!data) throw new NotFoundError('loan with that id not found');
   const response = new Response(data, 200);
   res.status(response.status).json(response);

@@ -1,14 +1,10 @@
-
-import { NotFoundError } from '../../../lib/error';
-import { 
-  verify as verifyService, getAllUsers, filterUsers, 
-  getUser as getUserService, 
-} from '../../../services/user';
-import Response from '../../../lib/response';
+import { UserService } from '../services/index';
+import { NotFoundError } from '../helpers/error';
+import Response from '../helpers/response';
 
 export const verify = (req, res) => {
   const { email } = req.params;
-  const data = verifyService(email);
+  const data = UserService.verify(email);
   if (!data) throw new NotFoundError('User with that email address doesnt exist');
   const response = new Response(data);
   res.status(response.status).json(response);
@@ -18,15 +14,15 @@ export const getUsers = (req, res) => {
   const statusEnums = ['verified', 'unverified'];
   const { status } = req.query;
   let data;
-  if (statusEnums.includes(status)) data = filterUsers({ status });
-  else data = getAllUsers();
+  if (statusEnums.includes(status)) data = UserService.filterUsers({ status });
+  else data = UserService.getAllUsers();
   const response = new Response(data);
   res.status(response.status).json(response);
 };
 
 export const getUser = (req, res) => {
   const { email } = req.params;
-  const data = getUserService(email);
+  const data = UserService.getUser(email);
   if (!data) throw new NotFoundError('User with that email address doesnt exist');
   const response = new Response(data);
   res.status(response.status).json(response);

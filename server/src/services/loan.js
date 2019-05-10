@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import { Loan } from '../model';
 
 export const getLoan = (loan) => {

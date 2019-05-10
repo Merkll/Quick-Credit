@@ -1,8 +1,12 @@
 /* eslint-disable no-unused-expressions */
-import chai from 'chai';
+import { expect } from 'chai';
+import { 
+  MethodNotAllowedError, 
+  ResourceNotFoundError, NotFoundError, 
+  UserExists, AuthenticationError, AuthorizationError, InvalidRequestBodyError,
+  TokenNotProvidedError, InvalidToken, ExpiredToken
+} from '../../src/helpers/error';
 
-const { expect } = chai;
-import { MethodNotAllowedError, ResourceNotFoundError, NotFoundError, UserExists, AuthenticationError, AuthorizationError, InvalidRequestBodyError } from '../src/lib/error';
 
 describe('Http Errors', () => {
   context('method not allowed', () => {
@@ -103,6 +107,48 @@ describe('Http Errors', () => {
     });
     it('Should return status and default mesage', async () => {
       const { error, status } = new InvalidRequestBodyError();
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.not.be.undefined;
+    });
+  });
+  context('MissingToken', () => {
+    const statusCode = 400;
+    it('Should return status and supplied message', async () => {
+      const message = 'Token missing';
+      const { error, status } = new TokenNotProvidedError(message);
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.be.eql(message);
+    });
+    it('Should return status and default mesage', async () => {
+      const { error, status } = new TokenNotProvidedError();
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.not.be.undefined;
+    });
+  });
+  context('InvalidToken', () => {
+    const statusCode = 403;
+    it('Should return status and supplied message', async () => {
+      const message = 'Token missing';
+      const { error, status } = new InvalidToken(message);
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.be.eql(message);
+    });
+    it('Should return status and default mesage', async () => {
+      const { error, status } = new InvalidToken();
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.not.be.undefined;
+    });
+  });
+  context('ExpiredToken', () => {
+    const statusCode = 403;
+    it('Should return status and supplied message', async () => {
+      const message = 'Token missing';
+      const { error, status } = new ExpiredToken(message);
+      expect(status).to.be.eqls(statusCode);
+      expect(error).to.be.eql(message);
+    });
+    it('Should return status and default mesage', async () => {
+      const { error, status } = new ExpiredToken();
       expect(status).to.be.eqls(statusCode);
       expect(error).to.not.be.undefined;
     });

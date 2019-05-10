@@ -53,3 +53,21 @@ export const InvalidRequestBodyError = class extends ApplicationError {
     super(message || 'Invalid Request Body', 422);
   }
 };
+
+export const TokenNotProvidedError = class extends ApplicationError {
+  constructor(message) {
+    super(message || 'Auth token missing', 400);
+  }
+};
+
+export const InvalidToken = class extends ApplicationError {
+  constructor(message) {
+    super(message || 'Token Invalid', 403);
+  }
+};
+
+export const ExpiredToken = class extends ApplicationError {
+  constructor(message) {
+    super(message || 'User Token expired Login', 403);
+  }
+};
