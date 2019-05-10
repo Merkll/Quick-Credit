@@ -1,5 +1,6 @@
-(function(){
-    const templateHtml = `
+/* eslint-disable no-param-reassign */
+((global) => {
+  const templateHtml = `
     <div class="card">
         <div class="card-header">
             <span>Client: {{userId}}</span>
@@ -15,10 +16,10 @@
  `;
 
 
-    const clientsCard = {
-        root: 'clients-card-root',
-        classNames: [],
-        template: templateHtml
-    };
-    templates['clients-card'] = clientsCard;
-}());
+  const clientsCard = {
+    root: 'clients-card-root',
+    classNames: [],
+    template: templateHtml
+  };
+  global.templates['clients-card'] = clientsCard;
+})(this);

@@ -1,5 +1,6 @@
-(function(){
-    const templateHtml = `
+/* eslint-disable no-param-reassign */
+((global) => {
+  const templateHtml = `
         <div class="subject">
                 <label for="">Subject</label>
                 <input type="text" value="{{subject}}">
@@ -14,11 +15,10 @@
         </div>
  `;
 
-
-    const message = {
-        root: 'message-root',
-        classNames: [],
-        template: templateHtml
-    };
-    templates['message'] = message;
-}());
+  const message = {
+    root: 'message-root',
+    classNames: [],
+    template: templateHtml
+  };
+  global.templates.message = message;
+})(this);
