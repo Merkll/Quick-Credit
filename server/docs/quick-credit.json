@@ -18,6 +18,11 @@
       "email": "dev@quick-credit.com"
     }
   },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "tags": [
     {
       "name": "Loan",
@@ -38,6 +43,7 @@
         "tags": [
           "Auth"
         ],
+        "security": [],
         "summary": "Signup User to the platform",
         "operationId": "signup",
         "description": "Creates a new user based on the supplied credentials",
@@ -155,6 +161,7 @@
         "tags": [
           "Auth"
         ],
+        "security": [],
         "summary": "signin User to the platform",
         "operationId": "signin",
         "description": "Authenticates existing user",
@@ -1404,6 +1411,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "User": {
         "type": "object",
