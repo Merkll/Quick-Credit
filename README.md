@@ -67,6 +67,14 @@ This project uses Mocha for test driven development. Ensure all test pass by run
 The API was documented using Swagger and the docs can be found in this route [/api/v1/docs](https://quick-credit-staging.herokuapp.com/api/v1/docs)
 
 ## Demo
+To use this demo, 
+* signup at the auth endpoint [```/auth/signup```](https://quick-credit-staging.herokuapp.com/api/v1/auth/signup)
+
+--OR--
+* signin using this credentials email ```'demouser@demo.com'``` password```demouser``` at [```/auth/signup```](https://quick-credit-staging.herokuapp.com/api/v1/auth/signin)
+
+* copy the token and set the Authorization header of your API client to the token
+
 ### Backend
 The demo server is [https://quick-credit-staging.herokuapp.com](https://quick-credit-staging.herokuapp.com)
 

@@ -8,7 +8,7 @@ export default function () {
   const numberofLoans = 15;
   const numberOfRepayments = 25;
 
-  const userData = new Array(numberOfUsers).fill(0).map(() => ({
+  const userData = new Array(numberOfUsers - 1).fill(0).map(() => ({
     email: faker.internet.email(),
     firstName: faker.name.findName(),
     lastName: faker.name.lastName(),
@@ -17,6 +17,15 @@ export default function () {
     status: 'unverified',
     isAdmin: faker.random.boolean(),
   }));
+  userData.push({
+    email: 'demouser@demo.com',
+    firstName: 'demo',
+    lastName: 'user',
+    password: 'demouser',
+    address: faker.address.streetAddress(),
+    status: 'unverified',
+    isAdmin: true,
+  });
 
   const loanData = Array(numberofLoans).fill(0).map(() => ({
     user: userData[faker.random.number({ min: 0, max: numberOfUsers - 1 })].email,
