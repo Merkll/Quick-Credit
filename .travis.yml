@@ -1,6 +1,15 @@
 language: node_js
+env:
+  global:
+    - CC_TEST_REPORTER_ID=c37b0267018af1c803858f8ba98a105c49a2accc776dc06673333fa147312330
+    - NODE_ENV=test
 node_js:
 - node
+before_script:
+  - yarn global add nyc
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 install:
 - npm install
 script:
@@ -9,10 +18,12 @@ cache:
   directories:
   - node_modules
 after_success: npm run coveralls
-branches:
-  only:
-  - master
-  - develop
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+# branches:
+#   only:
+#   - master
+#   - develop
 deploy:
   provider: heroku
   api_key:

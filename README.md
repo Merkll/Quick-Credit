@@ -1,5 +1,5 @@
 ## Quick-Credit
-[![Build Status](https://travis-ci.org/Merkll/Quick-Credit.svg?branch=develop)](https://travis-ci.org/Merkll/Quick-Credit) [![Coverage Status](https://coveralls.io/repos/github/Merkll/Quick-Credit/badge.svg?branch=develop)](https://coveralls.io/github/Merkll/Quick-Credit?branch=develop)
+[![Build Status](https://travis-ci.org/Merkll/Quick-Credit.svg?branch=develop)](https://travis-ci.org/Merkll/Quick-Credit) [![Coverage Status](https://coveralls.io/repos/github/Merkll/Quick-Credit/badge.svg?branch=develop)](https://coveralls.io/github/Merkll/Quick-Credit?branch=develop) <a href="https://codeclimate.com/github/Merkll/Quick-Credit/maintainability"><img src="https://api.codeclimate.com/v1/badges/98694594b546f4ff446f/maintainability" /></a> <a href="https://codeclimate.com/github/Merkll/Quick-Credit/test_coverage"><img src="https://api.codeclimate.com/v1/badges/98694594b546f4ff446f/test_coverage" /></a>
 
 Quick Credit is an online lending platform that provides short term soft loans to individuals. This helps solve problems of financial inclusion as a way to alleviate poverty and empower low income earners.
 
