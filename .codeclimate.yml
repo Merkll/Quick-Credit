@@ -5,10 +5,10 @@ version: 2
 checks:
   identical-code:
     config:
-      threshold: 100
+      threshold: 50
   similar-code:
     config:
-      threshold: 100
+      threshold: 50
   argument-count:
     config:
       threshold: 4
