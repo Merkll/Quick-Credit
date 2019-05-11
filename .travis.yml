@@ -17,7 +17,9 @@ script:
 cache:
   directories:
   - node_modules
-after_success: npm run coveralls
+after_success: 
+  - npm run coveralls
+  - npm run coverage
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 # branches:
