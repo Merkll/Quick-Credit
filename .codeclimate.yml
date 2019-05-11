@@ -1,6 +1,7 @@
-plugins:
-  duplication:
-    enable: true
+version: 2
+# plugins:
+#   duplication:
+#     enable: true
 checks:
   argument-count:
     config:
@@ -27,8 +28,9 @@ checks:
     config:
       threshold: 4
   
-exclude-patterns:
+exclude_patterns:
   - "node_modules/"
   - "**/UI/"
   - "server/test/"
   - "server/dist/"
+  - "UI"
