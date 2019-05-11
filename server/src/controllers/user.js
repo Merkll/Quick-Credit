@@ -1,11 +1,10 @@
 import { UserService } from '../services/index';
-import { NotFoundError } from '../helpers/error';
 import Response from '../helpers/response';
+import { checkUserData } from '../helpers/util';
 
 export const verify = (req, res) => {
   const { email } = req.params;
-  const data = UserService.verify(email);
-  if (!data) throw new NotFoundError('User with that email address doesnt exist');
+  const data = checkUserData(UserService.verify(email));
   const response = new Response(data);
   res.status(response.status).json(response);
 };
@@ -22,8 +21,7 @@ export const getUsers = (req, res) => {
 
 export const getUser = (req, res) => {
   const { email } = req.params;
-  const data = UserService.getUser(email);
-  if (!data) throw new NotFoundError('User with that email address doesnt exist');
+  const data = checkUserData(UserService.getUser(email));
   const response = new Response(data);
   res.status(response.status).json(response);
 };

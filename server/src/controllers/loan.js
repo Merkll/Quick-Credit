@@ -1,12 +1,13 @@
 import { LoanService } from '../services/index';
 
-import { NotFoundError, InvalidRequestBodyError } from '../helpers/error';
+import { InvalidRequestBodyError } from '../helpers/error';
 import Response from '../helpers/response';
+import { checkLoanData, checkRequestBody } from '../helpers/util';
+
 
 export const getLoan = (req, res) => {
   const { loan } = req.params;
-  const data = LoanService.getLoan(loan);
-  if (!data) throw new NotFoundError('loan with that id not found');
+  const data = checkLoanData(LoanService.getLoan(loan));
   const response = new Response(data);
   res.status(response.status).json(response);
 };
@@ -22,10 +23,7 @@ export const getAllLoans = (req, res) => {
 };
 
 export const applyForLoan = (req, res) => {
-  const requestBody = req.body;
-  if (!requestBody || Object.keys(requestBody).length === 0) {
-    throw new InvalidRequestBodyError('Post Body required');
-  }
+  const requestBody = checkRequestBody(req.body);
   const data = LoanService.newLoan(requestBody);
   const response = new Response(data, 201);
   res.status(response.status).json(response);
@@ -35,8 +33,7 @@ export const loanStatus = (req, res) => {
   const { status } = req.body;
   const { loan } = req.params;
   if (!(status === 'approved' || status === 'rejected')) throw new InvalidRequestBodyError('Invalid request Body');
-  const data = LoanService.changeLoanStatus({ loan, status });
-  if (!data) throw new NotFoundError('loan with that id not found');
+  const data = checkLoanData(LoanService.changeLoanStatus({ loan, status }));
   const response = new Response(data, 200);
   res.status(response.status).json(response);
 };
