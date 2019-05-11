@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import Debug from 'debug';
 import morgan from 'morgan';
 import routes from './routes';
-import ErrorHandler from './middleware/error-handler';
+import { ErrorHandler } from './middleware/error-handler';
 import Mock from './lib/mock';
 
 const debug = Debug('http');

@@ -1,11 +1,17 @@
 import { UserService } from '../services/index';
 import Response from '../helpers/response';
-import { checkUserData } from '../helpers/util';
+import { NotFoundError, AuthorizationError } from '../helpers/error';
+
+const isUserExist = (userData) => {
+  if (!userData) throw new NotFoundError('User with that email address doesnt exist');
+  return userData;
+};
 
 export const verify = (req, res) => {
   const { email } = req.params;
-  const data = checkUserData(UserService.verify(email));
-  const response = new Response(data);
+  const user = UserService.verify(email);
+  isUserExist(user);
+  const response = new Response(user);
   res.status(response.status).json(response);
 };
 
@@ -21,7 +27,10 @@ export const getUsers = (req, res) => {
 
 export const getUser = (req, res) => {
   const { email } = req.params;
-  const data = checkUserData(UserService.getUser(email));
-  const response = new Response(data);
+  const { email: userEmail, isAdmin } = req.user;
+  const user = UserService.getUser(email);
+  if (email !== userEmail && !isAdmin) throw new AuthorizationError();
+  isUserExist(user);
+  const response = new Response(user);
   res.status(response.status).json(response);
 };

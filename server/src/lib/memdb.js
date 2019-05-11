@@ -71,21 +71,12 @@ export default class Memdb {
    */
   insert(collection, data) {
     if (!collection || !data) throw new Error('Collection Name Should be specified');
-    if (this.collectionExist(collection) && !(data instanceof Object)) throw new Error('Insertion into a Non empty collection requires a data Object');
     if (!this.collectionExist(collection)) this.createCollection(collection);
-    if (data instanceof Array) return this.bulkInsert(collection, data);
-    let collectionData = this.getCollection(collection);
-    let insertedData = data;
-    if (!(data instanceof Object)) collectionData = data;
-    else {
-      let { id } = data;
-      if (!id) {
-        id = this.getPrimaryKey(collection);
-      }
-      collectionData[id] = { id, ...data };
-      insertedData = collectionData[id];
-    }
-    return insertedData;
+    if (Array.isArray(data)) return this.bulkInsert(collection, data);
+    const collectionData = this.getCollection(collection);
+    const { id = this.getPrimaryKey(collection) } = data;
+    collectionData[id] = { id, ...data };
+    return collectionData[id];
   }
 
   /**
@@ -172,4 +163,4 @@ export default class Memdb {
       return null;
     }).filter(details => !!details);
   }
-};
+}

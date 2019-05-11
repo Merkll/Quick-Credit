@@ -1,7 +1,9 @@
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../../docs/quick-credit.json';
-import { MethodNotAllowedError } from '../../helpers/error';
-import { Authenticate } from '../../middleware/auth';
+import { Authenticate, Authorize } from '../../middleware/auth';
+import { MethodNotAllowed } from '../../middleware/error-handler';
+import { CheckRequestBody } from '../../middleware/util';
+
 import { 
   LoanController, RepaymentController, UserController, AuthController 
 } from '../../controllers/index';
@@ -11,48 +13,32 @@ export default (router) => {
   router.use(Authenticate);
 
   router.route('/auth/signup')
-    .post(AuthController.signup).all(() => { 
-      throw new MethodNotAllowedError();
-    });
+    .post(CheckRequestBody, AuthController.signup).all(MethodNotAllowed);
 
   router.route('/auth/signin')
-    .post(AuthController.signin).all(() => {
-      throw new MethodNotAllowedError();
-    });
+    .post(CheckRequestBody, AuthController.signin).all(MethodNotAllowed);
 
   router.route('/users/:email/verify')
-    .patch(UserController.verify).all(() => {
-      throw new MethodNotAllowedError();
-    });
+    .patch(Authorize, UserController.verify).all(MethodNotAllowed);
 
   router.route('/loans/:loan')
     .get(LoanController.getLoan)
-    .patch(LoanController.loanStatus)
-    .all(() => {
-      throw new MethodNotAllowedError();
-    });
+    .patch(Authorize, LoanController.loanStatus)
+    .all(MethodNotAllowed);
 
   router.route('/loans/:loan/repayments')
     .get(RepaymentController.getLoanRepayments)
-    .post(RepaymentController.postLoanRepayment)
-    .all(() => {
-      throw new MethodNotAllowedError();
-    });
+    .post(Authorize, RepaymentController.postLoanRepayment)
+    .all(MethodNotAllowed);
 
   router.route('/loans')
-    .get(LoanController.getAllLoans).post(LoanController.applyForLoan).all(() => {
-      throw new MethodNotAllowedError();
-    });
+    .get(LoanController.getAllLoans).post(LoanController.applyForLoan).all(MethodNotAllowed);
 
-  router.route('/users').get(UserController.getUsers).all(() => {
-    throw new MethodNotAllowedError();
-  });
+  router.route('/users').get(Authorize, UserController.getUsers).all(MethodNotAllowed);
 
   router.route('/users/:email')
     .get(UserController.getUser)
-    .all(() => {
-      throw new MethodNotAllowedError();
-    });
+    .all(MethodNotAllowed);
 
   return router;
 };

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
-import ErrorHandler from '../../src/middleware/error-handler';
+import { ErrorHandler } from '../../src/middleware/error-handler';
 
 describe('ErrorHandler', () => {
   let req;

@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import { verifyToken, isRouteSecure } from '../helpers/auth';
-import { TokenNotProvidedError, InvalidToken } from '../helpers/error';
+import { verifyToken, isRouteSecure, isUserAuthorized } from '../helpers/auth';
+import { TokenNotProvidedError, InvalidToken, AuthorizationError } from '../helpers/error';
 
 const getAccessToken = (req) => {
   let { token } = req.body || {};
@@ -19,4 +19,8 @@ export const Authenticate = (req, res, next) => {
   if (!decoded) return next(new InvalidToken());
   req.user = decoded;
   return next();
+};
+export const Authorize = (req, res, next) => {
+  if (isUserAuthorized(req.user)) return next();
+  return next(new AuthorizationError());
 };
