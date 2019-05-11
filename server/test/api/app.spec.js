@@ -7,7 +7,7 @@ import { generateToken } from '../../src/helpers/auth';
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 
-const token = generateToken({ id: 3 });
+const token = generateToken({ id: 3, isAdmin: true });
 const authHeader = ['Authorization', token];
 
 const request = chai.request(app).keepOpen();

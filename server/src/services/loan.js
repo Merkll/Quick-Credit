@@ -6,9 +6,10 @@ export const getLoan = (loan) => {
   return Loan.find({ id: loan }).data[0];
 };
 
-export const getCurrentLoans = () => Loan.find({ status: 'approved', repaid: false }).data;
-export const getRepaidLoans = () => Loan.find({ status: 'approved', repaid: true }).data;
-export const getAllLoans = () => Loan.findAll().data;
+export const getCurrentLoans = (user = {}) => Loan.find({ status: 'approved', repaid: false, ...user }).data;
+export const getRepaidLoans = (user = {}) => Loan.find({ status: 'approved', repaid: true, ...user }).data;
+// eslint-disable-next-line max-len
+export const getAllLoans = (user = {}) => ((user === {}) ? Loan.findAll().data : Loan.find(user).data);
 
 export const newLoan = (loanDetails) => {
   if (!loanDetails) throw new Error('Loan details cant be empty');

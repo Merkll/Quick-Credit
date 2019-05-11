@@ -63,10 +63,6 @@ describe('Memdb', () => {
       expect(() => MemDBInstance.insert(collectionName)).to.throw();
     });
 
-    it('Should throw an Error if collection isnt empty and data isnt an object', () => {
-      expect(() => MemDBInstance.insert(collectionName, 555)).to.throw();
-    });
-
     it('Should insert Data into collection if collection doesnt exist and data is not an object', () => {
       const data = 555;
       const inserted = MemDBInstance.insert('new-collection', data);
@@ -116,10 +112,6 @@ describe('Memdb', () => {
 
     it('Should throw an error on empty data', () => {
       expect(() => MemDBInstance.bulkInsert('bulk-collection')).to.throw();
-    });
-    it('Should insert Data if data isnt an Array ', () => {
-      const inserted = MemDBInstance.bulkInsert('bulk-collection-non-array', 99);
-      expect(inserted).to.be.eql(99);
     });
     it('Should return array of inserted Data ', () => {
       const inserted = MemDBInstance.bulkInsert('bulk-collection-array', [{ id: 55 }, { id: 77 }]);

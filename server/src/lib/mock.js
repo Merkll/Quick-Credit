@@ -2,12 +2,7 @@
 import faker from 'faker';
 import * as Model from '../model';
 
-export default function () { 
-  if (process.env.NODE_ENV !== 'dev') return false;
-  const numberOfUsers = 20;
-  const numberofLoans = 15;
-  const numberOfRepayments = 25;
-
+const createUsers = (numberOfUsers) => {
   const userData = new Array(numberOfUsers - 1).fill(0).map(() => ({
     email: faker.internet.email(),
     firstName: faker.name.findName(),
@@ -26,7 +21,11 @@ export default function () {
     status: 'unverified',
     isAdmin: true,
   });
+  Model.User.insert(userData);
+  return userData;
+}; 
 
+const createLoan = (numberofLoans, numberOfUsers, userData) => {
   const loanData = Array(numberofLoans).fill(0).map(() => ({
     user: userData[faker.random.number({ min: 0, max: numberOfUsers - 1 })].email,
     CreatedOn: new Date(),
@@ -38,14 +37,26 @@ export default function () {
     balance: faker.random.number({ min: 2000 }),
     interest: faker.random.number({ min: 2000 }),
   }));
+  Model.Loan.insert(loanData);
+};
+
+const createRepayment = (numberOfRepayments, numberofLoans) => {
   const repaymentData = Array(numberOfRepayments).fill(0).map(() => ({
     CreatedOn: new Date(),
     loanId: faker.random.number({ min: 1, max: numberofLoans }),
     amount: faker.random.number({ min: 2000 }),
   }));
-
-  Model.Loan.insert(loanData);
-  Model.User.insert(userData);
   Model.Repayment.insert(repaymentData);
+};
+
+export default function () { 
+  if (process.env.NODE_ENV !== 'dev') return false;
+  const numberOfUsers = 20;
+  const numberofLoans = 15;
+  const numberOfRepayments = 25;
+
+  const userData = createUsers(numberOfUsers);
+  createLoan(numberofLoans, numberOfUsers, userData);
+  createRepayment(numberOfRepayments, numberofLoans);
   return true;
 }

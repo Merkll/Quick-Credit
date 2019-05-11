@@ -3,6 +3,12 @@ version: 2
 #   duplication:
 #     enable: true
 checks:
+  identical-code:
+    config:
+      threshold: 100
+  similar-code:
+    config:
+      threshold: 100
   argument-count:
     config:
       threshold: 4
