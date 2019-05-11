@@ -22,10 +22,10 @@ after_success:
   - npm run coverage
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-# branches:
-#   only:
-#   - master
-#   - develop
+branches:
+  only:
+  - master
+  - develop
 deploy:
   provider: heroku
   api_key:
