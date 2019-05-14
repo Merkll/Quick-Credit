@@ -10,6 +10,7 @@
                 <span>Loan Repayment History </span>
             </div>
             <div class="table-container" id="repayments-root"></div>
+            <button class="btn close-btn margin-20">Ok</button>
         </div>
     </div>
  `;

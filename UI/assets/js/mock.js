@@ -76,10 +76,10 @@ const Mock = (function () {
         childTag: 'action',
         childComponent: { type: 'literal', data: ' <button class="btn float-right overlay-btn client-action" data-action="{{buttonAction}}">{{text}}</button>' },
         childNodes: [
-          {
-            text: 'Approve',
-            buttonAction: 'approve'
-          },
+          // {
+          //   text: 'Approve',
+          //   buttonAction: 'approve'
+          // },
           {
             text: 'Reject',
             buttonAction: 'approve'
@@ -233,14 +233,14 @@ const Mock = (function () {
         childTag: 'action',
         childComponent: { type: 'literal', data: ' <button class="btn float-right overlay-btn loan-action" data-action="{{buttonAction}}">{{text}}</button>' },
         childNodes: [
-          {
-            text: 'Approve',
-            buttonAction: 'Approval',
-          },
-          {
-            text: 'Reject',
-            buttonAction: 'Rejection',
-          }
+          // {
+          //   text: 'Approve',
+          //   buttonAction: 'Approval',
+          // },
+          // {
+          //   text: 'Reject',
+          //   buttonAction: 'Rejection',
+          // }
         ]
       }            
     },

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 ((global) => {
   const templateHtml = `
-    <div class="alert">
+    <div class="alert {{classes}}">
         <i class="close-btn icon close"></i>
         <p class="message">
             {{content}}

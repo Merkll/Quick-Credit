@@ -1,8 +1,22 @@
 /* Primary #6028c1
 text #f5ce42 */
+/* rgb(105, 19, 19) */
+@import url(https://fonts.googleapis.com/css?family=Karla);
 
+:root{
+    --primary-bg-color: #35424a;
+    --secondary-bg-color: #8AABBF;
+    --tertiary-bg-color: #B8E4FF;
+    --primary-text-color: white;
+    --secondary-text-color: #e8491d;
+    --logo-color: #ff5425 ; /*#f5ce42  #e8491d*/
+    --btn-color: #ff5425;
+    --primary-link-hover-color: red;
+    --primary-link-color: firebrick;
+}
 *{
     box-sizing: border-box;
+    font-family: 'Karla', sans-serif;
 }
 body,html,.container{
     min-height: 100%;
@@ -24,7 +38,7 @@ body{
 .footer{
     margin-top: 50px;
     /* height: 40px; */
-    background-color: firebrick;
+    background-color: var(--primary-bg-color);
     color: white;
     font-weight: bold;
     text-align: center;
@@ -57,7 +71,7 @@ body{
     z-index: 5;
 }
 .full-overlay{
-    background-color: black;
+    background-color: var(--primary-bg-color);
     bottom: 0px;
     opacity: .9;
     padding: 30px;
@@ -75,14 +89,18 @@ body{
     position: static !important;
     margin: 10px;
 }
+.home-overlay{
+    background-color: var(--secondary-bg-color);
+    opacity: .9;
+}
 .content .details * {
     color: firebrick;
     border-color: firebrick;
 }
-.content .details .btn, .content .details a {
+/* .content .details .btn, .content .details a {
     color: white;
     border-color: white;
-}
+} */
 .full-overlay .content .details label {
     font-size: 14px
 }
@@ -90,9 +108,7 @@ body{
 .bg-black{
     background-color: black;
 }
-.bg-red{
-    background-color: firebrick
-}
+
 .bg-white{
     background-color: white;
 }
@@ -140,10 +156,13 @@ body{
     font-weight: bold;
     font-size: 16px
 }
-.colo
+.signup-form{
+    background-color: var(--secondary-bg-color);
+    /* background-color:#AECDE6 */
+}
 
 .primary-bg-color{
-    background-color: rgb(170, 12, 12);
+    background-color: var(--primary-bg-color);
 }
 .primary-bg-color:hover{
     background-color: red;
@@ -159,7 +178,7 @@ body{
 }
 
 a{
-    color: firebrick;
+    color: var(--secondary-text-color);
     text-decoration: underline;
 }
 a:hover{
@@ -240,7 +259,7 @@ textarea {
     min-width: 70px;
     height: 25px;
     border: none;
-    background-color: firebrick;
+    background-color: var(--btn-color);
     color: white;
     font-weight: 900;
 }
@@ -272,7 +291,7 @@ textarea {
 .menu{
     position: relative;
     height: 50px;
-    background-color: rgb(105, 19, 19);
+    background-color: var(--primary-bg-color);
     z-index: 10;
 }
 .menu nav{
@@ -300,7 +319,7 @@ textarea {
 }
 .logo{
     display: inline-block;
-    color: #f5ce42;
+    color: var(--logo-color);
     font-weight: bolder;
     font-size: 20px;
     padding: 10px;
@@ -308,11 +327,10 @@ textarea {
 
 .sidebar{
     height: 100%;
-    background-color: red;
+    background-color: var(--primary-bg-color);
     padding: 10px;
     color: white;
     font-weight: bold;
-    background-color: black;
     opacity: .9;
     position: absolute;
     left: 0px;
@@ -372,13 +390,15 @@ textarea {
     /* justify-content: space-between; */
     width: 100%;
     padding: 10px;
+    height: inherit;
 }
 .card{
-    height: 180px;
+    height: 250px;
     width: 230px;
     margin: auto;
     margin-bottom: 20px;
-    background-color: rgb(216, 213, 213);
+    /* background-color: rgb(216, 213, 213); */
+    background-color: #DCE6E1;
 }
 .card-header{
     padding: 5px;
@@ -396,6 +416,14 @@ textarea {
     content: " ";
     display: table;
     clear: both;
+}
+.card-header span{
+    color: var(--secondary-text-color)
+
+}
+.card-header span:hover{
+    color: red;
+
 }
 .card-content{
     padding: 5px;
@@ -417,15 +445,25 @@ textarea {
 
 .card-content a{
     margin-top: 20px;
-    background-color: firebrick;
-    color: white;
+    /* background-color: firebrick; */
+    color: var(--primary-link-color);
     font-weight: bold;
-    font-size: 14px;
-    padding: 2px;
+    font-size: 16px;
+    padding: 3px;
+    float: right;
+    position: relative;
+    bottom: -50px;
+}
+.card-content  a:nth-of-type(1){
     float: right;
 }
+
+.card-content a:nth-of-type(2){
+    float: left;
+}
 .card-content a:hover{
-    background-color: red;
+    color: var(--primary-link-hover-color);
+
 }
 
 
@@ -440,7 +478,7 @@ textarea {
 
 
 .alert{
-    height: 100px;
+    min-height: 100px;
     background-color: green;
     position: fixed;
     top: 0px;
@@ -521,7 +559,7 @@ textarea {
     font-size: 10px;
 }
 .heading{
-    color: #f5ce42;
+    color: var(--secondary-text-color);
     font-weight: bolder;
     text-align: center;
     font-size: 20px;
@@ -529,7 +567,7 @@ textarea {
 
 .banner{
     height: 150px;
-    background-color:firebrick;
+    background-color: var(--primary-bg-color);
     width: 100%;
     opacity: .9;
 }
@@ -559,4 +597,7 @@ textarea {
     position: relative;
     top: 50%;
     left: 40%;
+}
+.bg-red{
+    background-color: firebrick
 }
