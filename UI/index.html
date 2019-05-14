@@ -14,7 +14,7 @@
     <div class="container">
         <div id="top-menu-root"></div>
         <div class="home-bg-image"></div>
-        <div class="overlay home-overlay bg-black opacity-8 animate-fadein">
+        <div class="overlay home-overlay animate-fadein">
             <div class="row to-front">
                 <div class="col-4">
                     <div class="form interest-calc-form">
@@ -22,11 +22,11 @@
                         <form action="" id="calculator">
                             <div class="input-wrapper">
                                 <label for="">Amount</label>
-                                <input type="number" name="amount" required>
+                                <input type="number" name="amount" data-validator="amount" required>
                             </div>
                             <div class="input-wrapper">
                                 <label for="">Tenor</label>
-                                <input type="number" name="tenor" min="1" max="12" required>
+                                <input type="number" name="tenor" min="1" max="12" data-validator="number" required>
                             </div>
                             <button class="btn primary-bg-color primary-color" type="submit"> Calculate</button>
                         </form>
@@ -38,11 +38,11 @@
                             <form action="" id="login">
                                 <div class="input-wrapper">
                                     <label for="email">Email</label>
-                                    <input type="text" name="email" required>
+                                    <input type="email" name="email" data-validator="email" required>
                                 </div>
                                 <div class="input-wrapper">
                                     <label for="">Password</label>
-                                    <input type="password" name="password" required>
+                                    <input type="password" name="password" data-validator="password" required>
                                 </div>
                                 <button class="btn primary-bg-color primary-color" type="submit"> Login</button>
                                 <span class="primary-color size-16">Not yet a Member? <a href="#signup" class="color-red">Signup here</a></span>
@@ -54,14 +54,19 @@
         <div class="banner home-banner">
             <div class="row padding-16">
                 <h4 class="heading">Why Choose Us?</h4>
-                <div class="col-4"><p class="banner-text">Quick and Easy Loans</p></div>
+                <div class="col-4">
+                    
+                    <p class="banner-text">Quick and Easy Loans
+                            
+                    </p>                    
+                </div>
                 <div class="col-4"><p class="banner-text">Lower rates</p></div>
                 <div class="col-4"><p class="banner-text">No penalties</p></div>
             </div>
         </div>
         <div class="row">
             <div class="col-8 offset-2">
-                <div class="form signup-form bg-black opacity-9">
+                <div class="form signup-form">
                     <h4 class="heading">Register With Us</h4>
                     <form action="" method="POST" id="signup">
                             <div class="input-wrapper">
@@ -75,17 +80,17 @@
                             <div class="input-group">
                                     <div class="input-wrapper">
                                             <label for="" class="primary-color">Email</label>
-                                            <input class="required" type="email" name="email" placeholder="johnDe@example.com" required>
+                                            <input class="required" data-validator="email" type="email" name="email" placeholder="johnDe@example.com" required>
                                     </div>
                                     <div class="input-wrapper">
                                             <label for="" class="primary-color">Mobile</label>
-                                            <input class="required" type="password" name="passwordConfirm" placeholder="+2348132255421" required>
+                                            <input class="required" data-validator="phone" type="text" name="mobile" placeholder="+2348132255421" required>
                                     </div>
                             </div>
                             <div class="input-group">
                                 <div class="input-wrapper">
                                         <label for="" class="primary-color">Password </label>
-                                        <input class="required" type="password" name="password" placeholder="********" required>
+                                        <input class="required" type="password" data-validator="password" name="password" placeholder="********" required>
                                     </div>
                                 <div class="input-wrapper">
                                         <label for="" class="primary-color">Confirm Password</label>
