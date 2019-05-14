@@ -21,9 +21,10 @@
     /* top: 50px !important; */
 }
 .home-banner{
-    margin-top: 150px;
-    height: 350px !important;
+    margin-top: 165px;
+    height: 300px !important;
     margin-bottom: 20px;
+    height: auto;
 }
 .application-form *, .application-form label {
     color: firebrick;
@@ -85,7 +86,7 @@
         left: 100px;
     }
     .home-banner{
-        margin-top: 10px;
+        margin-top: 0px;
         height: 160px !important;
     }
 }

@@ -2,7 +2,7 @@
 ((global) => {
   const templateHtml = `
       <div class="menu">
-      <a href="../index.html"><span class="logo">Quick Credit</span></a>            
+      <a href="./index.html"><span class="logo">Quick Credit</span></a>            
           <nav>
               {{links}}
           </nav>

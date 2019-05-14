@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable radix */
@@ -64,7 +65,7 @@ document.body.onload = () => {
     const nameOfForm = formNode.id;   
     const data = new FormData(formNode);
     const functionToHandleForm = formActions[nameOfForm];
-    if (functionToHandleForm) return functionToHandleForm(data);
+    if (functionToHandleForm) return functionToHandleForm(data, formNode);
     return null;
   });
   pageSetup();
@@ -73,10 +74,10 @@ document.body.onload = () => {
 const calculateRate = (formData) => {
   const amount = parseFloat(formData.get('amount'));
   const tenor = parseInt(formData.get('tenor'));
-  const interest = (5 / 100) * amount;
-  const payment = Math.round((amount + interest) / tenor).toFixed(2);
-  if (!(interest && payment)) return;
-  displayRate({ interest, payment });
+  if (!(amount && tenor)) return;
+  const interest = ((5 / 100) * amount);
+  const payment = ((amount + interest) / tenor);
+  displayRate({ interest: interest.toFixed(2), payment: payment.toFixed(2) });
 };
 
 const displayRate = ({ interest, payment }) => {
@@ -88,14 +89,61 @@ const displayRate = ({ interest, payment }) => {
   render('alert', { content: message });
 };
 
-const login = (formData) => {
+const login = async (formData, form) => {
   const email = formData.get('email');
-  render('alert', { content: `Welcome ${email}` });
+  const isValid = validateFormFields(formData, form);
+  if (isValid) {
+    render('alert', { content: `Welcome ${email}`, classes: 'bg-red' });
+    window.location.href = './loans.html';
+  }
 };
 
-const signup = (formData) => {
+const validateFormFields = (formData, form) => {
+  const validators = {
+    email: (email) => {
+      const re = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'gi');
+      return re.test(String(email).toLowerCase());
+    },
+    phone: (phone) => {
+      const re = new RegExp(/[0-9]{11}/);
+      return re.test(String(phone));
+    },
+    password: password => password.length >= 6,
+    amount: amount => !!parseFloat(amount),
+    number: number => typeof field === 'number',
+  };
+  const messages = [];
+  for (const [fieldName, fieldValue] of formData.entries()) {
+    const inputNode = form.querySelector(`input[name="${fieldName}"]`);
+    const { validator } = inputNode.dataset;
+    const isRequired = inputNode.required;
+    let isFieldValid = true;
+    if (validator) isFieldValid = validators[validator](fieldValue);
+    if (fieldValue.length === 0 && isRequired) {
+      messages.push(`*field ${fieldName} is Required`);
+      inputNode.style.borderColor = 'red';
+      isValidated = false;
+    } else if (!isFieldValid) {
+      messages.push(`*field ${fieldName} is not valid`);
+      inputNode.style.borderColor = 'red';
+      isValidated = false;
+    } else inputNode.style.borderColor = 'white';
+  }
+  if (messages.length > 0) {
+    const content = messages.join('</br>');
+    render('alert', { content, classes: 'bg-red' });
+    return false;
+  }  
+  return true;
+};
+
+const signup = (formData, form) => {
   const email = formData.get('email');
-  render('alert', { content: `Account Creation succesfull for ${email}` });
+  const isValid = validateFormFields(formData, form);
+  if (isValid) {
+    render('alert', { content: `Account Creation succesfull for ${email}` });
+    window.location.href = './loans.html';
+  }
 };
 
 const passwordReset = (formData) => {
@@ -170,8 +218,12 @@ const clientAction = async (event) => {
   render('alert', { content: `Client ${action} Succesful` });
 };
 
-const loanApplication = (formData) => {
-  render('alert', { content: 'Loan application Successful' });
+const loanApplication = (formData, form) => {
+  const isValid = validateFormFields(formData, form);
+  if (isValid) {
+    render('alert', { content: 'Loan application Successful' });
+    window.location.href = './single-loans.html';
+  }
 };
 
 

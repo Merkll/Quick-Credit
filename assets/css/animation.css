@@ -36,7 +36,7 @@
     -ms-transition: opacity 3s ease-in;
     -o-transition: opacity 3s ease-in;
      transition: opacity 3s ease-in;
-     opacity: 1;
+     opacity: .8;
 }
 
 .hide{

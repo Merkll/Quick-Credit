@@ -1,4 +1,8 @@
 @media only screen and (min-width: 700px) {
+    .overlay .content{
+        width: 80%;
+        margin: auto;
+    }
     .content-box{
         width: 90%;
     }
