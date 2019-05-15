@@ -1,13 +1,30 @@
 require('dotenv').config();
 
-let credentials = {
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT
+const env = process.env.ENV || process.env.NODE_ENV;
+
+const dbConfig = {
+  test: {
+    user: 'postgres',
+    database: 'testdb',
+    password: '',
+  },
+  dev: {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
+  },
+  production: {
+    connectionString: process.env.DATABASE_URL 
+  },
+  staging: {
+    connectionString: process.env.DATABASE_URL 
+  }
 };
-if (!credentials.database) credentials = { connectionString: process.env.DATABASE_URL };
+
+let credentials = dbConfig[env]; 
+if (!credentials.database) credentials = dbConfig.dev;
 
 const config = credentials;
 
