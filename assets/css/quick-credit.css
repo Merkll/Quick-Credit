@@ -14,6 +14,7 @@ text #f5ce42 */
     --primary-link-hover-color: red;
     --primary-link-color: firebrick;
     --wave-bg-color: #702d67;
+    --sidebar-color: #702d67;
 }
 *{
     box-sizing: border-box;
@@ -372,7 +373,7 @@ textarea {
 
 .sidebar{
     height: 100%;
-    background-color: var(--primary-bg-color);
+    background-color: var(--sidebar-color);
     padding: 10px;
     color: white;
     font-weight: bold;
@@ -515,7 +516,9 @@ textarea {
 .position-relative{
     position: relative;
 }
-
+.position-absolute{
+    position: absolute;
+}
 
 .alert{
     min-height: 100px;
@@ -611,7 +614,7 @@ textarea {
     width: 100%;
     opacity: .9;
     position: relative;
-    top: 900px;
+    top: 920px;
 }
 .banner .inner {
     display: flex;
@@ -657,3 +660,344 @@ textarea {
 .bg-red{
     background-color: firebrick
 }
+
+  
+  .generic-card {
+    display: inline-block;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+    margin: 20px;
+    position: relative;
+    transition: all .2s ease-in-out;
+  }
+  
+  .generic-card:hover {
+    /*box-shadow: 0 5px 22px 0 rgba(0,0,0,.25);*/
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    margin-bottom: 54px;
+  }
+  
+  .generic-card .image {
+    height: 200px;
+    opacity: .7;
+    overflow: hidden;
+    transition: all .2s ease-in-out;
+  }
+  .dashboard-card{ 
+      width: 400px;
+  }
+  .image:hover,
+  .generic-card:hover .image {
+    height: 200px;
+    opacity: 1;
+  }
+  
+  .generic-card .text {
+    background: #FFF;
+    padding: 20px;
+    min-height: 200px;
+  }
+  
+  .generic-card .text p {
+    margin-bottom: 0px;
+  }
+  
+  .fab {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: absolute;
+    margin-top: -50px;
+    right: 20px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, .3);
+    color: #fff;
+    font-size: 48px;
+    line-height: 48px;
+    text-align: center;
+    background: #0066A2;
+    -webkit-transition: -webkit-transform .2s ease-in-out;
+    transition: transform .2s ease-in-out;
+  }
+  
+  .fab:hover {
+    background: #549D3C;
+    cursor: pointer;
+    -ms-transform: rotate(90deg);
+      -webkit-transform: rotate(90deg);
+      transform: rotate(90deg);
+  }
+
+  .circle{
+    width: 150px;
+    height: 150px;
+    border-radius:100%;
+    text-align:center;
+    line-height:0;
+    position:relative;
+    margin-bottom: 10px;
+  }
+
+  .circle span {
+      display: block;
+      position: relative;
+      top: 50%;
+      color: firebrick;
+      font-size: 27px;
+  }
+
+  .metric-container{
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex-basis: 200px;
+  }
+
+  .metric-container .circle{
+    background-color: white;
+    border: 10px solid rgb(214, 214, 214);
+    clip: rect(0, 1em, 1em, 0.5em);
+}
+.metric-card{
+    display: block;
+    width: 300px;
+    height: 150px;
+    text-align: center;
+}
+.metric-card .title{
+    font-size: 20px;
+    font-weight: unset;
+}
+.metric-card .fas{
+    font-size: 60px;
+    color: purple;
+}
+.metric-card span{
+    display: block;
+    font-size: 20px
+}
+
+
+
+
+
+/* Progress pie chart
+Inspiration gotten from Alex Marinenko (https://codepen.io/jo-asakura/pen/stFHi) */
+.metric span.text{
+    font-size: 18px;
+    display: block;
+    text-align: center;
+}
+.set-size {
+    font-size: 10em;
+  }
+  .charts-container{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center
+  }
+  
+  .charts-container:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+  
+  .pie-wrapper {
+    height: 1em;
+    width: 1em;
+    float: left;
+    margin: 15px;
+    position: relative;
+  }
+  .pie-wrapper:nth-child(3n + 1) {
+    clear: both;
+  }
+
+  .pie-wrapper .pie .half-circle {
+    height: 100%;
+    width: 100%;
+    border: 0.1em solid #3498db;
+    border-radius: 50%;
+    clip: rect(0, 0.5em, 1em, 0);
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+  .pie-wrapper .label {
+    background: #34495e;
+    border-radius: 50%;
+    bottom: 0.4em;
+    color: #ecf0f1;
+    cursor: default;
+    display: block;
+    font-size: 0.25em;
+    left: 0.4em;
+    line-height: 2.8em;
+    position: absolute;
+    right: 0.4em;
+    text-align: center;
+    top: 0.4em;
+    background: none;
+    color: #7f8c8d;
+  }
+  .pie-wrapper .label .smaller {
+    color: #bdc3c7;
+    font-size: 0.45em;
+    padding-bottom: 20px;
+    vertical-align: super;
+  }
+  .pie-wrapper .shadow {
+    height: 100%;
+    width: 100%;
+    border: 0.1em solid #bdc3c7;
+    border-radius: 50%;
+  }
+  
+ 
+  .pie-wrapper.progress-10 .pie .half-circle {
+    border-color: #1abc9c;
+  }
+  .pie-wrapper.progress-10 .pie .left-side {
+    -webkit-transform: rotate(36deg);
+            transform: rotate(36deg);
+  }
+  .pie-wrapper.progress-10 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+  .pie-wrapper.progress-10 .pie .right-side {
+    display: none;
+  }
+
+
+   .pie-wrapper.progress-20 .pie .half-circle {
+    border-color: #8e44ad;
+  }
+  .pie-wrapper.progress-20 .pie .left-side {
+    -webkit-transform: rotate(72deg);
+            transform: rotate(72deg);
+  }
+  .pie-wrapper.progress-20 .pie .right-side {
+    display: none;
+  }
+
+
+
+  .pie-wrapper.progress-30 .pie .half-circle {
+    border-color: #8e44ad;
+  }
+  .pie-wrapper.progress-30 .pie .left-side {
+    -webkit-transform: rotate(108deg);
+            transform: rotate(108deg);
+  }
+  .pie-wrapper.progress-30 .pie .right-side {
+    display: none;
+  }
+
+  .pie-wrapper.progress-40 .pie {
+    clip: rect(auto, auto, auto, auto);
+  }
+  .pie-wrapper.progress-40 .pie .half-circle {
+    border-color: #8e44ad;
+  }
+  .pie-wrapper.progress-40 .pie .left-side {
+    -webkit-transform: rotate(144deg);
+            transform: rotate(144deg);
+  }
+  .pie-wrapper.progress-40 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+
+
+  .pie-wrapper.progress-50 .pie {
+    clip: rect(auto, auto, auto, auto);
+  }
+  .pie-wrapper.progress-50 .pie .half-circle {
+    border-color: #8e44ad;
+  }
+  .pie-wrapper.progress-50 .pie .left-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+  .pie-wrapper.progress-50 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+
+
+  .pie-wrapper.progress-60 .pie {
+    clip: rect(auto, auto, auto, auto);
+  }
+  .pie-wrapper.progress-60 .pie .half-circle {
+    border-color: #8e44ad;
+  }
+  .pie-wrapper.progress-60 .pie .left-side {
+    -webkit-transform: rotate(216deg);
+            transform: rotate(216deg);
+  }
+  .pie-wrapper.progress-60 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+
+  .pie-wrapper.progress-70 .pie {
+    clip: rect(auto, auto, auto, auto);
+  }
+  .pie-wrapper.progress-70 .pie .half-circle {
+    border-color: #8e44ad;
+  }
+  .pie-wrapper.progress-70 .pie .left-side {
+    -webkit-transform: rotate(252deg);
+            transform: rotate(252deg);
+  }
+  .pie-wrapper.progress-70 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+
+
+  .pie-wrapper.progress-80 .pie {
+    clip: rect(auto, auto, auto, auto);
+  }
+  .pie-wrapper.progress-80 .pie .half-circle {
+    border-color: #e74c3c;
+  }
+  .pie-wrapper.progress-80 .pie .left-side {
+    -webkit-transform: rotate(288deg);
+            transform: rotate(288deg);
+  }
+  .pie-wrapper.progress-80 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+
+  .pie-wrapper.progress-90 .pie {
+    clip: rect(auto, auto, auto, auto);
+  }
+  .pie-wrapper.progress-90 .pie .half-circle {
+    border-color: #e74c3c;
+  }
+  .pie-wrapper.progress-90 .pie .left-side {
+    -webkit-transform: rotate(324deg);
+            transform: rotate(324deg);
+  }
+  .pie-wrapper.progress-90 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+
+
+  .pie-wrapper.progress-100 .pie {
+    clip: rect(auto, auto, auto, auto);
+  }
+  .pie-wrapper.progress-100 .pie .half-circle {
+    border-color: #e74c3c;
+  }
+  .pie-wrapper.progress-100 .pie .left-side {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+  .pie-wrapper.progress-100 .pie .right-side {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
