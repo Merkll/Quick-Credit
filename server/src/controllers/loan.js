@@ -1,4 +1,4 @@
-import { LoanService } from '../services/index';
+import { LoanService, UserService } from '../services/index';
 
 import { InvalidRequestBodyError, NotFoundError, AuthorizationError } from '../helpers/error';
 import Response from '../helpers/response';
@@ -34,8 +34,11 @@ export const getAllLoans = (req, res) => {
 };
 
 export const applyForLoan = (req, res) => {
-  const requestBody = checkRequestBody(req.body);
-  const data = LoanService.newLoan(requestBody);
+  const { email } = req.user;
+  if (!UserService.isUserVerified) throw new AuthorizationError('Your account isnt verified');
+  const requestBody = { ...checkRequestBody(req.body), user: email };
+  const data = LoanService.newLoan(requestBody, email);
+  // verified users should apply for loan
   const response = new Response(data, 201);
   res.status(response.status).json(response);
 };
