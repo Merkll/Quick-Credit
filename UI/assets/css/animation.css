@@ -36,7 +36,7 @@
     -ms-transition: opacity 3s ease-in;
     -o-transition: opacity 3s ease-in;
      transition: opacity 3s ease-in;
-     opacity: .8;
+     opacity: .9;
 }
 
 .hide{
@@ -96,7 +96,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -35px; /*-58px*/;
+    bottom: -1px; /*-58px*/;
     top: 0;
     margin: auto;
 }
@@ -105,7 +105,7 @@
     width: 100%;
     overflow: hidden;
     height: var(--wave-height);
-    bottom: -1px;
+    bottom: 1px;
     background-image: linear-gradient(to top, #702d67 20%, #702d67 80%);
 }
 .bgTop {
@@ -159,19 +159,22 @@
 
 @media only screen and (min-width: 700px) {
     .waveContainer {
-        bottom: 160px; /*150*/
+        bottom: 210px; /*150*/
     }
 }
 
 @media only screen and (max-width: 590px) {
     .waveContainer {
-        bottom: -55px; /*-145px;*/
+        bottom: -31px; /*-145px;*/
     }
+    /* .bgTop, .bgBottom, .bgMiddle{
+        display: none;
+    } */
 }
 
 @media only screen and (max-width: 298px) {
     .waveContainer {
-        bottom: -100px;
+        bottom: -70px;
     }
 }
 
