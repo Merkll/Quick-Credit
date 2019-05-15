@@ -13,6 +13,7 @@ text #f5ce42 */
     --btn-color: #ff5425;
     --primary-link-hover-color: red;
     --primary-link-color: firebrick;
+    --wave-bg-color: #702d67;
 }
 *{
     box-sizing: border-box;
@@ -27,6 +28,31 @@ body{
     margin: 0px;
 }
 
+
+.gradient-bg {
+	width: 100wh;
+	height: 90vh;
+	color: #fff;
+	background: linear-gradient(-45deg, var(--wave-bg-color), #7D3273, var(--wave-bg-color), #7D3273);
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 15s ease infinite;
+	-moz-animation: Gradient 15s ease infinite;
+    animation: Gradient 15s ease infinite;
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+
 .container{
     position: relative;
     width: 100%;
@@ -36,7 +62,6 @@ body{
 }
 
 .footer{
-    margin-top: 50px;
     /* height: 40px; */
     background-color: var(--primary-bg-color);
     color: white;
@@ -70,6 +95,14 @@ body{
     right: 0px;
     z-index: 5;
 }
+.overlay-text{
+    position: relative;
+    top: 80px;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: bolder;
+}
 .full-overlay{
     background-color: var(--primary-bg-color);
     bottom: 0px;
@@ -77,6 +110,10 @@ body{
     padding: 30px;
     top: 50px;
     display: none;
+}
+.full-height{
+    height: 100vh;
+    margin-top: 0px;
 }
 .full-overlay .content{
     height: 600px;
@@ -90,8 +127,8 @@ body{
     margin: 10px;
 }
 .home-overlay{
-    background-color: var(--secondary-bg-color);
-    opacity: .9;
+    background-color: var(--wave-bg-color);
+    opacity: .8;
 }
 .content .details * {
     color: firebrick;
@@ -148,6 +185,10 @@ body{
     margin: 20px;
 }
 
+.margin-top-30{
+    margin-top: 30px;
+}
+
 .form form{
     display: block;
 }
@@ -157,7 +198,7 @@ body{
     font-size: 16px
 }
 .signup-form{
-    background-color: var(--secondary-bg-color);
+    background-color: inherit;
     /* background-color:#AECDE6 */
 }
 
@@ -279,6 +320,10 @@ textarea {
     background-color: firebrick;
     height: 40px;
 
+}
+
+.shadow-box {
+    box-shadow: 2px 2px 2px rgb(163, 163, 163);
 }
 
 .form-selection a{
@@ -466,11 +511,6 @@ textarea {
 
 }
 
-
-.full-height{
-    height: 100%;
-}
-
 /* Position */
 .position-relative{
     position: relative;
@@ -567,17 +607,33 @@ textarea {
 
 .banner{
     height: 150px;
-    background-color: var(--primary-bg-color);
+    background-color: white;
     width: 100%;
     opacity: .9;
+    position: relative;
+    top: 900px;
+}
+.banner .inner {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.banner img{
+    height: 100px;
+    margin: auto;
 }
 .banner-text{
-    font-size: 20px;
-    color: white;
+    font-size: 23px;
+    color: firebrick;
     font-weight: bolder;
     text-align: center;
 }
-
+.banner .img-text {
+    color: rgb(109, 109, 109);
+    font-size: 18px;
+    text-align: center;
+}
 .icon{
     font-size: 25px;
 }
