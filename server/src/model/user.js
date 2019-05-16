@@ -1,6 +1,11 @@
 import bcrypt from 'bcrypt';
 import { FieldTypes } from '../lib/schema-validator';
 
+const filterPassword = userData => Object.keys(userData).reduce((object, key) => {
+  // eslint-disable-next-line no-param-reassign
+  if (key !== 'password') object[key] = userData[key];
+  return object;
+}, {});
 
 export default (Model) => {
   class User extends Model {
@@ -33,6 +38,10 @@ export default (Model) => {
         return userDetails;
       });
     },
+    afterInsert: data => ((!(data instanceof Array)) ? filterPassword(data) 
+      : data.map(detail => filterPassword(detail))),
+    afterFind: data => ((!(data instanceof Array)) ? filterPassword(data) 
+      : data.map(detail => filterPassword(detail))),
     beforeUpdate: (data) => {
       const details = data;
       details.updatedOn = new Date();

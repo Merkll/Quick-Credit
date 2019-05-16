@@ -119,7 +119,7 @@ export default class Model {
   findAll() {
     const collection = this.modelName;
     this.QueryData = this.DB.findAll(collection);
-    this.triggerHook('afterFind', this.QueryData);
+    this.QueryData = this.triggerHook('afterFind', this.QueryData);
     return this;
   }
 
@@ -138,7 +138,7 @@ export default class Model {
     const collection = this.modelName;
     const transformedData = this.triggerHook('beforeInsert', data);
     this.QueryData = this.DB.insert(collection, transformedData);
-    this.triggerHook('afterInsert', this.QueryData);
+    this.QueryData = this.triggerHook('afterInsert', this.QueryData);
     return this;
   }
 

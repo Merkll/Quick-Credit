@@ -79,7 +79,7 @@ describe('repayments', () => {
       const { status } = await request
         .post(url)
         .set(...authHeader);
-      expect(status).to.be.eql(200);
+      expect(status).to.be.eql(201);
     });
   });
 });

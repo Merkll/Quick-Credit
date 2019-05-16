@@ -8,8 +8,6 @@ import { generateToken, verifyToken, validateHash } from '../helpers/auth';
 const tokenSecret = process.env.SECRET || 'quickcredite435rt';
 
 export const Signin = ({ email, password }) => {
-  if (!email || !password) throw new Error('Email and Password required for autjentication');
-
   const authData = User.find({ email }).data[0];
   if (!authData) return { error: 'User Email doesnt exist' };
 

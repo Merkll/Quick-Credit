@@ -21,6 +21,6 @@ export const postLoanRepayment = (req, res) => {
   const loanDetails = LoanService.getLoan(loan);
   if (!loanDetails) throw new NotFoundError('loan with that id not found');
   const data = RepaymentService.createRepayment(loan);
-  const response = new Response(data);
+  const response = new Response(data, 201);
   res.status(response.status).json(response);
 };
