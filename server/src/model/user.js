@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import { FieldTypes } from '../lib/schema-validator';
 
 const filterPassword = userData => Object.keys(userData).reduce((object, key) => {
   // eslint-disable-next-line no-param-reassign
@@ -15,19 +14,21 @@ export default (Model) => {
   }
 
   const UserModel = new User('User', {
-    id: FieldTypes.Integer,
-    createdOn: FieldTypes.Date,
-    email: FieldTypes.String,
-    firstName: FieldTypes.String,
-    lastName: FieldTypes.String,
-    password: FieldTypes.String,
-    address: FieldTypes.String,
-    status: FieldTypes.String,
-    isAdmin: FieldTypes.Boolean,
+    id: { type: 'integer', format: 'id' },
+    createdOn: { type: 'date' },
+    email: { 
+      type: 'string', format: 'email', required: true, unique: true, 
+    },
+    firstName: { type: 'string', required: true },
+    lastName: { type: 'string', required: true },
+    password: { type: 'string', required: true },
+    address: { type: 'string', required: true },
+    status: { type: 'string' },
+    isAdmin: { type: 'boolean' },
   }, {
     beforeInsert: (data) => {
       let details = data;
-      if (!(details instanceof Array)) details = [details];
+      if (!Array.isArray(details)) details = [details];
       return details.map((detail) => {
         const userDetails = detail;
         const hash = bcrypt.hashSync(userDetails.password, 10);

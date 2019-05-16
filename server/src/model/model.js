@@ -10,49 +10,66 @@
  * Valid Hooks are beforeInsert, afterInsert, afterFind, beforeUpdate
  * afterUpdate, afterDelete
  */
+import { Validator } from 'jsonschema';
+import DB from '../db/db';
 
-import DB from '../lib/memdb';
-
-import { Validator } from '../lib/schema-validator';
-
-const MemDB = new DB('quick-credit');
+const database = process.env.DB_DATABASE || 'quickCredit'; 
 
 export default class Model {
-  constructor(modelName, hooks = {}, schema) {
-    this.modelName = modelName;
+  constructor(modelName, schema, hooks = {}, db) {
+    this.modelName = `${modelName.toLowerCase()}s`;
     this.associations = {};
-    this.modelAssociation = {};
-    // Maps modelName to the type of association so search can be faster
-    this.DB = MemDB;
     this.hooks = hooks;
+    this.database = db || database;
     this.schema = schema;
-    this.init(); // initialises the model
+    // this.init(); // initialises the model
   }
 
   init() {
-    if (!this.modelName) return {};
     this.triggerHook('start', this);
-    return this.DB.createCollection(this.modelName);
+  }
+
+  
+  getDbFieldsFromModelSchema() {
+    const schemaTypeToDB = {
+      string: 'TEXT',
+      integer: 'INTEGER',
+      boolean: 'BOOLEAN',
+      required: 'NOT NULL',
+      unique: 'UNIQUE',
+      date: 'DATE',
+    };
+    const { schema } = this;
+    return Object.entries(schema).map(([key, value]) => {
+      if (key === 'id') return 'id SERIAL PRIMARY KEY';
+      const type = schemaTypeToDB[value.type];
+      const unique = (value.unique) ? schemaTypeToDB.unique : '';
+      const required = (value.required) ? schemaTypeToDB.required : '';
+      return `${key} ${type} ${required} ${unique}`;
+    });
+  }
+
+  get DB() {
+    return new DB(this.database);
+  }
+
+  async initialise() {
+    const table = this.modelName;
+    const schema = this.getDbFieldsFromModelSchema();
+    await this.DB.createTable(table, schema);
+    return this;
   }
 
   get Model() {
     return this;
   }
 
-  get foreignKey() {
-    const modelName = this.modelName.toLowerCase();
-    return `${modelName}Id`;
+  get table() {
+    return this.modelName;
   }
 
   get data() {
     return (this.QueryData) ? this.QueryData : {};
-  }
-
-  getKeys(modelData) {
-    if (modelData === this) return this.foreignKey;
-    const { model = modelData } = modelData;
-    const modelName = model.modelName.toLowerCase();
-    return `${modelName}Id`;
   }
 
   /**
@@ -65,18 +82,7 @@ export default class Model {
     if (!this.associations[association]) this.associations[association] = {};
     const { modelName } = model;
     this.associations[association][modelName] = { model, references };
-    this.modelAssociation[modelName] = association;
     return this.associations[association];
-  }
-
-  /**
-   * Gets models associated to a particular type of association
-   * @param {String} association - Type of Association to get (hasMany, hasOne, belongsTo)
-   */
-  getAssociation(association) {
-    if (!association) throw new Error('Association isnt specified');
-    const associationName = association.toLowerCase();
-    return this.associations[associationName] || {};
   }
 
   /**
@@ -116,109 +122,56 @@ export default class Model {
     return this;
   }
 
-  findAll() {
-    const collection = this.modelName;
-    this.QueryData = this.DB.findAll(collection);
+  async findAll(associate = false) {
+    const query = this.DB.select().from(this.table);
+    if (associate) this.associate(query);
+    this.QueryData = await query.execute();
     this.QueryData = this.triggerHook('afterFind', this.QueryData);
     return this;
   }
 
-  find(criteria = {}) {
-    const collection = this.modelName;
-    this.QueryData = this.DB.find(collection, criteria);
+  async find(criteria = {}, associate = false) {
+    const query = this.DB.select().from(this.table).where(criteria);
+    if (associate) this.associate(query);
+    this.QueryData = await query.execute();
     this.triggerHook('afterFind', this.QueryData);
     return this;
   }
 
   validateSchema(fields) {
-    return new Validator(this.schema).validate(fields);
+    // console.log(fields, this.schema);
+    // var schema = {"type": "string"};
+    // return (new Validator().validate(4, schema));
+    return new Validator().validate(fields, this.schema);
   }
 
-  insert(data = []) {
-    const collection = this.modelName;
+  async insert(data = []) {
     const transformedData = this.triggerHook('beforeInsert', data);
-    this.QueryData = this.DB.insert(collection, transformedData);
+    this.QueryData = await this.DB.insert(transformedData).into(this.table).execute();
     this.QueryData = this.triggerHook('afterInsert', this.QueryData);
     return this;
   }
 
-  delete(criteria = {}) {
-    const collection = this.modelName;
-    this.QueryData = this.DB.delete(collection, criteria);
+  async delete(criteria = {}) {
+    this.QueryData = await this.DB.delete(this.table).where(criteria).execute();
     this.triggerHook('afterDelete', this.QueryData);
     return this;
   }
 
-  update(value = {}, criteria = {}) {
-    const collection = this.modelName;
+  async update(value = {}, criteria = {}) {
     const transformedValue = this.triggerHook('beforeUpdate', value);
-    this.QueryData = this.DB.update(collection, criteria, transformedValue);
+    this.QueryData = await this.DB.update(this.table)
+      .setFields(transformedValue).where(criteria).execute();
     this.triggerHook('afterUpdate', this.QueryData);
     return this;
   }
 
-  associate() {
-    const { QueryData } = this;
-    // QueryData is an array of results returned from a query
-    // foreignKey is used for association with other collections
-    const assocationHandlers = {
-      hasmany: this.hasManyAssosciationHandler.bind(this),
-      hasone: this.hasOneAndBelongsToHandler.bind(this),
-      belongsto: this.hasOneAndBelongsToHandler.bind(this),
-    };
-    if (QueryData) {
-      this.QueryData = QueryData.map((data) => {
-        let associatedData = {};
-        Object.entries(this.associations).map(([key, value]) => {
-          const handler = assocationHandlers[key];
-          if (!handler) return null;
-          const associated = handler(value, data);
-          associatedData = { ...associatedData, ...associated };
-          return null;
-        });
-        return { ...data, ...associatedData };
-      });
-    }
-    return this;
-  }
-
-  hasManyAssosciationHandler(associations, data = {}) {
-    if (!associations) throw new Error('Association can not be undefined');
-    if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
-    const associatedData = {};
-    const { id } = data;
-    const searchCriteria = {};
-    searchCriteria[this.foreignKey] = id;
-    Object.entries(associations).map(([searchKey, value]) => {
-      const { model, references } = value;
-      const {
-        criteria = searchCriteria,
-        key = searchKey,
-      } = Model.getSearchReferenceKey(references, data);
-      associatedData[key] = model.find(criteria).QueryData;
-      return associatedData[key];
-    });
-    return associatedData;
-  }
-
-  hasOneAndBelongsToHandler(associations, data = {}) {
-    if (!associations) throw new Error('Association can not be undefined');
-    if (!(associations instanceof Object)) throw new Error('Association need to be defined as an object');
-    const associatedData = {};
-    Object.entries(associations).map(([searchKey, value]) => {
-      const associationKey = this.getKeys(value);
-      const id = data[associationKey];
-      const searchCriteria = { id };
-      const { model, references } = value;
-      const {
-        criteria = searchCriteria,
-        key = searchKey,
-      } = Model.getSearchReferenceKey(references, data);
-      const associated = model.find(criteria).QueryData;
-      [associatedData[key] = null] = associated;
-      return associatedData[key];
-    });
-    return associatedData;
+  associate(query) {
+    Object.entries(this.associations)
+      .map(([, value]) => Object.values(value)
+        .map(({ model, references }) => query.join(model.table)
+          .on(Object.keys(references)[0], Object.values(references)[0])));
+    return query;
   }
 
   /**
@@ -231,59 +184,5 @@ export default class Model {
     const hookFunction = this.hooks[hook];
     if (!hookFunction && typeof hookFunction !== 'function') return data;
     return hookFunction(data);
-  }
-
-  searchForModelInAssociation(modelToSearch) {
-    if (!modelToSearch) throw new Error('Model name must be specified');
-    const { associations, modelAssociation } = this;
-    const modelName = modelAssociation[modelToSearch];
-    return associations[modelName][modelToSearch];
-  }
-
-  /**
-   * Serches for a model by using the data of its associated model as criteria
-   * @param {String} associatedModelName -name of the model to search
-   * @param {Object} criteria -search criteria
-   * @param {String} association -type of association between the models
-   */
-  searchByAssociation(associatedModelName, criteria = {}, association) {
-    if (!associatedModelName) throw new Error('Associated Model name not specified');
-    let associatedModel;
-    // checks if association is supplied which makes search faster
-    if (association) {
-      associatedModel = this.getAssociation(association);
-      associatedModel = associatedModel[associatedModelName];
-    } else {
-      // if type of association isnt supplied it searches for the model
-      associatedModel = this.searchForModelInAssociation(associatedModelName);
-    }
-    if (associatedModel) {
-      const { model, references } = associatedModel;
-      const { QueryData: [associatedData = {}] } = model.find(criteria);
-      const modelkey = associatedData[this.foreignKey];
-      let {
-        criteria: associationSearchCriteria,
-      } = Model.getSearchReferenceKey(references, associatedData);
-      if (!associationSearchCriteria) associationSearchCriteria = { id: modelkey };
-      this.QueryData = this.find(associationSearchCriteria).QueryData;
-    }
-    return this;
-  }
-
-  /**
-   * gets the search criteria based on the refernces provided.
-   * it maps the key in the refence provided to the data attribute
-   * @param {*} references
-   * @param {*} data
-   */
-  static getSearchReferenceKey(references, data) {
-    const associationSearchCriteria = {};
-    const referenceKey = Object.keys(references)[0];
-    if (!referenceKey) return {};
-    const referenceKeyValue = data[referenceKey];
-    if (!referenceKeyValue) return {};
-    const modelMappedKey = references[referenceKey];
-    associationSearchCriteria[modelMappedKey] = referenceKeyValue;
-    return { criteria: associationSearchCriteria, key: referenceKey };
   }
 }

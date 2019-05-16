@@ -31,3 +31,8 @@ export const FieldTypes = {
 //   Validator,
 //   FieldTypes,
 // };
+
+
+// Validator.prototype.customFormats.myFormat = function(input) {
+//   return input === 'myFormat';
+// };
