@@ -108,6 +108,10 @@ const Mock = (function () {
       childComponent: { type: 'literal', data: '<a href="{{href}}">{{text}}</a>' },
       childNodes: [
         {
+          text: 'Dashboard',
+          href: './dashboard.html',
+        },
+        {
           text: 'Loans',
           href: './admin-loans.html',
         },
@@ -133,6 +137,10 @@ const Mock = (function () {
         {
           text: 'Apply',
           href: './application.html',
+        },
+        {
+          text: 'Profile',
+          href: './single-client.html'
         }
       ]
     }

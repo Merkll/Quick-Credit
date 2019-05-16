@@ -94,7 +94,7 @@ const login = async (formData, form) => {
   const isValid = validateFormFields(formData, form);
   if (isValid) {
     render('alert', { content: `Welcome ${email}`, classes: 'bg-red' });
-    window.location.href = './loans.html';
+    window.location.href = './dashboard.html';
   }
 };
 
@@ -102,15 +102,15 @@ const validateFormFields = (formData, form) => {
   const validators = {
     email: (email) => {
       const re = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'gi');
-      return re.test(String(email).toLowerCase());
+      return { valid: re.test(String(email).toLowerCase()), message: 'Email address should follow this format user@exmaple.com' };
     },
     phone: (phone) => {
       const re = new RegExp(/[0-9]{11}/);
-      return re.test(String(phone));
+      return { valid: re.test(String(phone)), message: 'Phone number should follow this format 08098735167' };
     },
-    password: password => password.length >= 6,
-    amount: amount => !!parseFloat(amount),
-    number: number => typeof field === 'number',
+    password: password => ({ valid: password.length >= 6, message: 'Password should have min 6 chars' }),
+    amount: amount => ({ valid: !!parseFloat(amount) }),
+    number: number => ({ valid: typeof field === 'number' }),
   };
   const messages = [];
   for (const [fieldName, fieldValue] of formData.entries()) {
@@ -123,8 +123,8 @@ const validateFormFields = (formData, form) => {
       messages.push(`*field ${fieldName} is Required`);
       inputNode.style.borderColor = 'red';
       isValidated = false;
-    } else if (!isFieldValid) {
-      messages.push(`*field ${fieldName} is not valid`);
+    } else if (!isFieldValid.valid) {
+      messages.push(isFieldValid.message || `*field ${fieldName} is not valid`);
       inputNode.style.borderColor = 'red';
       isValidated = false;
     } else inputNode.style.borderColor = 'white';
@@ -142,13 +142,21 @@ const signup = (formData, form) => {
   const isValid = validateFormFields(formData, form);
   if (isValid) {
     render('alert', { content: `Account Creation succesfull for ${email}` });
-    window.location.href = './loans.html';
+    window.location.href = './dashboard.html';
   }
 };
 
-const passwordReset = (formData) => {
-  const email = formData.get('email');
-  render('alert', { content: `Password reset succesfull for ${email}` });
+const passwordReset = (formData, form) => {
+  const confirm = formData.get('confirm-password');
+  const password = formData.get('password');
+  if (confirm !== password) return render('alert', { content: 'Passwords do not match', classes: 'bg-red' });
+  
+  const isValid = validateFormFields(formData, form);
+  if (isValid) {
+    render('alert', { content: 'Password reset succesfull' });
+    window.location.href = './dashboard.html';
+  }
+  return null;
 };
 
 const modalCloseAction = (event) => {

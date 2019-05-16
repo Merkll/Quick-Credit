@@ -13,6 +13,7 @@
             <span>Balance <i>{{loanBalance}}</i></span>
             <span>Next Repayment <i>{{nextRepayment}} </i></span>
             <a href="#" data-loan="{{loanId}}" class="view-loan">View Loan</a>
+            <a href="#" data-loan="{{loanId}}" class="loan-action" data-action="Repayment">Post Repayment</a>
         </div>
     </div>
  `;
