@@ -37,4 +37,4 @@ deploy:
   app:
     master: quick-credit-production
     develop: quick-credit-staging
-    
+  
