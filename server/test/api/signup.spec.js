@@ -48,7 +48,7 @@ describe('Signup API', () => {
       const { status } = await request
         .post(url)
         .send(userData);
-      expect(status).to.be.eql(400);
+      expect(status).to.be.eql(409);
     });
   });
 });

@@ -13,13 +13,7 @@ describe('Auth Service', () => {
     before(() => {
       User.insert({ email, password });
     });
-    it('Should throw error if email and password is undefined', () => {
-      expect(() => Signin()).to.throw();
-    });
 
-    it('Should throw error if password is undefined', () => {
-      expect(() => Signin({ email: 'email' })).to.throw();
-    });
     it('Should return an error Object if user doesnt exist', () => {
       const data = Signin({ email: 'email', password });
       expect(data).to.be.an.instanceof(Object);

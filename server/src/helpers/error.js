@@ -26,7 +26,7 @@ export const NotFoundError = class extends ApplicationError {
 
 export const UserExists = class extends ApplicationError {
   constructor(message) {
-    super(message || 'User with that email already exist', 400);
+    super(message || 'User with that email already exist', 409);
   }
 };
 

@@ -53,7 +53,7 @@ describe('Http Errors', () => {
   });
 
   context('UserExists', () => {
-    const statusCode = 400;
+    const statusCode = 409;
     it('Should return status and supplied message', async () => {
       const message = 'User exist';
       const { error, status } = new UserExists(message);
