@@ -1,38 +1,61 @@
-/**
- * A validator class to check if a data conform to the defined schema
- */
+import { Validator } from 'jsonschema';
 
-export class Validator {
-  constructor(schema) {
-    this.schema = schema;
-  }
 
-  validate(entryToValidate = {}) {
-    if (entryToValidate instanceof Array) return this.validateArrayOfData(entryToValidate);
-    return !Object.entries(entryToValidate)
-      .some(([field, value]) => !(typeof this.schema[field] === 'function' && this.schema[field](value)));
-  }
+Validator.prototype.customFormats.myId = id => (typeof id === 'number');
 
-  validateArrayOfData(entryToValidate) {
-    return !entryToValidate.some(field => !this.validate(field));
-  }
-}
-
-/** Defines major types and their validation functions */
-export const FieldTypes = {
-  Integer: field => typeof field === 'number' && field % 1 === 0,
-  String: field => typeof field === 'string',
-  Boolean: field => typeof field === 'boolean' || (field === 'true' || field === 'false'),
-  Number: field => typeof field === 'number',
-  Date: field => field instanceof Date,
+Validator.prototype.customFormats.myEmail = (email) => {
+  // eslint-disable-next-line no-useless-escape
+  const re = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'gi');
+  return re.test(String(email).toLowerCase());
 };
 
-// export default {
-//   Validator,
-//   FieldTypes,
-// };
+const errorTypes = {
+  required: ({ field }) => `Field ${field} is required`,
+  type: ({ field, type }) => `Field ${field} should be of type ${type}`,
+  format: ({ field, format }) => `Field ${field} should conform to ${format.split('my')[1]} format`,
+};
 
+const getErrors = errors => errors.map((err) => {
+  const field = (err.schema && err.schema.fieldName) ? err.schema.fieldName.toUpperCase() : '';
+  const type = (err.schema) ? err.schema.type : '';
+  const format = (err.schema) ? err.schema.format : '';
+  const errorMessage = (errorTypes[err.name]) ? errorTypes[err.name]({ field, type, format }) 
+    : err.message;
+  return errorMessage;
+});
 
-// Validator.prototype.customFormats.myFormat = function(input) {
-//   return input === 'myFormat';
-// };
+const schema = (data, model) => {
+  const id = `/${model.table}`;
+  const validatorSchema = {
+    id,
+    properties: model.schema
+  };
+  let validationErrors = [];
+  const dataToValidate = (!Array.isArray(data)) ? [data] : data;
+  const error = dataToValidate.some((singleData) => {
+    const { valid: isValid, errors } = new Validator().validate(singleData, validatorSchema);
+    validationErrors = errors;
+    return !isValid;
+  });
+  return { valid: !error, errors: getErrors(validationErrors) };
+};
+
+const validate = (data, dataSchema) => new Validator().validate(data, dataSchema);
+
+const validateSchemaForUpdate = (data, dataSchema) => {
+  let validationError = [];
+  const isValid = !Object.entries(data).some(([key, value]) => {
+    if (!dataSchema[key]) {
+      validationError.push('Field is Invalid');
+      return true;
+    }
+    const { valid, errors } = validate(value, dataSchema[key]);
+    validationError = errors;
+    return !valid;
+  });
+  return { valid: isValid, errors: getErrors(validationError) };
+};
+
+export default {
+  schema, validate, validateSchemaForUpdate
+};

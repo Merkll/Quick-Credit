@@ -232,6 +232,10 @@ describe('DB', () => {
       const data = await select.execute();
       expect(data[0]).to.be.contain(dataToInsert);
     });
+    it('Should catch and return error', async () => {
+      const { error } = await select.execute('invalid sql query');
+      expect(error).to.not.be.undefined;
+    });
   });
   describe('DB JOIN', async () => {
     const db = await new DB(testDatabase);

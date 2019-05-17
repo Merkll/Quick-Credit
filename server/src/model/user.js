@@ -1,28 +1,24 @@
 import bcrypt from 'bcrypt';
 
-const filterPassword = userData => Object.keys(userData).reduce((object, key) => {
-  // eslint-disable-next-line no-param-reassign
-  if (key !== 'password') object[key] = userData[key];
-  return object;
-}, {});
-
 export default (Model) => {
   class User extends Model {
+    // eslint-disable-next-line no-useless-constructor
     constructor(modelName, schema, hooks) {
-      super(modelName, hooks, schema);
+      super(modelName, schema, hooks);
     }
   }
 
   const UserModel = new User('User', {
-    id: { type: 'integer', format: 'id' },
+    id: { type: 'integer', format: 'myId', fieldName: 'Id' },
     createdOn: { type: 'date' },
+    updatedOn: { type: 'date' },
     email: { 
-      type: 'string', format: 'email', required: true, unique: true, 
+      type: 'string', format: 'myEmail', required: true, unique: true, fieldName: 'Email' 
     },
-    firstName: { type: 'string', required: true },
-    lastName: { type: 'string', required: true },
-    password: { type: 'string', required: true },
-    address: { type: 'string', required: true },
+    firstName: { type: 'string', required: true, fieldName: 'First Name' },
+    lastName: { type: 'string', required: true, fieldName: 'Last Name' },
+    password: { type: 'string', required: true, fieldName: 'Password' },
+    address: { type: 'string', required: true, fieldName: 'User Address' },
     status: { type: 'string' },
     isAdmin: { type: 'boolean' },
   }, {
@@ -39,10 +35,6 @@ export default (Model) => {
         return userDetails;
       });
     },
-    afterInsert: data => ((!(data instanceof Array)) ? filterPassword(data) 
-      : data.map(detail => filterPassword(detail))),
-    afterFind: data => ((!(data instanceof Array)) ? filterPassword(data) 
-      : data.map(detail => filterPassword(detail))),
     beforeUpdate: (data) => {
       const details = data;
       details.updatedOn = new Date();

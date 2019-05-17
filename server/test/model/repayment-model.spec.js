@@ -6,45 +6,52 @@ import faker from 'faker';
 import { Repayment } from '../../src/model';
 
 let RepaymentData;
+let insertedData;
+
 describe('Repayment Model', () => {
-  before(() => {
-    RepaymentData = Array(10).fill(0).map((data, index) => ({
-      id: index + 1,
-      CreatedOn: new Date(),
+  before(async () => {
+    RepaymentData = Array(10).fill(0).map(() => ({
+      createdOn: new Date(),
       loanId: faker.random.number({ max: 12 }),
       amount: faker.random.number({ min: 2000 }),
     }
     ));
-    Repayment.insert(RepaymentData);
+    await Repayment.initialise();
+    const { data } = await Repayment.insert(RepaymentData);
+    insertedData = data;
+  });
+  
+  after(async () => {
+    await Repayment.deleteAll();
   });
 
-
-  context('Model Initialization', () => {
-    it('Should return RepaymentData', () => {
-      const { data } = Repayment.findAll();
-      expect(...data).to.contain(...RepaymentData);
+  describe('Model Initialization', () => {
+    it('Should return RepaymentData', async () => {
+      const { data } = await Repayment.findAll();
+      expect(data).to.be.an('array');
+      expect(data[0]).to.have.property('id');
     });
   });
 
-  context('Repayment update', () => {
-    it('Should return RepaymentData', () => {
-      const { id } = RepaymentData[4];
-      const data = Repayment.update({
+  describe('Repayment update', () => {
+    it('Should return RepaymentData', async () => {
+      const { id } = insertedData[0];
+      const { data } = await Repayment.update({
         amount: 400,
-      }, { id }).data[0];
-      expect(data.id).to.be.eql(id);
+      }, { id: { eq: id } });
+      expect(data[0].id).to.be.eql(id);
     });
   });
 
-  context('Repayment insert non array data', () => {
-    it('Should return RepaymentData', () => {
-      const data = Repayment.insert({
-        id: 66,
+  describe('Repayment insert non array data', () => {
+    it('Should return RepaymentData', async () => {
+      const { data } = await Repayment.insert({
         createdOn: new Date(),
         loanId: faker.random.number({ max: 12 }),
         amount: faker.random.number({ min: 2000 }),
-      }).data[0];
-      expect(data.id).to.be.eql(66);
+      });
+      expect(data).to.not.undefined;
+      expect(data).to.an('array');
     });
   });
 });

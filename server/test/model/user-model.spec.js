@@ -6,10 +6,12 @@ import faker from 'faker';
 import { User } from '../../src/model';
 
 let UserData;
+let insertedData;
+
+
 describe('User Model', () => {
-  before(() => {
-    UserData = Array(10).fill(0).map((data, index) => ({
-      id: index + 1,
+  before(async () => {
+    UserData = Array(10).fill(0).map(() => ({
       email: faker.internet.email(),
       firstName: faker.name.findName(),
       lastName: faker.name.lastName(),
@@ -19,30 +21,34 @@ describe('User Model', () => {
       isAdmin: faker.random.boolean(),
     }
     ));
-    User.insert(UserData);
+    await User.initialise();
+    await User.deleteAll();
+    const { data } = await User.insert(UserData);
+    insertedData = data;
   });
-
-
-  context('Model Initialization', () => {
-    it('Should return UserData', () => {
-      const { data } = User.findAll();
+  after(async () => {
+    await User.deleteAll();
+  });
+  describe('Model Initialization', () => {
+    it('Should return UserData', async () => {
+      const { data } = await User.findAll();
       expect(...data).to.have.property('email');
     });
   });
-  context('user update', () => {
-    it('Should return UserData', () => {
-      const { id } = UserData[4];
-      const data = User.update({
+  describe('user update', () => {
+    it('Should return UserData', async () => {
+      const userId = insertedData[0].id;
+      const { data } = await User.update({
         address: faker.address.streetAddress(),
-      }, { id }).data[0];
-      expect(data.id).to.be.eql(id);
+      }, { id: { eq: userId } });
+      expect(data[0].id).to.be.eql(userId);
     });
-    it('Should update password', () => {
-      const { id } = UserData[4];
-      const data = User.update({
+    it('Should update password', async () => {
+      const userId = insertedData[0].id;
+      const { data } = await User.update({
         password: 'newpassword',
-      }, { id }).data[0];
-      expect(data.id).to.be.eql(id);
+      }, { id: { eq: userId } });
+      expect(data[0].id).to.be.eql(userId);
     });
   });
 });

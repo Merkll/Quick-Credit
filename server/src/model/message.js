@@ -1,21 +1,20 @@
-import { FieldTypes } from '../lib/schema-validator';
-
 export default (Model) => {
   class Message extends Model {
+    // eslint-disable-next-line no-useless-constructor
     constructor(modelName, schema, hooks) {
-      super(modelName, hooks, schema);
+      super(modelName, schema, hooks);
     }
   }
-
   const MessageModel = new Message('Message', {
-    id: FieldTypes.Integer,
-    createdOn: FieldTypes.Date,
-    sender: FieldTypes.Integer,
-    repliedTo: FieldTypes.Integer,
-    recipient: FieldTypes.Integer,
-    body: FieldTypes.String,
-    subject: FieldTypes.String,
-    excerpt: FieldTypes.String,
+    id: { type: 'integer', format: 'myId', fieldName: 'ID' },
+    createdOn: { type: 'date' },
+    updatedOn: { type: 'date' },
+    sender: { type: 'integer', format: 'myId', fieldName: 'Message Sender' },
+    repliedTo: { type: 'integer', format: 'myId', fieldName: 'Message Replying' },
+    recipient: { type: 'integer', format: 'myId', fieldName: 'Message Recipient' },
+    body: { type: 'string', required: true, fieldName: 'Message Body' },
+    subject: { type: 'string', required: true, fieldName: 'Message Subject' },
+    excerpt: { type: 'string' },
   }, {
     beforeInsert: (data) => {
       let details = data;

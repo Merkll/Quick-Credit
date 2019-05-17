@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 /**
  * Base class inherited by all models
  * @constructor
@@ -10,19 +11,21 @@
  * Valid Hooks are beforeInsert, afterInsert, afterFind, beforeUpdate
  * afterUpdate, afterDelete
  */
-import { Validator } from 'jsonschema';
+
 import DB from '../db/db';
+import Validator from '../lib/schema-validator';
+import { SchemaError } from '../helpers/error';
 
 const database = process.env.DB_DATABASE || 'quickCredit'; 
 
 export default class Model {
   constructor(modelName, schema, hooks = {}, db) {
-    this.modelName = `${modelName.toLowerCase()}s`;
+    this.modelName = modelName;
     this.associations = {};
     this.hooks = hooks;
     this.database = db || database;
     this.schema = schema;
-    // this.init(); // initialises the model
+    this.init(); // initialises the model
   }
 
   init() {
@@ -34,6 +37,7 @@ export default class Model {
     const schemaTypeToDB = {
       string: 'TEXT',
       integer: 'INTEGER',
+      number: 'NUMERIC',
       boolean: 'BOOLEAN',
       required: 'NOT NULL',
       unique: 'UNIQUE',
@@ -54,7 +58,7 @@ export default class Model {
   }
 
   async initialise() {
-    const table = this.modelName;
+    const { table } = this;
     const schema = this.getDbFieldsFromModelSchema();
     await this.DB.createTable(table, schema);
     return this;
@@ -65,7 +69,7 @@ export default class Model {
   }
 
   get table() {
-    return this.modelName;
+    return `${this.modelName.toLowerCase()}s`;
   }
 
   get data() {
@@ -138,15 +142,18 @@ export default class Model {
     return this;
   }
 
-  validateSchema(fields) {
-    // console.log(fields, this.schema);
-    // var schema = {"type": "string"};
-    // return (new Validator().validate(4, schema));
-    return new Validator().validate(fields, this.schema);
+  validateSchema(data, update = false) {
+    let schemaValidation;
+    if (update) schemaValidation = Validator.validateSchemaForUpdate(data, this.schema);
+    else schemaValidation = Validator.schema(data, this);
+    const { valid, errors } = schemaValidation;
+    if (!valid) throw new SchemaError(errors);
+    return valid;
   }
 
   async insert(data = []) {
     const transformedData = this.triggerHook('beforeInsert', data);
+    // this.validateSchema(transformedData);
     this.QueryData = await this.DB.insert(transformedData).into(this.table).execute();
     this.QueryData = this.triggerHook('afterInsert', this.QueryData);
     return this;
@@ -158,8 +165,14 @@ export default class Model {
     return this;
   }
 
+  async deleteAll() {
+    this.QueryData = await this.DB.deleteAll(this.table).execute();
+    return this;
+  }
+
   async update(value = {}, criteria = {}) {
     const transformedValue = this.triggerHook('beforeUpdate', value);
+    // this.validateSchema(transformedValue);
     this.QueryData = await this.DB.update(this.table)
       .setFields(transformedValue).where(criteria).execute();
     this.triggerHook('afterUpdate', this.QueryData);

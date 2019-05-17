@@ -27,8 +27,8 @@ const createUsers = (numberOfUsers) => {
 
 const createLoan = (numberofLoans, numberOfUsers, userData) => {
   const loanData = Array(numberofLoans).fill(0).map(() => ({
-    user: userData[faker.random.number({ min: 0, max: numberOfUsers - 1 })].email,
-    CreatedOn: new Date(),
+    client: userData[faker.random.number({ min: 0, max: numberOfUsers - 1 })].email,
+    createdOn: new Date(),
     status: 'pending',
     repaid: faker.random.boolean(),
     tenor: faker.random.number({ max: 12 }),
@@ -36,13 +36,14 @@ const createLoan = (numberofLoans, numberOfUsers, userData) => {
     paymentInstallment: faker.random.number({ min: 2000 }),
     balance: faker.random.number({ min: 2000 }),
     interest: faker.random.number({ min: 2000 }),
+    purpose: faker.lorem.sentence()
   }));
   Model.Loan.insert(loanData);
 };
 
 const createRepayment = (numberOfRepayments, numberofLoans) => {
   const repaymentData = Array(numberOfRepayments).fill(0).map(() => ({
-    CreatedOn: new Date(),
+    createdOn: new Date(),
     loanId: faker.random.number({ min: 1, max: numberofLoans }),
     amount: faker.random.number({ min: 2000 }),
   }));

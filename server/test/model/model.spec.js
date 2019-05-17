@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import faker from 'faker';
 
 import Model from '../../src/model/model';
-import DB from '../../src/db/db';
 
 const database = process.env.DB_DATABASE || 'quickCredit';
 
@@ -41,21 +40,24 @@ const ArticleModel = new Model('Article', {
 
 UserModel.hasMany(ArticleModel, { author: 'id' });
 
-before(async () => {
-  const ArticleData = Array(5).fill(0).map(() => ({
-    title: faker.lorem.sentence(),
-    author: 4
-  }
-  ));
-  await ArticleModel.initialise();
-  await ArticleModel.insert(ArticleData);
-});
-after(async () => {
-  await new DB(database).execute(`DROP TABLE ${UserModel.modelName}`);
-  await new DB(database).execute(`DROP TABLE ${ArticleModel.modelName}`);
-});
-
 describe('Data Model', () => {
+  before(async () => {
+    await ArticleModel.initialise();
+    await UserModel.initialise();
+
+    const { data } = await UserModel.insert(UserData);
+
+    const ArticleData = Array(5).fill(0).map((d, i) => ({
+      title: faker.lorem.sentence(),
+      author: data[i].id
+    }
+    ));
+    await ArticleModel.insert(ArticleData);
+  });
+  after(async () => {
+    await UserModel.deleteAll();
+    await ArticleModel.deleteAll();
+  });
   describe('Database fields from schema', () => {
     it('Schema should be accesible', () => {
       expect(UserModel.schema).to.not.be.undefined;
@@ -71,8 +73,23 @@ describe('Data Model', () => {
       const table = await UserModel.initialise();
       expect(table).to.not.be.undefined;
     });
+    it('Model isntance should be accessible', async () => {
+      const model = UserModel.Model;
+      expect(model).to.be.eql(UserModel);
+    });
+  });
+  describe('Data association', () => {
+    it('Should associate data', async () => {
+      const { data } = await UserModel.findAll(true);
+      expect(data).to.not.be.undefined;
+      expect(data).to.be.an('array');
+      expect(data).to.not.be.empty;
+    });
   });
   describe('Insert Data', () => {
+    before(async () => {
+      await UserModel.deleteAll();
+    });
     it('Should insert data into db', async () => {
       const { data } = await UserModel.insert(UserData);
       expect(data).to.be.an('array');
@@ -104,14 +121,6 @@ describe('Data Model', () => {
     });
   });
 
-  describe('Data association', () => {
-    it('Should associate data', async () => {
-      const { data } = await UserModel.findAll(true);
-      expect(data).to.not.be.undefined;
-      expect(data).to.be.an('array');
-      expect(data).to.not.be.empty;
-    });
-  });
 
   describe('Delete data', () => {
     it('Should delete data', async () => {

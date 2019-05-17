@@ -27,7 +27,8 @@ export default class {
 
   // eslint-disable-next-line class-methods-use-this
   stringifyField(field) {
-    return (typeof field === 'string') ? `'${this.excape(field)}'` : field;
+    const dataField = (typeof field === 'object') ? JSON.stringify(field) : field;   
+    return (typeof dataField === 'string') ? `'${this.excape(dataField)}'` : dataField;
   }
   
   async createTable(tableName, schema) {
@@ -96,6 +97,11 @@ export default class {
     return this;
   }
 
+  deleteAll(table) {
+    this.queryActions = { action: 'deleteAll', table };
+    return this;
+  }
+
   where(condition) {
     this.queryActions.where = condition;
     return this;
@@ -135,6 +141,11 @@ export default class {
     const clauseIterator = (clause) => {
       return Object.entries(clause).map(([key, value]) => {
         if (conjuctors.includes(key)) {
+          let multiConjuction = '';
+          if (Array.isArray(value)) {
+            multiConjuction = value.map(v => `${key} ${clauseIterator(v)}`).join(' ');
+            return `${multiConjuction}`;
+          } 
           return `${key} ${clauseIterator(value)}`;
         }
         const [op, field] = Object.entries(value)[0];
@@ -166,7 +177,7 @@ export default class {
     return this;
   }
 
-  objectToFields(dataObject, formatter = (datfield, row) => ((typeof row === 'string') ? `'${this.excape(row)}'` : row)) {
+  objectToFields(dataObject, formatter = (datafield, row) => this.stringifyField(row)) {
     let values = dataObject;
     this.n = 5;
     if (!Array.isArray(values)) values = [values];
@@ -206,12 +217,20 @@ export default class {
     return this;
   }
 
+  deleteAllQuery() {
+    const { table } = this.queryObject;
+    const query = `DELETE FROM ${table} WHERE true`;
+    this.queryData = query;
+    return this;
+  }
+
   queryString() {
     const queryActionHandlers = { 
       select: this.selectQueryBuild.bind(this),
       insert: this.insertQueryBuild.bind(this),
       update: this.updateQueryBuild.bind(this),
       delete: this.deleteQueryBuild.bind(this),
+      deleteAll: this.deleteAllQuery.bind(this),
     };
     const { action } = this.queryObject;
     return queryActionHandlers[action]();
@@ -220,7 +239,13 @@ export default class {
   async execute(query) {
     const sql = query || this.queryString().queryData;
     debug(sql);
-    const { rows } = await this.db.query(sql);
-    return rows;
+    let data;
+    try {
+      const { rows } = await this.db.query(sql);
+      data = rows;
+    } catch (error) {
+      data = { error: error.message };
+    }
+    return data;
   }
 }
