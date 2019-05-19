@@ -1,36 +1,38 @@
 language: node_js
 services:
-  - postgresql
+- postgresql
 env:
   global:
-    - CC_TEST_REPORTER_ID=c37b0267018af1c803858f8ba98a105c49a2accc776dc06673333fa147312330
-    - NODE_ENV=test
-    - DB=testdb
+  - CC_TEST_REPORTER_ID=c37b0267018af1c803858f8ba98a105c49a2accc776dc06673333fa147312330
+  - NODE_ENV=test
+  - DB=testdb
+  - secure: h3xQHSleweY4Pel6VL5kju7AIHP8rYUPjN8nTFXfH2XJBv4OzVuU0QQ2TM9kcqiQr/aq5Ri8tbFkeJiDDTnejxlAk9h5pn9DEm/NtwW1nSbrwV7bRjPl8PM4u7WzSwpnwnV1OFRGYR5X+6W6mkcsASpGhKYODF0vfoNYqfYl3m0qBcMd2dhawiikz583TcrwDD3dlmjuSSyoX6MttfWm0hM6U+j3onEE0QQkjJDVmVpidlWeGzwdyXXtsosgXLnHYLm3+By9EAfO9S/Fwweleh4WmRmsgxWWPUtyUMleyhudrn9bmoyOcMfj8Brdta9yZY4c3BkHbcdk9GDTUuwhlJDDTUgpq+zG7k4hotFwdfVJY/icAGhnx/R8P9aLtzNVKuR+G8v1mttwekJCs3o/R783TXQP2NeqNAebTi8FL/mp3thQaPW2gXuFFhnewgvi6z/Zruwc/TDGWeyfeAuN1Jbq5kxX3IbMBCMBAcLDmQTMnqzVBr5TFWedS81qSEg3vyPaRhqOIotcCAXJycJVQlr2FtFaCS5iELbQfXDnf0+xxu+cdpyp+bkcsxynCJTPNpUnKGgGWV7QU8uN9WaBVxOVbFZ1oL7JhsA82kfFAk1WuPc+LY2fBCCH55X2tTtvaQn0jop+bAFAOxqy/9nEsWiRQtPqPVy7wNoxnPcu/64=
+  - secure: I9bCmnclMqnXtpgM+1S4wzvE1XlfLhQX3xXWkYwJvpNvbK7yn9+TDLx0k+buukhTtUuIXSq/Bfm+rHBw+5INXWmcac8BaLG9YOspscJ7zxqNHg/7cXH0N+vI3H+0+3AdPFi3JZF28pX1Gc8RIsNF2E0f/MOpbTk/jELjCgcSdTIwvbfsMmIz2g494/EW1EsAeiZW8Rg/BhDe6b3bHoDKkDnhoacONZkqdUrYegwEKKkLvFlYZ8EmXxLurDzGkYYlaM/FImpseJzTJ2pZeV6ifcraHGBux6uHajEA1qntBXZd5heoEWCu45UAq8veebM0oW92DZSt6P9tnCQBciKU0NjJrGlE3OjwVpu5s0ZjNtfZKjZ3192boR9WW+Hzo30IUzByUiQr2eymlVsb1vjvOGUWelI4MIx+9gcD1Ib1bx3wvlPyzndoU5AOdQag+oLcMlei2CAqRHf6SckNg3FfU8M7m7DwQY+tXwRTrpVjs3/3Hg78m4lajL9a0pZM+ucsoTTrc9hK7S00YvkfbkEL9q4KUpfMwYiSZWcnEGxBHWawukyHTCfHOnR34UXKQCbVB5819g6DoHWto7A5evuSRAZfDv1Ba7v4W6yY1GOw4OANZGhQXYMNbfNEGPczKFdKnr4rxSiYxG/UxZaJYegDOKlWc14tCdvuAoiKc/J+5gs=
+  - secure: YV+YImpoea57c7vYYQU2g0A4XlTAkAUWqlXjnKjRndZcWUe1WQm6Og9qcmEIhlhmsRYYKcIlkEegCXHvIGUcYZZx8rz6SsQItkIK5VBNGBIJf2O1i9qqcZ24P51reHJRMdT3Bkl+oVeolPYiVSmWYYFlgLdHQDaqxcOemVmCVj8XfI7pdiIlPYKJmdmDTwEZpqUNf1MHkmnH1csMx8YplJYdPrVnxu4DNUepzZuw1bMr1KZaJsTZBC/TP1OZNmEO07/VQzoilAfEYFVw7SObVrV2pah+BzkxkWYKX7saqQu/KQPIvHwcH53r7lPpZOX0zjsCJ34OctieewMqe2oottRDPZWJa276XCVEfcyg3dIoiTTy7bKzHRch9MZINlcnnKhJXR1RJjoExHNmpa7jYxiEYwBgpVREzfGhH36Tu1duTpScz159EeQc8r/QaPNNj0+OQ1IKaoI46xK97FyIBDolpw7miTLvGmrA2LqHbwgwBiVKKHrKbVG+Cn5S+rNX/3IXzBFgqERa50My7TMjzi0UWwtnfBqYQUSH77SSeXcXGFcTSAHUuy0fklmt0cX2O07FtpkL15QpelcfWudxwqTy4RrDDuFbUdHxfuJV7yGKM/OcWYYEugLPdhtLCKrpskvqq5B1BI5MXgGkF3KetVkow8jK/+UTt3KsbX4npx4=
+  - secure: JUDY11brk1Uv+LekHYavz21Y0zkFiHKLmREiPGO2rhiIOcLg7nMp9U9HddNv/FYw+DQKSK21agDxscw9KBMW/E8o2je2rTd4aZpCb3gJ99ny76DzfLBuI/diG9HmqWBulFprrNtczY4nQJQ6XkkHBub5yxztKVCm08secqOueYLf9+ipb/iePhy0srxRUl40qvNnsY4BR+kmCNX/1IvCrl8YLFYBNNi3iuDxRTlQ7sQ9OdBqqtRrF3fvXNADdUXVtE1bqcVNQZGh2o3BwNIZeu9Q61olJ5RmoG51qHwzqlA9uQ7aEH84ofX5OY83dqpYQzQfpkTrJhu2dXfC0UKNf/MC44skI0sOYYNThIGoPmwKfrWv5psbRLLPwTTEmkVMkUEXrtAZpBpyl0dk8YpAcAZDea/r4PmHMrnb/DFVDGg0wWgSVabHNh5VfzSINLvpJxl9BoDovVH5+VXx3uoGro0Bl3COhVSbulyhqqmGVwRP2y7tGQUMJW9/nh0ELIWKjAjX1Ss7goAITwM3sUvwHgFNeLErgkolx34PfNlXoRuflT2EUYrv2QmQ/Fjpy+bOKkLnv/Tn1EnrNJ9dwBUsvEYagoOAJXUezcFLjjU804qJeN0IgSz5OmLO8fcmAD2WQClJH/vjVgoXxoUoSORjBicJewSIgCOR5QA8axt6ajI=
+  - secure: AYTTSsC+2U7FQD6Ug7yvr33qHQSgGct98eUQJ3yqUE5M2G9fJW4/+3MS8mvgR5NSHWUze9OHLqRcXxDgshNc2zp/XNqANB2TtXHUXP/iojzzeNhSFswhobq7FFJCEwKz8MxW13bZ8+2ZiHqnEvgqpQakEUf9b3TjALfdGxhp2sRAsYw4Ca7qd2eknnfZoPaTUEhwnYOybkOeW/VbW1ZI+2AO5E+qoiBzg/U9gUozv2XspGiv2RvR9uPDiWRLuXejfO7e2KfW8/BPCjW4WXXM5SIs1H/eam0pIBPl+UxU7VCh9LOgIfgLDrZuGoC3hzk7WKU1qn15P6O9KI/Igyj0cirMi2vghxjOAUnhDCOse6uczMZpBZxeIS3wsmmLuzcu48HfEBI1FadS+7Y69I8RQGyIraR1sXzO8X7MJH6Z7CG+NJgRDUy1BkHu3VF3uVe9y0S8SPfcnSChsS2aq29Oz/rlZxUh1oIABQp3to1eKeljr7rcib24sw6yJxsvTGHi/WQuDNJSLNTeyptz7bLAYmEVrxQc7E4DccztCIc7oJR/1h7Gl/6/ToURVGfyhs3LMvgL/baAR0PRDCypQnouklVcKrdjZcqXkWFwG79hsYgetJxCeiNeeO8/FTaYIGWZW8r934lel7mgLUt5KtGrZ8Bbl8VTzvfdRbsydrmT8Is=
+  - secure: G8Bvgykkt9h7ox2MH1jPBx0xrz8ZHBYjQPXB2tqIkE5CvT5YMn5ty80T0Iagcs3QQkMCxHzgj97e8dMTZ1olnRZ1Ed1PNfH/7A2lbO12LS0Y+ci4Os5/lpJbVi+PdUyW/4hBpa8JsCIgXhtt+g7cP4vKavibEKCCJuc2yCf2DsQNLbH5TVMXdcYgCDogMkFJ0iPEGZFTSqHXIPaOVV8yI0i0t1cBh3s4SA0AddG5ymD/pOtC90ijIxaFoC1urkEmhVAVJtntPKYU6R/xsv/6T5F9QWrMciJvtE9ppa5e4F1HcxHdNRtmU+MUvgKjsPe1eNET5M7ndRguIQ17LUKPInTPC7aKYR+T/kH9QaeeBNwWSBXWUt6Ie6J/VMuwKjkgQjFeNb/B+PeZM+wuekPoPM7a+xFWkN41Y6q89N1x7WL8U5tT/H/+Zu5bPcnIq0oMfRu08obuaBS3uuRWDDXKAYNthweJ69SwN2nIHtQ4Ggq9gyiuVMqjDm9t0g24uubARQrZQ0HIuc4F2v11sM/wEFpbXNoQLMEwJNKJZfZLXFM08a2tF1N4/dSJuTCkfD4YwMlnLB0XQO9IobbGyasSy+5cUiE57mdD6QLT0uiFBqZ7Je1sTZLZlVYi6/+wL6HIuDE0MJvm7VB3+8EKp85AhSd9MFT6XID905LAI38kNLM=
 node_js:
 - node
 before_script:
-  - yarn global add nyc
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-  - psql -c "CREATE DATABASE testdb;" -U postgres
+- yarn global add nyc
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- "./cc-test-reporter before-build"
+- psql -c "CREATE DATABASE testdb;" -U postgres
 install:
 - npm install
-
 script:
 - npm run test
 cache:
   directories:
   - node_modules
-after_success: 
-  - npm run coveralls
-  - npm run coverage
+after_success:
+- npm run coveralls
+- npm run coverage
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-# branches:
-#   only:
-#   - master
-#   - develop
+- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 deploy:
   provider: heroku
   api_key:
@@ -38,4 +40,3 @@ deploy:
   app:
     master: quick-credit-production
     develop: quick-credit-staging
-  

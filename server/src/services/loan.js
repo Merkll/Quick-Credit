@@ -1,5 +1,8 @@
 /* eslint-disable import/named */
 import { Loan } from '../model';
+// eslint-disable-next-line import/no-cycle
+import { UserService } from '.'; // code smell check later
+import { MailEvent } from '../lib/mail';
 
 export const getLoan = async (loan) => {
   if (!loan) throw new Error('Loan to query not specified');
@@ -47,7 +50,19 @@ export const newLoan = async (loanDetails) => {
 };
 
 export const changeLoanStatus = async ({ loan, status }) => {
+  const mailActions = { approved: 'loan-approval', rejected: 'loan-rejection' };
   if (status !== 'approved' && status !== 'rejected') return { error: 'Status should either be "approved" or "rejected"' };
   const { data } = await Loan.update({ status }, { id: { eq: loan } });
+  if (data && data[0]) {
+    const loanDetails = data[0];
+    const client = await UserService.getUser(data[0].client);  
+    if (client) {
+      MailEvent(mailActions[status], {
+        'client-name': client.firstname,
+        'loan-id': loanDetails.id,
+        to: loanDetails.client,
+      });
+    }
+  }
   return data;
 };

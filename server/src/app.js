@@ -27,5 +27,5 @@ app.use(ErrorHandler);
 
 export default app.listen(port, () => {
   debug(`Server started on port ${port}`);
-  // Mock();
+  Mock();
 });

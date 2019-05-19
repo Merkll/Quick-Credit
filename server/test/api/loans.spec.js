@@ -146,5 +146,5 @@ describe('Loans', () => {
         .send({ status: 'approved' });
       expect(status).to.be.eql(404);
     });
-  });
+  }).timeout(5000);
 });
