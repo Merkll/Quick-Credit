@@ -72,6 +72,12 @@ export const ExpiredToken = class extends ApplicationError {
   }
 };
 
+export const HTTPError = class extends ApplicationError {
+  constructor(message, status) {
+    super(message || 'Unknown Error Occured', status || 500);
+  }
+};
+
 export const SchemaError = class extends Error {
   constructor(error) {
     super();

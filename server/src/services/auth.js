@@ -2,8 +2,13 @@
 /**
  * Business login for all authentication based actions
  */
-import { User } from '../model';
-import { generateToken, verifyToken, validateHash } from '../helpers/auth';
+import uuid from 'uuid/v4';
+import { User, Auth } from '../model';
+
+import { 
+  generateToken, verifyToken, validateHash, hashPassword
+} from '../helpers/auth';
+import { MailEvent } from '../lib/mail';
 
 const tokenSecret = process.env.SECRET || 'quickcredite435rt';
 
@@ -40,4 +45,31 @@ export const validateToken = async (token) => {
   const { data } = await User.find({ id: { eq: id } });
   if (!data[0]) return { error: 'Cannot retrieve a user for the specified token.' };
   return { token, ...data[0] };
+};
+
+export const passwordReset = async (email) => {
+  const token = uuid();
+  await MailEvent('password-reset', {
+    to: email,
+    token,
+    'client-email': email
+  });
+  const authData = {
+    token,
+    email,
+  };
+  await Auth.insert(authData);
+  return token;
+};
+
+export const changePassword = async (email, token, newPassword) => {
+  const { data } = await Auth.find({ email: { eq: email } });
+  if (!data[0]) return { error: 'Could not verify user' };
+  const storedToken = data[0].token;
+  // add token expiration logic
+  if (storedToken !== token) return { error: 'Token do not match' };
+  const password = hashPassword(newPassword);
+  await User.update({ password }, { email: { eq: email } });
+  await Auth.delete({ email: { eq: email } }); 
+  return Signin({ email, password });
 };
