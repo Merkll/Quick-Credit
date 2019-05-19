@@ -6,7 +6,7 @@
   "scripts": {
     "start": "DEBUG=http node server/dist/app",
     "prestart": "npm run build",
-    "start:dev": "NODE_ENV=dev nodemon --exec babel-node server/src/app.js",
+    "start:dev": "DEBUG=dev NODE_ENV=dev nodemon --exec babel-node server/src/app.js",
     "build": "babel server/src/ -d server/dist/",
     "test": "NODE_ENV=test nyc --reporter=text mocha ./server/test/ --recursive -r @babel/register -r @babel/polyfill",
     "coveralls": "nyc report --reporter=lcov --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js ",
@@ -32,6 +32,7 @@
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
+    "jsonschema": "^1.2.4",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "pg": "^7.11.0",

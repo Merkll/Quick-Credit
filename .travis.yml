@@ -5,6 +5,7 @@ env:
   global:
     - CC_TEST_REPORTER_ID=c37b0267018af1c803858f8ba98a105c49a2accc776dc06673333fa147312330
     - NODE_ENV=test
+    - DB=testdb
 node_js:
 - node
 before_script:

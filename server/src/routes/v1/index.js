@@ -32,7 +32,7 @@ export default (router) => {
     .all(MethodNotAllowed);
 
   router.route('/loans')
-    .get(LoanController.getAllLoans).post(LoanController.applyForLoan).all(MethodNotAllowed);
+    .get(LoanController.getAllLoans).post(CheckRequestBody, LoanController.applyForLoan).all(MethodNotAllowed);
 
   router.route('/users').get(Authorize, UserController.getUsers).all(MethodNotAllowed);
 

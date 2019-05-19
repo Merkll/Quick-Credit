@@ -1,9 +1,11 @@
+/* eslint-disable import/named */
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import app from '../../src/app';
 import { generateToken } from '../../src/helpers/auth';
+import { User } from '../../src/model';
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
@@ -14,8 +16,14 @@ const authHeader = ['Authorization', token];
 const request = chai.request(app).keepOpen();
 const { expect } = chai;
 
-after(() => {
+before(async () => {
+  await User.initialise();
+  await User.deleteAll();
+});
+
+after(async () => {
   request.close();
+  await User.deleteAll();
 });
 
 describe('verify client API', () => {

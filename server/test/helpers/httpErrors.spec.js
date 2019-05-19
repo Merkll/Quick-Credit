@@ -4,7 +4,7 @@ import {
   MethodNotAllowedError, 
   ResourceNotFoundError, NotFoundError, 
   UserExists, AuthenticationError, AuthorizationError, InvalidRequestBodyError,
-  TokenNotProvidedError, InvalidToken, ExpiredToken
+  TokenNotProvidedError, InvalidToken, ExpiredToken, SchemaError
 } from '../../src/helpers/error';
 
 
@@ -151,6 +151,13 @@ describe('Http Errors', () => {
       const { error, status } = new ExpiredToken();
       expect(status).to.be.eqls(statusCode);
       expect(error).to.not.be.undefined;
+    });
+  });
+  context('Schema Error', () => {
+    it('Should return error type and errors', async () => {
+      const { type, error } = new SchemaError(['Invalid request']);
+      expect(type).to.be.eqls('schema');
+      expect(error).to.be.an('array');
     });
   });
 });

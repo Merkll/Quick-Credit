@@ -16,27 +16,24 @@ const authHeader = ['Authorization', token];
 const request = chai.request(app).keepOpen();
 const { expect } = chai;
 
-after(() => {
+before(async () => {
+  await Repayment.initialise();
+  await Loan.initialise();
+});
+after(async () => {
   request.close();
+  await Repayment.deleteAll();
+  await Loan.deleteAll();
 });
 
 
 describe('repayments', () => {
-  const url = '/api/v1/loans/20/repayments';
-  const loanId = 20;
-  before(() => {
-    const RepaymentData = Array(5).fill(0).map((data, index) => ({
-      id: index + 1,
-      CreatedOn: new Date(),
-      loanId,
-      amount: faker.random.number({ min: 2000 }),
-    }
-    ));
-
+  let url;
+  let loanId;
+  before(async () => {
     const loanData = {
-      user: faker.internet.email(),
-      id: loanId,
-      CreatedOn: new Date(),
+      client: faker.internet.email(),
+      createdOn: new Date(),
       status: 'pending',
       repaid: faker.random.boolean(),
       tenor: faker.random.number({ max: 12 }),
@@ -44,10 +41,20 @@ describe('repayments', () => {
       paymentInstallment: faker.random.number({ min: 2000 }),
       balance: faker.random.number({ min: 2000 }),
       interest: faker.random.number({ min: 2000 }),
+      purpose: faker.lorem.sentence()
     };
+    const { data } = await Loan.insert(loanData);
+    loanId = data[0].id;
+    url = `/api/v1/loans/${loanId}/repayments`;
 
-    Loan.insert(loanData);
-    Repayment.insert(RepaymentData);
+    const RepaymentData = Array(5).fill(0).map(() => ({
+      createdOn: new Date(),
+      loanId,
+      amount: 55555,
+    }
+    ));
+
+    await Repayment.insert(RepaymentData);
   });
   context('Query loan repayment', () => {
     it('Should return error 405 with non-get request', async () => {
@@ -55,7 +62,7 @@ describe('repayments', () => {
       expect(status).to.be.eql(405);
     });
     it('Should return status 404 if no repayment', async () => {
-      const { status } = await request.get('/api/v1/loans/50/repayments').set(...authHeader);
+      const { status } = await request.get('/api/v1/loans/5000/repayments').set(...authHeader);
       expect(status).to.be.eql(404);
     });
 
@@ -71,7 +78,7 @@ describe('repayments', () => {
     });
     it('Should return status 404 if loan doesnt exist', async () => {
       const { status } = await request
-        .post('/api/v1/loans/50/repayments').set(...authHeader);
+        .post('/api/v1/loans/500/repayments').set(...authHeader);
       expect(status).to.be.eql(404);
     });
 
