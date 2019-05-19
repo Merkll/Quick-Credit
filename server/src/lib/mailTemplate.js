@@ -13,6 +13,6 @@ export default {
   },
   'password-reset': {
     subject: 'Quick Credit Password Recovery',
-    body: 'Visit this link {{reset-link}} to complete your password reset',
+    body: 'Input this text into the password recovery board {{token}}',
   }
 };

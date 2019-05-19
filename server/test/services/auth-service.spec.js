@@ -4,8 +4,10 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 import faker from 'faker';
-import { Signin, Signup, validateToken } from '../../src/services/auth';
-import { User } from '../../src/model';
+import { 
+  Signin, Signup, validateToken, passwordReset, changePassword 
+} from '../../src/services/auth';
+import { User, Auth } from '../../src/model';
 
 chai.use(chaiAsPromised);
 
@@ -13,6 +15,7 @@ const { expect } = chai;
 
 after(async () => {
   await User.deleteAll();
+  Auth.deleteAll();
 });
 
 before(async () => {
@@ -123,5 +126,41 @@ describe('Auth Service', () => {
       expect(data).to.be.an.instanceof(Object);
       expect(data.error).to.not.be.undefined;
     });
+  });
+  context('password reset', () => {
+    let userData;
+    before(async () => {
+      userData = {
+        email: faker.internet.email(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.lastName(),
+        password: faker.random.uuid(),
+        address: faker.address.streetAddress(),
+        status: 'unverified',
+        isAdmin: faker.random.boolean(),
+      };
+      await Signup(userData);
+    });
+    let token;
+    it('Should return true', async () => {
+      const data = await passwordReset(userData.email);
+      token = data;
+      expect(data).to.not.be.undefined;
+    }).timeout(5000);
+    it('Should return user credentials', async () => {
+      const data = await changePassword(userData.email, token, 'changedPassword');
+      expect(data).to.be.an('object');
+      expect(data.id).to.not.be.undefined;
+    }).timeout(5000);
+    it('Should return error if token do not match', async () => {
+      const data = await changePassword(userData.email, 'token', 'changedPassword');
+      expect(data).to.be.an('object');
+      expect(data.error).to.not.be.undefined;
+    }).timeout(5000);
+    it('Should return error if user hasnt requested', async () => {
+      const data = await changePassword('email', 'token', 'changedPassword');
+      expect(data).to.be.an('object');
+      expect(data.error).to.not.be.undefined;
+    }).timeout(5000);
   });
 });

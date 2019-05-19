@@ -17,6 +17,10 @@ export default (router) => {
 
   router.route('/auth/signin')
     .post(CheckRequestBody, AuthController.signin).all(MethodNotAllowed);
+  
+  router.route('/auth/:email/password-reset')
+    .get(AuthController.passwordReset)
+    .patch(CheckRequestBody, AuthController.changePassword).all(MethodNotAllowed);
 
   router.route('/users/:email/verify')
     .patch(Authorize, UserController.verify).all(MethodNotAllowed);
@@ -32,7 +36,8 @@ export default (router) => {
     .all(MethodNotAllowed);
 
   router.route('/loans')
-    .get(LoanController.getAllLoans).post(CheckRequestBody, LoanController.applyForLoan).all(MethodNotAllowed);
+    .get(LoanController.getAllLoans)
+    .post(CheckRequestBody, LoanController.applyForLoan).all(MethodNotAllowed);
 
   router.route('/users').get(Authorize, UserController.getUsers).all(MethodNotAllowed);
 

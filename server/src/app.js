@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import express from 'express';
 import bodyParser from 'body-parser';
 import Debug from 'debug';
@@ -14,6 +15,10 @@ const port = process.env.PORT || 5000;
 
 app.use(morgan(':method :url :status :response-time ms'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  process.env.HOST = req.get('host');
+  next();
+});
 app.use(bodyParser.json());
 app.use('/', routes(router));
 
