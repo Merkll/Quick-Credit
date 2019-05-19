@@ -134,11 +134,11 @@ export default class Model {
     return this;
   }
 
-  async find(criteria = {}, associate = false) {
+  async find(criteria = {}, associate = false, hookData) {
     const query = this.DB.select().from(this.table).where(criteria);
     if (associate) this.associate(query);
     this.QueryData = await query.execute();
-    this.triggerHook('afterFind', this.QueryData);
+    this.triggerHook('afterFind', this.QueryData, hookData);
     return this;
   }
 
@@ -147,13 +147,11 @@ export default class Model {
     if (update) schemaValidation = Validator.validateSchemaForUpdate(data, this.schema);
     else schemaValidation = Validator.schema(data, this);
     const { valid, errors } = schemaValidation;
-    if (!valid) throw new SchemaError(errors);
-    return valid;
+    return { valid, errors };
   }
 
   async insert(data = []) {
     const transformedData = this.triggerHook('beforeInsert', data);
-    // this.validateSchema(transformedData);
     this.QueryData = await this.DB.insert(transformedData).into(this.table).execute();
     this.QueryData = this.triggerHook('afterInsert', this.QueryData);
     return this;
@@ -172,7 +170,6 @@ export default class Model {
 
   async update(value = {}, criteria = {}) {
     const transformedValue = this.triggerHook('beforeUpdate', value);
-    // this.validateSchema(transformedValue);
     this.QueryData = await this.DB.update(this.table)
       .setFields(transformedValue).where(criteria).execute();
     this.triggerHook('afterUpdate', this.QueryData);
@@ -192,10 +189,10 @@ export default class Model {
    * @param {String} hook -Name of the hook to trigger
    * @param {Object} data - Data to pass to the hook
    */
-  triggerHook(hook, data = {}) {
+  triggerHook(hook, data = {}, hookData) {
     if (!hook) throw new Error('Hook to execute not specified');
     const hookFunction = this.hooks[hook];
     if (!hookFunction && typeof hookFunction !== 'function') return data;
-    return hookFunction(data);
+    return hookFunction(data, hookData);
   }
 }

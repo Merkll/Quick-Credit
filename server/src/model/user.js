@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { filterPassword } from '../helpers/util';
 
 export default (Model) => {
   class User extends Model {
@@ -35,6 +36,7 @@ export default (Model) => {
         return userDetails;
       });
     },
+    afterFind: (data, hookData) => (hookData && hookData.auth ? data : filterPassword(data)),
     beforeUpdate: (data) => {
       const details = data;
       details.updatedOn = new Date();
