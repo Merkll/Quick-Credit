@@ -6,27 +6,41 @@ import faker from 'faker';
 import { 
   getLoan, getCurrentLoans, getRepaidLoans, getAllLoans, newLoan, changeLoanStatus, 
 } from '../../src/services/loan';
-import { Loan } from '../../src/model';
+import { Loan, User } from '../../src/model';
 
 chai.use(chaiAsPromised);
 
 const { expect } = chai;
 
-after(async () => {
-  await Loan.deleteAll();
-});
 
-before(async () => {
-  await Loan.deleteAll();
-  await Loan.initialise();
-});
+const email = faker.internet.email();
+
 
 describe('Loan Service', () => {
+  after(async () => {
+    await User.deleteAll();
+    await Loan.deleteAll();
+  });
+  
+  before(async () => {
+    await Loan.deleteAll();
+    await Loan.initialise();
+  });
   context('get specific loan', () => {
     let loanId;
     before(async () => {
+      const userData = {
+        email,
+        firstName: faker.name.findName(),
+        lastName: faker.name.lastName(),
+        password: faker.random.uuid(),
+        address: faker.address.streetAddress(),
+        status: 'unverified',
+        isAdmin: faker.random.boolean(),
+      };
+
       const loanData = {
-        client: faker.internet.email(),
+        client: email,
         createdOn: new Date(),
         status: 'pending',
         repaid: faker.random.boolean(),
@@ -37,6 +51,7 @@ describe('Loan Service', () => {
         interest: faker.random.number({ min: 2000, max: 5000 }),
         purpose: faker.lorem.sentence(),
       };
+      await User.insert(userData);
       const { data } = await Loan.insert(loanData);
       loanId = data[0].id;
     });
@@ -50,7 +65,7 @@ describe('Loan Service', () => {
   context('get current loans', () => {
     before(async () => {
       const loanData = {
-        client: faker.internet.email(),
+        client: email,
         createdOn: new Date(),
         status: 'approved',
         repaid: false,
@@ -76,7 +91,7 @@ describe('Loan Service', () => {
   context('get repaid loans', () => {
     before(async () => {
       const loanData = {
-        client: faker.internet.email(),
+        client: email,
         createdOn: new Date(),
         status: 'approved',
         repaid: true,
@@ -112,7 +127,7 @@ describe('Loan Service', () => {
 
   context('Create New Loan', () => {
     const loanData = {
-      client: faker.internet.email(),
+      client: email,
       createdOn: new Date(),
       status: 'pending',
       repaid: faker.random.boolean(),
@@ -142,7 +157,7 @@ describe('Loan Service', () => {
     let loanId;
     before(async () => {
       const loanData = {
-        client: faker.internet.email(),
+        client: email,
         createdOn: new Date(),
         status: 'pending',
         repaid: faker.random.boolean(),

@@ -4,22 +4,37 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import faker from 'faker';
 import { createRepayment, getLoanRepayments } from '../../src/services/repayment';
-import { Loan, Repayment } from '../../src/model';
+import { Loan, Repayment, User } from '../../src/model';
 
 chai.use(chaiAsPromised);
 
 const { expect } = chai;
 
+const email = faker.internet.email();
+const userData = {
+  email,
+  firstName: faker.name.findName(),
+  lastName: faker.name.lastName(),
+  password: faker.random.uuid(),
+  address: faker.address.streetAddress(),
+  status: 'unverified',
+  isAdmin: faker.random.boolean(),
+};
+
 after(async () => {
   await Loan.deleteAll();
   await Repayment.deleteAll();
+  await User.deleteAll();
 });
 
 before(async () => {
   await Loan.initialise();
   await Repayment.initialise();
+  await User.initialise();
   await Loan.deleteAll();
   await Repayment.deleteAll();
+  await User.deleteAll();
+  await User.insert(userData);
 });
 
 describe('Repayment Service', () => {
@@ -52,7 +67,7 @@ describe('Repayment Service', () => {
           purpose: faker.lorem.sentence(),
         },
         {
-          client: faker.internet.email(),
+          client: email,
           createdOn: new Date(),
           status: 'pending',
           repaid: faker.random.boolean(),
