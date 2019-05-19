@@ -4,6 +4,7 @@
  */
 import uuid from 'uuid/v4';
 import { User, Auth } from '../model';
+import { filterPassword } from '../helpers/util';
 
 import { 
   generateToken, verifyToken, validateHash, hashPassword
@@ -13,16 +14,15 @@ import { MailEvent } from '../lib/mail';
 const tokenSecret = process.env.SECRET || 'quickcredite435rt';
 
 export const Signin = async ({ email, password }) => {
-  const { data } = await User.find({ email: { eq: email } });
+  const { data } = await User.find({ email: { eq: email } }, false, { auth: true });
   const authData = data[0];
   if (!authData) return { error: 'User Email doesnt exist' };
 
   const isValid = validateHash(password, authData.password);
   if (!isValid) return { error: 'Password and email doesnt match' };
-
   const { id, isAdmin } = authData;
   const token = generateToken({ id, isAdmin, email });
-  return { token, ...authData };
+  return { token, ...filterPassword(authData) };
 };
 
 export const Signup = async (userDetails) => {
@@ -33,7 +33,8 @@ export const Signup = async (userDetails) => {
   const userExist = !!(data[0]);
 
   if (userExist) return { error: 'User With that email already exists' };
-  if (!User.validateSchema(userDetails)) return { error: 'Invalid User Details' };
+  const { valid, errors } = User.validateSchema(userDetails);
+  if (!valid) return { error: errors };
 
   await User.insert(userDetails);
   return Signin({ email, password });

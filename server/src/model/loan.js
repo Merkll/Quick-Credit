@@ -31,7 +31,7 @@ export default (Model) => {
         const interest = amount * 0.05;
         loanData.interest = interest;
         const installment = (amount + interest) / tenor;
-        loanData.paymentInstallment = installment.toFixed(2);
+        loanData.paymentInstallment = installment;
         loanData.createdOn = new Date();
         loanData.balance = amount + interest;
         return loanData;
