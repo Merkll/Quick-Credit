@@ -11,7 +11,7 @@ describe('Data Seed', () => {
     process.env.NODE_ENV = initialEnv;
   });
   it('should return true', async () => {
-    const seed = Seed();
+    const seed = await Seed();
     expect(seed).to.be.true;
   });
 });

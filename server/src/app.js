@@ -30,7 +30,7 @@ app.all('*', (req, res) => {
 // default error handler
 app.use(ErrorHandler);
 
-export default app.listen(port, () => {
+export default app.listen(port, async () => {
   debug(`Server started on port ${port}`);
-  Seed();
+  await Seed();
 });
