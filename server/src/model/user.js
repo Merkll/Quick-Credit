@@ -1,33 +1,31 @@
 import bcrypt from 'bcrypt';
-import { FieldTypes } from '../lib/schema-validator';
-
-const filterPassword = userData => Object.keys(userData).reduce((object, key) => {
-  // eslint-disable-next-line no-param-reassign
-  if (key !== 'password') object[key] = userData[key];
-  return object;
-}, {});
+import { filterPassword } from '../helpers/util';
 
 export default (Model) => {
   class User extends Model {
+    // eslint-disable-next-line no-useless-constructor
     constructor(modelName, schema, hooks) {
-      super(modelName, hooks, schema);
+      super(modelName, schema, hooks);
     }
   }
 
   const UserModel = new User('User', {
-    id: FieldTypes.Integer,
-    createdOn: FieldTypes.Date,
-    email: FieldTypes.String,
-    firstName: FieldTypes.String,
-    lastName: FieldTypes.String,
-    password: FieldTypes.String,
-    address: FieldTypes.String,
-    status: FieldTypes.String,
-    isAdmin: FieldTypes.Boolean,
+    id: { type: 'integer', format: 'myId', fieldName: 'Id' },
+    createdOn: { type: 'date' },
+    updatedOn: { type: 'date' },
+    email: { 
+      type: 'string', format: 'myEmail', required: true, unique: true, fieldName: 'Email' 
+    },
+    firstName: { type: 'string', required: true, fieldName: 'First Name' },
+    lastName: { type: 'string', required: true, fieldName: 'Last Name' },
+    password: { type: 'string', required: true, fieldName: 'Password' },
+    address: { type: 'string', required: true, fieldName: 'User Address' },
+    status: { type: 'string' },
+    isAdmin: { type: 'boolean' },
   }, {
     beforeInsert: (data) => {
       let details = data;
-      if (!(details instanceof Array)) details = [details];
+      if (!Array.isArray(details)) details = [details];
       return details.map((detail) => {
         const userDetails = detail;
         const hash = bcrypt.hashSync(userDetails.password, 10);
@@ -38,10 +36,7 @@ export default (Model) => {
         return userDetails;
       });
     },
-    afterInsert: data => ((!(data instanceof Array)) ? filterPassword(data) 
-      : data.map(detail => filterPassword(detail))),
-    afterFind: data => ((!(data instanceof Array)) ? filterPassword(data) 
-      : data.map(detail => filterPassword(detail))),
+    afterFind: (data, hookData) => (hookData && hookData.auth ? data : filterPassword(data)),
     beforeUpdate: (data) => {
       const details = data;
       details.updatedOn = new Date();

@@ -71,3 +71,18 @@ export const ExpiredToken = class extends ApplicationError {
     super(message || 'User Token expired Login', 403);
   }
 };
+
+export const HTTPError = class extends ApplicationError {
+  constructor(message, status) {
+    super(message || 'Unknown Error Occured', status || 500);
+  }
+};
+
+export const SchemaError = class extends Error {
+  constructor(error) {
+    super();
+    Error.captureStackTrace(this, this.constructor);
+    this.type = 'schema';
+    this.error = error;
+  }
+};

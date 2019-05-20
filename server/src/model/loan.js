@@ -1,36 +1,39 @@
-import { FieldTypes } from '../lib/schema-validator';
-
 export default (Model) => {
   class Loan extends Model {
+    // eslint-disable-next-line no-useless-constructor
     constructor(modelName, schema, hooks) {
-      super(modelName, hooks, schema);
+      super(modelName, schema, hooks);
     }
   }
-
   const LoanModel = new Loan('Loan', {
-    id: FieldTypes.Integer,
-    user: FieldTypes.String,
-    CreatedOn: FieldTypes.Date,
-    status: FieldTypes.String,
-    repaid: FieldTypes.Boolean,
-    tenor: FieldTypes.Integer,
-    amount: FieldTypes.Number,
-    paymentInstallment: FieldTypes.Number,
-    balance: FieldTypes.Number,
-    interest: FieldTypes.Number,
-    purpose: FieldTypes.String,
+    id: { type: 'integer', format: 'myId', fieldName: 'ID' },
+    client: { 
+      type: 'string', format: 'myEmail', required: true, fieldName: 'Client'
+    },
+    createdOn: { type: 'date' },
+    updatedOn: { type: 'date' },
+    status: { type: 'string' },
+    repaid: { type: 'boolean' },
+    tenor: { type: 'integer', required: true, fieldName: 'Loan Tenor' },
+    amount: { type: 'number', required: true, fieldName: 'Loan Amount' },
+    paymentInstallment: { type: 'number', fieldName: 'Payment Installment' },
+    balance: { type: 'number', fieldName: 'Loan Balance' },
+    interest: { type: 'number', fieldName: 'Loan Interest' },
+    purpose: { type: 'string', required: true, fieldName: 'Loan Purpose' },
   }, {
     beforeInsert: (data) => {
       let details = data;
       if (!(details instanceof Array)) details = [details];
       return details.map((detail) => {
         const loanData = detail;
-        const interest = loanData.amount * 0.05;
-        loanData.interest = parseFloat(interest.toFixed(2));
-        const installment = (loanData.amount + loanData.interest) / loanData.tenor;
-        loanData.paymentInstallment = parseFloat(installment.toFixed(2));
+        loanData.tenor = parseInt(loanData.tenor, 10) || 1;
+        const { amount, tenor } = loanData;
+        const interest = amount * 0.05;
+        loanData.interest = interest;
+        const installment = (amount + interest) / tenor;
+        loanData.paymentInstallment = installment;
         loanData.createdOn = new Date();
-        loanData.balance = loanData.amount + loanData.interest;
+        loanData.balance = amount + interest;
         return loanData;
       });
     },

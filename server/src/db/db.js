@@ -1,5 +1,8 @@
 import { Pool } from 'pg';
+import Debug from 'debug';
 import dbConfig from './config';
+
+const debug = Debug('dev');
 
 const dbPool = new Pool(dbConfig);
 
@@ -15,6 +18,26 @@ export default class {
 
   async init() {
     return this;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  excape(str) {
+    return (`${str}`).replace(/["|']/g, '');
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  stringifyField(field) {
+    const dataField = (typeof field === 'object') ? JSON.stringify(field) : field;   
+    return (typeof dataField === 'string') ? `'${this.excape(dataField)}'` : dataField;
+  }
+  
+  async createTable(tableName, schema) {
+    const query = `
+      create table IF NOT EXISTS ${tableName} (
+        ${schema.join(', ')}
+      );
+    `;
+    return this.execute(query);
   }
 
   get database() {
@@ -74,6 +97,11 @@ export default class {
     return this;
   }
 
+  deleteAll(table) {
+    this.queryActions = { action: 'deleteAll', table };
+    return this;
+  }
+
   where(condition) {
     this.queryActions.where = condition;
     return this;
@@ -113,10 +141,16 @@ export default class {
     const clauseIterator = (clause) => {
       return Object.entries(clause).map(([key, value]) => {
         if (conjuctors.includes(key)) {
+          let multiConjuction = '';
+          if (Array.isArray(value)) {
+            multiConjuction = value.map(v => `${key} ${clauseIterator(v)}`).join(' ');
+            return `${multiConjuction}`;
+          } 
           return `${key} ${clauseIterator(value)}`;
         }
         const [op, field] = Object.entries(value)[0];
-        return `${key} ${operators[op]} ${field}`;
+        const fieldValue = (typeof field === 'string') ? `'${field}'` : field;
+        return `${key} ${operators[op]} ${fieldValue}`;
       }).join(' ');
     };
     return `WHERE ${clauseIterator(condition)}`;    
@@ -143,7 +177,7 @@ export default class {
     return this;
   }
 
-  objectToFields(dataObject, formatter = (datfield, row) => ((typeof row === 'string') ? `'${row}'` : row)) {
+  objectToFields(dataObject, formatter = (datafield, row) => this.stringifyField(row)) {
     let values = dataObject;
     this.n = 5;
     if (!Array.isArray(values)) values = [values];
@@ -167,9 +201,10 @@ export default class {
   }
 
   updateQueryBuild() {
-    const { table, values } = this.queryObject;
-    const { fields } = this.objectToFields(values, (col, row) => `${col} = ${row}`);
-    const query = `UPDATE ${table} SET ${fields}`;
+    const { table, values, where } = this.queryObject;
+    const clause = this.buildClause(where);
+    const { fields } = this.objectToFields(values, (col, row) => `${col} = ${this.stringifyField(row)}`);
+    const query = `UPDATE ${table} SET ${fields.substr(1).slice(0, -1)} ${clause}  RETURNING *`;
     this.queryData = query;
     return this;
   }
@@ -177,7 +212,14 @@ export default class {
   deleteQueryBuild() {
     const { where, table } = this.queryObject;
     const clause = this.buildClause(where);
-    const query = `DELETE FROM ${table} ${clause}`;
+    const query = `DELETE FROM ${table} ${clause} RETURNING *`;
+    this.queryData = query;
+    return this;
+  }
+
+  deleteAllQuery() {
+    const { table } = this.queryObject;
+    const query = `DELETE FROM ${table} WHERE true`;
     this.queryData = query;
     return this;
   }
@@ -188,6 +230,7 @@ export default class {
       insert: this.insertQueryBuild.bind(this),
       update: this.updateQueryBuild.bind(this),
       delete: this.deleteQueryBuild.bind(this),
+      deleteAll: this.deleteAllQuery.bind(this),
     };
     const { action } = this.queryObject;
     return queryActionHandlers[action]();
@@ -195,7 +238,14 @@ export default class {
 
   async execute(query) {
     const sql = query || this.queryString().queryData;
-    const { rows } = await this.db.query(sql);
-    return rows;
+    debug(sql);
+    let data;
+    try {
+      const { rows } = await this.db.query(sql);
+      data = rows;
+    } catch (error) {
+      data = { error: error.message };
+    }
+    return data;
   }
 }

@@ -1,106 +1,118 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
+import faker from 'faker';
 
-import { Validator, FieldTypes } from '../src/lib/schema-validator';
+import Validator from '../src/lib/schema-validator';
 
-describe('Schema validator', () => {
+describe('Schema validation', () => {
   context('Schema validation', () => {
     const schema = {
-      name: FieldTypes.String,
-      age: FieldTypes.Integer,
+      id: { type: 'integer', format: 'myId', fieldName: 'ID' },
+      createdOn: { type: 'date' },
+      updatedOn: { type: 'date' },
+      email: { 
+        type: 'string', format: 'myEmail', required: true, unique: true, fieldName: 'Email' 
+      },
+      firstName: { type: 'string', required: true },
+      lastName: { type: 'string', required: true },
+      password: { type: 'string', required: true },
+      address: { type: 'string', required: true },
+      status: { type: 'string' },
+      isAdmin: { type: 'boolean' },
     };
-    const validator = new Validator(schema);
-    it('Should true', async () => {
+    it('Should object with valid property true for valid data', async () => {
       const data = {
-        name: 'johnDoe',
-        age: 35,
+        email: faker.internet.email(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.lastName(),
+        password: faker.random.uuid(),
+        address: faker.address.streetAddress(),
+        status: 'unverified',
+        isAdmin: faker.random.boolean(),
       };
-      const isValid = validator.validate(data);
-      expect(isValid).to.be.true;
+      const { valid } = Validator.schema(data, { schema, table: 'users' });
+      expect(valid).to.be.true;
     });
-    it('Should false', async () => {
+    it('Should object with valid property false and array of error for invalid data', async () => {
       const data = {
-        name: 50,
-        age: 'age',
+        id: 'id',
+        // email: faker.internet.email(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.lastName(),
+        password: faker.random.uuid(),
+        address: faker.address.streetAddress(),
+        status: 'unverified',
+        isAdmin: faker.random.boolean(),
       };
-      const isValid = validator.validate(data);
-      expect(isValid).to.be.false;
+      const { valid, errors } = Validator.schema(data, { schema, table: 'users' });
+      expect(valid).to.be.false;
+      expect(errors).to.not.be.empty;
     });
-    it('Should return true for empty object', async () => {
-      const isValid = validator.validate();
-      expect(isValid).to.be.true;
-    });
-    it('Should return false for invalid array of data', async () => {
-      const data = [
-        {
-          name: 50,
-          age: 'age',
-        },
-        {
-          name: 50,
-          age: 'age',
-        },
-      ];
-      const isValid = validator.validate(data);
-      expect(isValid).to.be.false;
-    });
-    it('Should return true for valid array of data', async () => {
-      const data = [
-        {
-          name: 'Mike',
-          age: 40,
-        },
-        {
-          name: 'john',
-          age: 30,
-        },
-      ];
-      const isValid = validator.validate(data);
-      expect(isValid).to.be.true;
-    });
-
-    it('Should return false for mix of valid and invalid array of data', async () => {
-      const data = [
-        {
-          name: 'Mike',
-          age: 40,
-        },
-        {
-          name: 'john',
-          age: 30,
-        },
-        {
-          name: 50,
-          age: 'age',
-        },
-      ];
-      const isValid = validator.validate(data);
-      expect(isValid).to.be.false;
+    it('Should accept array of data', async () => {
+      const data = [{
+        email: faker.internet.email(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.lastName(),
+        password: faker.random.uuid(),
+        address: faker.address.streetAddress(),
+        status: 'unverified',
+        isAdmin: faker.random.boolean(),
+      },
+      {
+        email: faker.internet.email(),
+        firstName: faker.name.findName(),
+        lastName: faker.name.lastName(),
+        password: faker.random.uuid(),
+        address: faker.address.streetAddress(),
+        status: 'unverified',
+        isAdmin: faker.random.boolean(),
+      }];
+      const { valid } = Validator.schema(data, { schema, table: 'users' });
+      expect(valid).to.be.true;
     });
   });
-  context('fieldTypes', () => {
-    it('Should check boolean', () => {
-      expect(FieldTypes.Boolean(true)).to.be.true;
-      expect(FieldTypes.Boolean('true')).to.be.true;
-      expect(FieldTypes.Boolean(34)).to.be.false;
+  context('Schema validation for data update', () => {
+    const schema = {
+      id: { type: 'integer', format: 'myId' },
+      createdOn: { type: 'date' },
+      updatedOn: { type: 'date' },
+      email: { 
+        type: 'string', format: 'myEmail', required: true, unique: true, 
+      },
+      firstName: { type: 'string', required: true },
+      lastName: { type: 'string', required: true },
+      password: { type: 'string', required: true },
+      address: { type: 'string', required: true },
+      status: { type: 'string' },
+      isAdmin: { type: 'boolean' },
+    };
+    it('Should object with valid property true for valid data', async () => {
+      const data = {
+        email: faker.internet.email(),
+        firstName: faker.name.findName(),
+      };
+      const { valid } = Validator.validateSchemaForUpdate(data, schema);
+      expect(valid).to.be.true;
     });
-    it('Should check String', () => {
-      expect(FieldTypes.String('true')).to.be.true;
-      expect(FieldTypes.String(true)).to.be.false;
-      expect(FieldTypes.String(34)).to.be.false;
+    it('Should object with valid property false for invalid data', async () => {
+      const data = {
+        email: faker.internet.email(),
+        firstName: faker.name.findName(),
+        nonfield: 'field'
+      };
+      const { valid, errors } = Validator.validateSchemaForUpdate(data, schema);
+      expect(valid).to.be.false;
+      expect(errors).to.not.empty;
     });
-    it('Should check Integer', () => {
-      expect(FieldTypes.Integer(40)).to.be.true;
-      expect(FieldTypes.Integer(true)).to.be.false;
-      expect(FieldTypes.Integer('34')).to.be.false;
-    });
-    it('Should check Date', () => {
-      expect(FieldTypes.Date(new Date())).to.be.true;
-      expect(FieldTypes.Date('34')).to.be.false;
-    });
-    it('Should check Number', () => {
-      expect(FieldTypes.Number(40)).to.be.true;
-      expect(FieldTypes.Number(13000.8)).to.be.true;
+    it('Should object with valid property false for invalid datatype', async () => {
+      const data = {
+        email: 'email',
+        firstName: faker.name.findName(),
+      };
+      const { valid, errors } = Validator.validateSchemaForUpdate(data, schema);
+      expect(valid).to.be.false;
+      expect(errors).to.not.empty;
     });
   });
 });

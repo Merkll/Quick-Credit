@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import { expect } from 'chai';
-import Mock from '../src/lib/mock';
+import Seed from '../src/db/seed';
 
-describe('Data mock', () => {
+describe('Data Seed', () => {
   const initialEnv = process.env.NODE_ENV;
   before(() => {
     process.env.NODE_ENV = 'dev';
@@ -11,7 +11,7 @@ describe('Data mock', () => {
     process.env.NODE_ENV = initialEnv;
   });
   it('should return true', async () => {
-    const mock = Mock();
-    expect(mock).to.be.true;
+    const seed = await Seed();
+    expect(seed).to.be.true;
   });
 });

@@ -1,22 +1,36 @@
+/* eslint-disable import/named */
 import { Loan, Repayment } from '../model';
+import { MailEvent } from '../lib/mail';
+// eslint-disable-next-line import/no-cycle
+import { UserService } from '.'; // code smell check later
 
-export const createRepayment = (loan) => {
+export const createRepayment = async (loan) => {
   if (!loan) throw new Error('Loan to query not specified');
-  const loanDetails = Loan.find({ id: loan }).data[0];
+  const { data: loanData } = await Loan.find({ id: { eq: loan } });
+  const loanDetails = loanData[0];
   const { balance, paymentInstallment } = loanDetails;
   const repaymentDetails = {
-    amount: (balance - paymentInstallment <= 0) ? balance : paymentInstallment,
+    amount: (balance - paymentInstallment >= 0) ? paymentInstallment : balance,
     loanId: loan,
   };
-  const { data } = Repayment.insert(repaymentDetails);
+  const { data } = await Repayment.insert(repaymentDetails);
   const loanBalance = balance - repaymentDetails.amount;
   let repaid = false;
   if (loanBalance === 0) repaid = true;
-  Loan.update({ balance: loanBalance, repaid }, { id: loan });
+  await Loan.update({ balance: loanBalance, repaid }, { id: { eq: loan } });
+  const client = await UserService.getUser(loanDetails.client);
+  if (client) {
+    MailEvent('loan-repayment', {
+      'client-name': client.firstname,
+      'loan-id': loanDetails.id,
+      to: loanDetails.client,
+    });
+  }
   return data;
 };
 
-export const getLoanRepayments = (loan) => {
+export const getLoanRepayments = async (loan) => {
   if (!loan) throw new Error('Loan to query not specified');
-  return Repayment.find({ loanId: loan }).data;
+  const { data } = await Repayment.find({ loanId: { eq: loan } });
+  return data;
 };

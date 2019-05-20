@@ -1,18 +1,29 @@
 // eslint-disable-next-line import/named
 import { User } from '../model';
 
-export const verify = (email) => {
+export const verify = async (email) => {
   if (!email) throw new Error('Email is undefined');
-  return User.update({ status: 'verified' }, { email }).data[0];
+  const { data } = await User.update({ status: 'verified' }, { email: { eq: email } });
+  return data[0];
 };
 
-export const getUser = (email) => {
+export const getUser = async (email) => {
   if (!email) throw new Error('Email is undefined');
-  return User.find({ email }).data[0];
+  const { data } = await User.find({ email: { eq: email } });
+  return data[0];
 };
 
-export const filterUsers = ({ status }) => User.find({ status }).data;
-export const getAllUsers = () => User.findAll().data;
-export const getVerifiedUsers = () => User.find({ status: 'verified' }).data;
-export const getUnverifiedUsers = () => User.find({ status: 'unverified' }).data;
-export const isUserVerified = email => getUser(email).status === 'verified';
+export const filterUsers = async (status) => {
+  const { data } = await User.find({ status: { eq: status } });
+  return data;
+};
+export const getAllUsers = async () => {
+  const { data } = await User.findAll();
+  return data;
+};
+export const getVerifiedUsers = async () => filterUsers('verified');
+export const getUnverifiedUsers = async () => filterUsers('unverified');
+export const isUserVerified = async (email) => {
+  const { status } = await getUser(email);
+  return status === 'verified';
+};

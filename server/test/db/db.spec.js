@@ -59,6 +59,21 @@ describe('DB', () => {
       expect(db.config).to.be.undefined;
     });
   });
+  describe('db Table Create', async () => {
+    const db = await new DB(testDatabase);
+    const dbTable = 'createTable';
+    before(async () => {
+      const query = `
+      DROP TABLE IF EXISTS ${dbTable};  
+    `;
+      await db.execute(query);
+    });
+    it('Should create table ', async () => {
+      const schema = ['id SERIAL PRIMARY KEY', 'detail INTEGER'];
+      const table = await db.createTable(dbTable, schema);
+      expect(table).to.not.be.undefined;
+    });
+  });
   describe('db Select', async () => {
     const db = await new DB(testDatabase);
     it('Should save the action and return db instance ', () => {
@@ -216,6 +231,10 @@ describe('DB', () => {
     it('Should return queried data', async () => {
       const data = await select.execute();
       expect(data[0]).to.be.contain(dataToInsert);
+    });
+    it('Should catch and return error', async () => {
+      const { error } = await select.execute('invalid sql query');
+      expect(error).to.not.be.undefined;
     });
   });
   describe('DB JOIN', async () => {

@@ -4,7 +4,7 @@ import { nonSecureRoutes } from '../routes/config';
 
 const tokenSecret = process.env.SECRET || 'quickcredite435rt';
 
-export const generateToken = details => jwt.sign({ ...details }, tokenSecret, { expiresIn: '12h' });
+export const generateToken = (details, exp = '12h') => jwt.sign({ ...details }, tokenSecret, { expiresIn: exp });
 export const verifyToken = (token) => {
   try {
     return jwt.verify(token, tokenSecret); 
