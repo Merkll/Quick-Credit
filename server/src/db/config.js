@@ -24,7 +24,7 @@ const dbConfig = {
 };
 
 let credentials = dbConfig[env]; 
-if (!credentials.database) credentials = dbConfig.dev;
+if (!credentials) credentials = dbConfig.dev;
 
 const config = credentials;
 
