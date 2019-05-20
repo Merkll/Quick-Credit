@@ -50,7 +50,13 @@ const createRepayment = (numberOfRepayments, numberofLoans) => {
   Model.Repayment.insert(repaymentData);
 };
 
-export default function () { 
+export default async function () { 
+  const promiseData = Object.entries(Model).map(async ([, model]) => {
+    if (model.initialise) await model.initialise();
+    return true;
+  });
+  await Promise.all(promiseData);
+
   if (process.env.NODE_ENV !== 'dev') return false;
   const numberOfUsers = 20;
   const numberofLoans = 15;

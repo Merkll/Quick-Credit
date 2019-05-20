@@ -5,7 +5,7 @@ import Debug from 'debug';
 import morgan from 'morgan';
 import routes from './routes';
 import { ErrorHandler } from './middleware/error-handler';
-import Mock from './lib/mock';
+import Seed from './db/seed';
 
 const debug = Debug('http');
 const router = express.Router();
@@ -32,5 +32,5 @@ app.use(ErrorHandler);
 
 export default app.listen(port, () => {
   debug(`Server started on port ${port}`);
-  Mock();
+  Seed();
 });
