@@ -57,7 +57,7 @@ export default async function () {
   });
   await Promise.all(promiseData);
 
-  if (process.env.NODE_ENV !== 'dev') return false;
+  if (process.env.NODE_ENV !== 'dev' && process.env.ENV !== 'staging') return false;
   const numberOfUsers = 20;
   const numberofLoans = 15;
   const numberOfRepayments = 25;
