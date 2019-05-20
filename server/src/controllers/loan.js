@@ -52,4 +52,5 @@ export const loanStatus = async (req, res, next) => {
     const response = new Response(data, 200);
     return res.status(response.status).json(response);
   }
+  return next();
 };

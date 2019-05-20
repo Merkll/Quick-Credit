@@ -14,7 +14,6 @@
 
 import DB from '../db/db';
 import Validator from '../lib/schema-validator';
-import { SchemaError } from '../helpers/error';
 
 const database = process.env.DB_DATABASE || 'quickCredit'; 
 
