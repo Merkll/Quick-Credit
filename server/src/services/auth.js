@@ -20,8 +20,8 @@ export const Signin = async ({ email, password }) => {
 
   const isValid = validateHash(password, authData.password);
   if (!isValid) return { error: 'Password and email doesnt match' };
-  const { id, isAdmin } = authData;
-  const token = generateToken({ id, isAdmin, email });
+  const { id, isadmin } = authData;
+  const token = generateToken({ id, isAdmin: isadmin, email });
   return { token, ...filterPassword(authData) };
 };
 

@@ -112,7 +112,7 @@ describe('Http Errors', () => {
     });
   });
   context('MissingToken', () => {
-    const statusCode = 400;
+    const statusCode = 401;
     it('Should return status and supplied message', async () => {
       const message = 'Token missing';
       const { error, status } = new TokenNotProvidedError(message);

@@ -5,7 +5,7 @@
     background-repeat: no-repeat, repeat;
     background-color: #cccccc;
     background-size: cover;
-    margin-top: 50px;
+    margin-top: -120px;
 }
 .interest-calc-form{
     position: relative;
@@ -82,6 +82,53 @@
     float: right;
 }
 
+
+.search-box {
+    width: 100%;
+    float: right;
+    border: unset;
+    border: 1px solid rgb(212, 212, 212);
+    margin-top: 20px;
+    color: firebrick;
+    position: relative;
+}
+.search-box * {
+   color: firebrick;
+}
+.search-box input:focus{
+    border-bottom: 1px solid purple;
+    width: 100%;
+    outline: none;
+    transition: all 0.5s linear;
+}
+
+.search-box::after{
+    content: ' ';
+    display: table;
+    clear: both;
+}
+.search-box input::placeholder{
+    color: firebrick;
+}
+.search-icon {
+    position: absolute;
+    right: 0px;
+    display: block;
+    height: 100%;
+    width: 40px;
+    text-align: center;
+    background-color: rgb(216, 216, 216);
+}
+
+/* .search-icon:hover {
+    background-color: rgb(216, 216, 216);
+} */
+
+.search-icon i {
+    font-size: 25px;
+    color: purple;
+}
+
 @media only screen and (min-width: 720px) {
     .interest-calc-form{
         left: 100px;
@@ -91,3 +138,6 @@
         height: 160px !important;
     } */
 }
+
+
+  

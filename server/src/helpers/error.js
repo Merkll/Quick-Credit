@@ -56,7 +56,7 @@ export const InvalidRequestBodyError = class extends ApplicationError {
 
 export const TokenNotProvidedError = class extends ApplicationError {
   constructor(message) {
-    super(message || 'Auth token missing', 400);
+    super(message || 'Auth token missing', 401);
   }
 };
 

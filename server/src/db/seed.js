@@ -2,7 +2,7 @@
 import faker from 'faker';
 import * as Model from '../model';
 
-const createUsers = (numberOfUsers) => {
+const createUsers = async (numberOfUsers) => {
   const userData = new Array(numberOfUsers - 1).fill(0).map(() => ({
     email: faker.internet.email(),
     firstName: faker.name.findName(),
@@ -21,11 +21,11 @@ const createUsers = (numberOfUsers) => {
     status: 'unverified',
     isAdmin: true,
   });
-  Model.User.insert(userData);
+  await Model.User.insert(userData);
   return userData;
 }; 
 
-const createLoan = (numberofLoans, numberOfUsers, userData) => {
+const createLoan = async (numberofLoans, numberOfUsers, userData) => {
   const loanData = Array(numberofLoans).fill(0).map(() => ({
     client: userData[faker.random.number({ min: 0, max: numberOfUsers - 1 })].email,
     createdOn: new Date(),
@@ -38,13 +38,14 @@ const createLoan = (numberofLoans, numberOfUsers, userData) => {
     interest: faker.random.number({ min: 2000 }),
     purpose: faker.lorem.sentence()
   }));
-  Model.Loan.insert(loanData);
+  const { data } = await Model.Loan.insert(loanData);
+  return data;
 };
 
-const createRepayment = (numberOfRepayments, numberofLoans) => {
+const createRepayment = async (numberOfRepayments, numberofLoans, loandata) => {
   const repaymentData = Array(numberOfRepayments).fill(0).map(() => ({
     createdOn: new Date(),
-    loanId: faker.random.number({ min: 1, max: numberofLoans }),
+    loanId: loandata[faker.random.number({ min: 1, max: numberofLoans - 1 })].id,
     amount: faker.random.number({ min: 2000 }),
   }));
   Model.Repayment.insert(repaymentData);
@@ -57,13 +58,13 @@ export default async function () {
   });
   await Promise.all(promiseData);
 
-  if (process.env.NODE_ENV !== 'dev' && process.env.ENV !== 'staging') return false;
+  if (process.env.NODE_ENV !== 'dev' || process.env.ENV === 'test' || process.env.ENV === 'staging') return false;
   const numberOfUsers = 20;
   const numberofLoans = 15;
-  const numberOfRepayments = 25;
+  const numberOfRepayments = 50;
 
-  const userData = createUsers(numberOfUsers);
-  createLoan(numberofLoans, numberOfUsers, userData);
-  createRepayment(numberOfRepayments, numberofLoans);
+  const userData = await createUsers(numberOfUsers);
+  const loanData = await createLoan(numberofLoans, numberOfUsers, userData);
+  createRepayment(numberOfRepayments, numberofLoans, loanData);
   return true;
 }

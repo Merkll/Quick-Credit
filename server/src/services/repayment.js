@@ -3,14 +3,18 @@ import { Loan, Repayment } from '../model';
 import { MailEvent } from '../lib/mail';
 // eslint-disable-next-line import/no-cycle
 import { UserService } from '.'; // code smell check later
+import { formatAmount } from '../helpers/util';
 
-export const createRepayment = async (loan) => {
+export const createRepayment = async (loan, amount) => {
   if (!loan) throw new Error('Loan to query not specified');
   const { data: loanData } = await Loan.find({ id: { eq: loan } });
   const loanDetails = loanData[0];
-  const { balance, paymentInstallment } = loanDetails;
+  const { balance, paymentinstallment } = loanDetails;
+  if (amount > balance) return { error: ` Payment Amount in excess of ${formatAmount(amount - balance)}` };
+  let repaidAmount = amount;
+  if (!amount) repaidAmount = (balance - paymentinstallment >= 0) ? paymentinstallment : balance;
   const repaymentDetails = {
-    amount: (balance - paymentInstallment >= 0) ? paymentInstallment : balance,
+    amount: repaidAmount,
     loanId: loan,
   };
   const { data } = await Repayment.insert(repaymentDetails);
