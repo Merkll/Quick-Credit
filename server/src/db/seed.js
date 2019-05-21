@@ -53,7 +53,10 @@ const createRepayment = async (numberOfRepayments, numberofLoans, loandata) => {
 
 export default async function () { 
   const promiseData = Object.entries(Model).map(async ([, model]) => {
-    if (model.initialise) await model.initialise();
+    if (model.initialise) {
+      // await model.dropTable();
+      await model.initialise();
+    }
     return true;
   });
   await Promise.all(promiseData);
