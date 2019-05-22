@@ -4,6 +4,7 @@ import TopMenu from '../components/top-menu.component.js';
 
 
 const template = `
+<div>
   <div id="top-menu-root"></div>
   <div class="waveContainer waveAnimation">
           <div class="overlay-text">
@@ -30,7 +31,7 @@ const template = `
                                       <input type="password" name="password" data-validator="password" required>
                                   </div>
                                   <button class="btn primary-bg-color primary-color home-btn" type="submit"> Login</button>
-                                  <span class="primary-color size-16">Not yet a Member? <a href="./signup.html" class="color-red">Signup here</a></span>
+                                  <span class="primary-color size-16">Not yet a Member? <a href="./signup.html" class="color-red router" data-path="/signup" data-view="signup">Signup here</a></span>
                               </br>
                                   <span class="primary-color size-16">Forgot password reset? <a href="./password-reset.html" class="color-red">here</a></span>
                               </form>
@@ -65,10 +66,11 @@ const template = `
               </div>
           </div>
   </div>
+  </div>
 `;
 
 export default new View({
-  elem: '#home',
+  elem: '#app',
   template,
   components: [{
     component: TopMenu,

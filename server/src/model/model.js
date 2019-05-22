@@ -149,7 +149,22 @@ export default class Model {
     return { valid, errors };
   }
 
-  async insert(data = []) {
+  filterData(modelData) {
+    let data = modelData;
+    if (!Array.isArray(data)) data = [data];
+    const fields = this.schema;
+    const filtered = data.map((field) => {
+      return Object.entries(field).reduce((object, [key, value]) => {
+        // eslint-disable-next-line no-param-reassign
+        if (fields[key]) object[key] = value;
+        return object;
+      }, {});
+    });
+    return !(Array.isArray(modelData) && filtered.length === 1) ? filtered[0] : filtered;
+  }
+
+  async insert(dataToInsert = []) {
+    const data = this.filterData(dataToInsert);
     const transformedData = this.triggerHook('beforeInsert', data);
     this.QueryData = await this.DB.insert(transformedData).into(this.table).execute();
     this.QueryData = this.triggerHook('afterInsert', this.QueryData);

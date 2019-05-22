@@ -12,14 +12,16 @@ export default (Model) => {
     },
     createdOn: { type: 'string', fieldName: 'Created On', format: 'myDate' },
     updatedOn: { type: 'string', format: 'myDate' },
-    status: { type: 'string' },
+    status: { type: 'string', format: 'myString', },
     repaid: { type: 'boolean' },
     tenor: { type: 'integer', required: true, fieldName: 'Loan Tenor' },
     amount: { type: 'number', required: true, fieldName: 'Loan Amount' },
     paymentInstallment: { type: 'number', fieldName: 'Payment Installment' },
     balance: { type: 'number', fieldName: 'Loan Balance' },
     interest: { type: 'number', fieldName: 'Loan Interest' },
-    purpose: { type: 'string', required: true, fieldName: 'Loan Purpose' },
+    purpose: { 
+      type: 'string', format: 'myString', required: true, fieldName: 'Loan Purpose' 
+    },
   }, {
     beforeInsert: (data) => {
       let details = data;

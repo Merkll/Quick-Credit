@@ -1,28 +1,33 @@
 import { addEventToDomNodelist,  } from './helper/util.js';
 
-export default class Router {
+class Router {
   constructor(routerIdentifier) {
     this.routes = {};
-    this.init(routerIdentifier);
+    this.routerIdentifier = routerIdentifier;
+    this.init();
   }
 
-  init(routerIdentifier) {
-    if (!routerIdentifier) return;
-    this.router = document.querySelectorAll(routerIdentifier);
+  init() {
+    if (!this.routerIdentifier) return;
+    this.router = document.querySelectorAll(this.routerIdentifier);
     addEventToDomNodelist('click', this.router, async (event) => {
       event.preventDefault()
       const target = event.target;
       const { path, view } = target.dataset;
-      if (!this.routes[path]) this.routes[path] = await import(`./views/${view}.js`);
-      this.routes[path].render();
+      if (!this.routes[path]) this.routes[path] = (await import(`./views/${view}.js`)).default;
+      this.renderRoute(path);
     });
   }
 
   addRoute(path, view) {
     this.routes[path] = view;
   }
-  renderRoute(path) {
-    if (this.routes[path]) this.routes[path].render();
+  async renderRoute(path, data) {
+    if (this.routes[path]) await this.routes[path].render(data);
+    this.init();
   }
 
 }
+
+export default new Router('.router');
+

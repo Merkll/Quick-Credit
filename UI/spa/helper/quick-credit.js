@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/named */
 /* eslint-disable import/extensions */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-unused-vars */
@@ -5,8 +7,9 @@
 /* eslint-disable radix */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-undef */
+import SiteAction from '../store/store.js';
+import { render } from './render.js';
 
-import { render } from './render.js'
 /**
  * Handles attaching events for nodelist
  * @param {*} listOfNodes {an array of DOM nodes} 
@@ -20,31 +23,9 @@ const addEventToDomNodelist = (event, listOfNodes, eventHandler) => {
   }
 };
 
-/**
- * Loops through a Nodelist and calls the callback function for each node
- * @param {*} listOfNodes 
- * @param {*} callbackFunction 
- */
-const foreachNodeInNodelist = (listOfNodes, callbackFunction) => {
-  for (const node of listOfNodes) {
-    callbackFunction(node);
-  }  
-};
 
-/** Template Engine actions */
-const initialiseTemplateEngine = () => {
-  const templateScript = document.createElement('script');
-  const mockScript = document.createElement('script');
-  templateScript.src = 'assets/js/template.js';
-  templateScript.id = 'template-js';
-  mockScript.src = 'assets/js/mock.js';
-  document.body.insertBefore(templateScript, document.getElementById('main-js'));
-  document.body.insertBefore(mockScript, document.getElementById('main-js'));
-};
-
-initialiseTemplateEngine();
 // loads the js template file
-document.body.onload = () => {
+export const onViewLoaded = () => {
   const modalCloseButton = document.querySelectorAll('.close-btn');
   const formSubmitButton = document.querySelectorAll('button[type="submit"]');
     
@@ -71,7 +52,6 @@ document.body.onload = () => {
     if (functionToHandleForm) return functionToHandleForm(data, formNode);
     return null;
   });
-  pageSetup();
 };
 
 const calculateRate = (formData) => {
@@ -92,14 +72,6 @@ const displayRate = ({ interest, payment }) => {
   render('alert', { content: message });
 };
 
-const login = async (formData, form) => {
-  const email = formData.get('email');
-  const isValid = validateFormFields(formData, form);
-  if (isValid) {
-    render('alert', { content: `Welcome ${email}`, classes: 'bg-red' });
-    window.location.href = './dashboard.html';
-  }
-};
 
 const validateFormFields = (formData, form) => {
   const validators = {
@@ -206,11 +178,13 @@ const viewMessageAction = (event) => {
   render('message', message);
 };
 
+
 const sideBarAction = (event) => {
   event.preventDefault();
+  event.stopImmediatePropagation();
   const sideBar = document.querySelector('.sidebar');
-  event.target.classList.toggle('close');
   sideBar.classList.toggle('show');
+  event.target.classList.toggle('close');
 };
 
 const loanAction = async (event) => {
@@ -237,7 +211,7 @@ const loanApplication = (formData, form) => {
 
 
 const formActions = {
-  calculator: calculateRate, login, signup, apply: loanApplication, 'password-reset': passwordReset 
+  calculator: calculateRate, login: SiteAction.login, signup: SiteAction.signup, apply: loanApplication, 'password-reset': passwordReset 
 };
 
 

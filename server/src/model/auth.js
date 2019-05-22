@@ -10,7 +10,7 @@ export default (Model) => {
     id: { type: 'integer', format: 'myId', fieldName: 'ID' },
     token: { type: 'string', required: true, fieldName: 'token' },
     email: { 
-      type: 'string', required: true, unique: true, fieldName: 'User Email' 
+      type: 'string', format: 'myString', required: true, unique: true, fieldName: 'User Email' 
     },
     client: { 
       type: 'integer', format: 'myId', fieldName: 'Client' 

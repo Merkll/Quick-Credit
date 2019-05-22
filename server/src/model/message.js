@@ -12,9 +12,13 @@ export default (Model) => {
     sender: { type: 'integer', format: 'myId', fieldName: 'Message Sender' },
     repliedTo: { type: 'integer', format: 'myId', fieldName: 'Message Replying' },
     recipient: { type: 'integer', format: 'myId', fieldName: 'Message Recipient' },
-    body: { type: 'string', required: true, fieldName: 'Message Body' },
-    subject: { type: 'string', required: true, fieldName: 'Message Subject' },
-    excerpt: { type: 'string' },
+    body: { 
+      type: 'string', format: 'myString', required: true, fieldName: 'Message Body' 
+    },
+    subject: { 
+      type: 'string', format: 'myString', required: true, fieldName: 'Message Subject' 
+    },
+    excerpt: { type: 'string', format: 'myString', },
   }, {
     beforeInsert: (data) => {
       let details = data;

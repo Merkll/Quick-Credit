@@ -1,18 +1,30 @@
+/* eslint-disable no-restricted-syntax */
+const formDataToJson = (formData) => {
+  if (!formData.entries) return JSON.stringify(formData);
+  const form = {};
+  for (const [fieldName, fieldValue] of formData.entries()) {
+    form[fieldName] = fieldValue;
+  }
+  return JSON.stringify(form);
+};
+
 class Request {
   constructor(url, headers = {}) {
     this.url = url;
     this.headers = headers;
-    this.fetchBody = {};
-  }
-
-  post(data) {
-    this.fetchBody = {
+    this.fetchBody = {      
       headers: { 
         'Content-Type': 'application/json',
         ...this.headers 
       },
-      method: 'POST',
-      body: JSON.stringify(data)
+    };
+  }
+
+  post(data) {
+    this.fetchBody = { 
+      ...this.fetchBody,
+      method: 'POST', 
+      body: formDataToJson(data)
     };
     return this;
   }
@@ -50,8 +62,9 @@ class Request {
   }
 
   async execute() {
+    console.log(this.fetchBody);
     const data = await fetch(this.url, this.fetchBody);
-    return data;
+    return data.json();
   }
 }
 
