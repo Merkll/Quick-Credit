@@ -1,5 +1,12 @@
-const scripts = '../helper/quick-credit.js';
+/* eslint-disable import/extensions */
+import { onViewLoaded } from '../helper/quick-credit.js';
 
+const removeAllChildren = (node) => {
+  while (node.firstChild) {
+    node.removeChild(node.firstChild);
+  }
+  return node;
+};
 export default class View {
   constructor({
     elem, template, components, hooks = {} 
@@ -29,11 +36,12 @@ export default class View {
   async renderComponents() {
     if (!Array.isArray(this.components)) return null;
     const components = this.components.map(({ component, data }) => component.render(data));
-    return Promise.all(components);
+    const renderedComponent = await Promise.all(components);
+    return renderedComponent;
   }
 
-  async render() {
-    const data = this.trigerHook('data') || this.template;
+  async render(viewData) {
+    const data = this.trigerHook('data', viewData) || this.template;
     const populatedTemplate = this.trigerHook('populate', data);
     this.populatedTemplate = populatedTemplate;
     const templateElement = document.createElement('template');
@@ -42,12 +50,12 @@ export default class View {
     const rootElement = this.getElem();
     if (rootElement) {
       // eslint-disable-next-line no-unused-expressions
-      rootElement.firstChild ? rootElement.removeChild(rootElement.firstChild) : '';
+      removeAllChildren(rootElement);
       rootElement.appendChild(templateNode);
-      const renderData = await this.renderComponents(); 
-      await import(scripts); 
+      await this.renderComponents(); 
+      await onViewLoaded(); 
     }
-    this.trigerHook('render', data);
-    this.trigerHook('afterRender', data);
+    await this.trigerHook('render', data);
+    await this.trigerHook('afterRender', data);
   }
 }

@@ -4,6 +4,7 @@
 import View from './view.js';
 import TopMenu from '../components/top-menu.component.js';
 import Sidebar from '../components/sidebar.component.js';
+import SiteAction from '../store/store.js';
 
 
 const template = `
@@ -14,60 +15,11 @@ const template = `
             <div id="sidebar-root"></div>
     </div>
     <div class="col-9">
-            <div class="search-box">
-                    <a href="#" class="search-icon"><i class="fas fa-search"></i></a href="#">
-                    <form action="">
-                        <input type="text" placeholder="Search for anything">
-                    </form>
-                </div>
-        <div class="card-container metric-container">
-            <div class="generic-card dashboard-card">                
-                <div class="set-size charts-container">
-                        <div class="metric">
-                            <div class="pie-wrapper progress-50 ">
-                                    <span class="label">50<span class="smaller">%</span></span>
-                                    <div class="pie">
-                                    <div class="left-side half-circle"></div>
-                                    <div class="right-side half-circle"></div>
-                                    </div>
-                                    <div class="shadow"></div>
-                            </div>
-                            <span class="text">Loan Repayed</span>
-                        </div>
-                        <div class="metric">
-                            <div class="pie-wrapper progress-50 ">
-                                    <span class="label">50<span class="smaller">%</span></span>
-                                    <div class="pie">
-                                    <div class="left-side half-circle"></div>
-                                    <div class="right-side half-circle"></div>
-                                    </div>
-                                    <div class="shadow"></div>
-                            </div>
-                            <span class="text">User Verified</span>
-                        </div>
-                </div>
-            </div>                  
-                <div class="generic-card metric-card">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span>2</span>
-                    <h3 class="title">Pending Repayments</h3>
-                </div>   
-                <div class="generic-card metric-card">
-                    <i class="fas fa-users"></i>
-                    <span>2</span>
-                    <h3 class="title">New Users</h3>
-                </div>        
-        </div>
         <div class="content">
             <div class="page-title">
-                <span>New Loan Applications</span>
+                <span>Loans</span>
             </div>
-            
-            <div class="card-container" id = "card-container-root"></div>  
-            <div class="page-title">
-                    <span>New Clients</span>
-                </div>
-                <div class="card-container" id = "card-container-root"></div>                  
+            <div class="card-container" id = "card-container-root"></div>                   
         </div>
     </div>
 </div>
@@ -92,8 +44,9 @@ export default new View({
   }
   ],
   hooks: {
-    data(data) {
-      const { isadmin } = data;
+    async data(data) {
+      const user = SiteAction.getUserDetails();
+      const { isadmin } = user;
       const topMenuLinks = {
         childTag: 'links',
         childComponent: { type: 'literal', data: '<a href="{{href}}">{{text}}</a>' },
@@ -152,8 +105,10 @@ export default new View({
         }
       };
       const mode = isadmin ? 'admin' : 'client';
-      this.components[0].data = { links: sideBarlinks[mode], ...data };   
+      this.components[0].data = { links: sideBarlinks[mode], ...user };   
       this.components[1].data = { ...topMenuLinks };
+      const loans = await SiteAction.getLoans();
+      console.log(loans);
     },
     afterRender: () => {
       // after rendering 
