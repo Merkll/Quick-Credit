@@ -4,6 +4,7 @@
 import View from './view.js';
 import TopMenu from '../components/top-menu.component.js';
 import Sidebar from '../components/sidebar.component.js';
+import Loans from '../components/loans.component.js';
 import SiteAction from '../store/store.js';
 
 
@@ -19,7 +20,7 @@ const template = `
             <div class="page-title">
                 <span>Loans</span>
             </div>
-            <div class="card-container" id = "card-container-root"></div>                   
+            <div class="card-container" id = "loans-root"></div>                   
         </div>
     </div>
 </div>
@@ -41,7 +42,11 @@ export default new View({
   {
     component: TopMenu,
     data: {}
-  }
+  },
+  {
+    component: Loans,
+    data: {}
+  },
   ],
   hooks: {
     async data(data) {
@@ -108,7 +113,8 @@ export default new View({
       this.components[0].data = { links: sideBarlinks[mode], ...user };   
       this.components[1].data = { ...topMenuLinks };
       const loans = await SiteAction.getLoans();
-      console.log(loans);
+      this.components[2].data = loans;
+      return template;
     },
     afterRender: () => {
       // after rendering 

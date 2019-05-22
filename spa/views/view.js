@@ -35,14 +35,16 @@ export default class View {
 
   async renderComponents() {
     if (!Array.isArray(this.components)) return null;
-    const components = this.components.map(({ component, data }) => component.render(data));
+    const components = this.components.map(({ component, data }) => {
+      return component.render(data)
+    });
     const renderedComponent = await Promise.all(components);
     return renderedComponent;
   }
 
   async render(viewData) {
-    const data = this.trigerHook('data', viewData) || this.template;
-    const populatedTemplate = this.trigerHook('populate', data);
+    const data = await this.trigerHook('data', viewData) || this.template;
+    const populatedTemplate = await this.trigerHook('populate', data);
     this.populatedTemplate = populatedTemplate;
     const templateElement = document.createElement('template');
     templateElement.innerHTML = populatedTemplate;
