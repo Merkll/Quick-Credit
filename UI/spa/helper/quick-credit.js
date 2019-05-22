@@ -110,14 +110,6 @@ const validateFormFields = (formData, form) => {
   return true;
 };
 
-const signup = (formData, form) => {
-  const email = formData.get('email');
-  const isValid = validateFormFields(formData, form);
-  if (isValid) {
-    render('alert', { content: `Account Creation succesfull for ${email}` });
-    window.location.href = './dashboard.html';
-  }
-};
 
 const passwordReset = (formData, form) => {
   const confirm = formData.get('confirm-password');
@@ -142,10 +134,12 @@ const modalCloseAction = (event) => {
 const viewLoanAction = async (event) => {
   event.preventDefault();
   const loanId = event.target.dataset.loan;
-  const repayments = Mock.repayments[loanId];
-  const loanDetails = Mock.loanDetails[loanId];
-  await render('single-loan', {}, { repayments, loanDetails });
-  document.querySelector('.full-overlay').classList.add('show');
+  const loanDetails = SiteAction.getLoan(loanId);
+  console.log(loanDetails);
+  // const repayments = Mock.repayments[loanId];
+  // const loanDetails = Mock.loanDetails[loanId];
+  // await render('single-loan', {}, { repayments, loanDetails });
+  // document.querySelector('.full-overlay').classList.add('show');
 };
 
 const viewClientAction = async (event) => {

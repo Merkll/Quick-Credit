@@ -55,6 +55,19 @@ const templates = {};
     return templateHtml.replace(new RegExp(templateTag, 'g'), `${value}${templateTag}`); // appends original tag to handle multiple elements
   };
 
+  export const mapStringReplace = (template, dataToreplace) => {
+    let data = dataToreplace;
+    let replacedTemplate = template;
+      Object.entries(data).map(([key, value]) => {
+        replacedTemplate = replaceTag(replacedTemplate, key, value);
+      });
+    return replaceTrailingTags(replacedTemplate);
+  }
+
+  export const generateMultiFromTemplate = (template, data) =>{
+    return data.map((singleData) => mapStringReplace(template, singleData)).join(' ');
+  }
+
   /**
      * Handles component with multiple childNodes
      * @param {Object}
@@ -63,6 +76,7 @@ const templates = {};
   const multipleChildPopulate = async ({ templateHtml, childNodes, childTag, childTemplate, childComponent, rootTag }) => {
     for (const child of childNodes) {
       const { data, baseTemplate = childComponent } = child; // data takes precedence
+      console.log(child);
       if (data) {
         templateHtml = replaceTag(templateHtml, childTag, data);
       } else if (baseTemplate) {
