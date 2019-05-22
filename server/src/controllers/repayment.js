@@ -1,7 +1,7 @@
 import { 
   LoanService, RepaymentService
 } from '../services/index';
-import { NotFoundError, AuthorizationError } from '../helpers/error';
+import { NotFoundError, AuthorizationError, InvalidRequestBodyError } from '../helpers/error';
 import Response from '../helpers/response';
 
 export const getLoanRepayments = async (req, res, next) => {
@@ -18,9 +18,11 @@ export const getLoanRepayments = async (req, res, next) => {
 
 export const postLoanRepayment = async (req, res, next) => {
   const { loan } = req.params;
+  const { amount } = req.body;
   const loanDetails = await LoanService.getLoan(loan);
-  if (!loanDetails) return next(new NotFoundError('loan with that id not found'));
-  const data = await RepaymentService.createRepayment(loan);
+  if (!loanDetails || loanDetails.length === 0) return next(new NotFoundError('loan with that id not found'));
+  const data = await RepaymentService.createRepayment(loan, amount);
+  if (data.error) return next(new InvalidRequestBodyError(data.error));
   const response = new Response(data, 201);
   return res.status(response.status).json(response);
 };

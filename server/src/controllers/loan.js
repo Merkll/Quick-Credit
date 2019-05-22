@@ -4,14 +4,15 @@ import { InvalidRequestBodyError, NotFoundError, AuthorizationError } from '../h
 import Response from '../helpers/response';
 
 const isLoanExist = (loanData, next) => {
-  if (!loanData || loanData.length === 0) return next(new NotFoundError('loan with that id not found'));
+  if ((Array.isArray(loanData) && loanData.length === 0) || (!loanData)) return next(new NotFoundError('loan with that id not found'));
   return loanData;
 };
 
 export const getLoan = async (req, res, next) => {
   const { loan } = req.params;
   const { email, isAdmin } = req.user;
-  const data = isLoanExist(await LoanService.getLoan(loan), next);
+  const loanData = await LoanService.getLoan(loan);
+  const data = isLoanExist(loanData, next);
   if (!data) return null;
   // throws error if loan doesnt belong to user and user isnt an admin
   if (email !== data.user && !isAdmin) return next(new AuthorizationError('You are not authorized to view that loan'));
@@ -38,6 +39,7 @@ export const applyForLoan = async (req, res, next) => {
   if (!UserService.isUserVerified) return next(new AuthorizationError('Your account isnt verified'));
   const requestBody = { ...req.body, client: email };
   const data = await LoanService.newLoan(requestBody, email);
+  if (data.error) return next(new InvalidRequestBodyError(data.error));
   // verified users should apply for loan
   const response = new Response(data, 201);
   return res.status(response.status).json(response);
@@ -47,7 +49,9 @@ export const loanStatus = async (req, res, next) => {
   const { status } = req.body;
   const { loan } = req.params;
   if (!(status === 'approved' || status === 'rejected')) return next(new InvalidRequestBodyError('Invalid request Body'));
-  const data = isLoanExist(await LoanService.changeLoanStatus({ loan, status }), next);
+  const loanDetails = await LoanService.changeLoanStatus({ loan, status });
+  const data = isLoanExist(loanDetails, next);
+  if (data.error) return next(new InvalidRequestBodyError(data.error));
   if (data) {
     const response = new Response(data, 200);
     return res.status(response.status).json(response);

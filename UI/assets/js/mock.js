@@ -105,11 +105,12 @@ const Mock = (function () {
     inboxCount: 1,
     links: {
       childTag: 'links',
-      childComponent: { type: 'literal', data: '<a href="{{href}}">{{text}}</a>' },
+      childComponent: { type: 'literal', data: '<a href="{{href}}" class="{{class}}">{{text}}</a>' },
       childNodes: [
         {
           text: 'Dashboard',
           href: './dashboard.html',
+          class: 'active'
         },
         {
           text: 'Loans',

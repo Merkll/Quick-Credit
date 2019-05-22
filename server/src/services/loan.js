@@ -7,7 +7,7 @@ import { MailEvent } from '../lib/mail';
 export const getLoan = async (loan) => {
   if (!loan) throw new Error('Loan to query not specified');
   const { data } = await Loan.find({ id: { eq: loan } });
-  return data[0];
+  return data[0] || [];
 };
 
 export const getCurrentLoans = async (user = {}) => {
@@ -45,6 +45,8 @@ export const getAllLoans = async (user = {}) => {
 export const newLoan = async (loanDetails) => {
   if (!loanDetails) throw new Error('Loan details cant be empty');
   // if (!Loan.validateSchema(loanDetails)) return { error: 'Invalid Loan Details' };
+  const { valid, errors } = Loan.validateSchema(loanDetails);
+  if (!valid) return { error: errors };
   const { data } = await Loan.insert(loanDetails);
   return data;
 };
@@ -52,6 +54,7 @@ export const newLoan = async (loanDetails) => {
 export const changeLoanStatus = async ({ loan, status }) => {
   const mailActions = { approved: 'loan-approval', rejected: 'loan-rejection' };
   if (status !== 'approved' && status !== 'rejected') return { error: 'Status should either be "approved" or "rejected"' };
+  if (typeof parseInt(loan, 10) !== 'number') return { error: 'Loan Id should be a number' };
   const { data } = await Loan.update({ status }, { id: { eq: loan } });
   if (data && data[0]) {
     const loanDetails = data[0];

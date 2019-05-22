@@ -167,6 +167,11 @@ export default class Model {
     return this;
   }
 
+  async dropTable() {
+    this.QueryData = await this.DB.execute(`DROP TABLE IF EXISTS ${this.table}; `);
+    return this;
+  }
+
   async update(value = {}, criteria = {}) {
     const transformedValue = this.triggerHook('beforeUpdate', value);
     this.QueryData = await this.DB.update(this.table)

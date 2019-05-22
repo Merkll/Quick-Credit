@@ -18,3 +18,5 @@ export const filterPassword = (data) => {
   }, {}));
   return (filteredData.length === 1 && !Array.isArray(data)) ? filteredData[0] : filteredData;
 };
+
+export const formatAmount = amount => amount.toFixed(2);

@@ -10,8 +10,8 @@ export default (Model) => {
     client: { 
       type: 'string', format: 'myEmail', required: true, fieldName: 'Client'
     },
-    createdOn: { type: 'date' },
-    updatedOn: { type: 'date' },
+    createdOn: { type: 'string', fieldName: 'Created On', format: 'myDate' },
+    updatedOn: { type: 'string', format: 'myDate' },
     status: { type: 'string' },
     repaid: { type: 'boolean' },
     tenor: { type: 'integer', required: true, fieldName: 'Loan Tenor' },

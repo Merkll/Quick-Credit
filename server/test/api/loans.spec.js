@@ -105,7 +105,7 @@ describe('Loans', () => {
       expect(status).to.be.eql(405);
     });
 
-    it('Should return status 201 with get request', async () => {
+    it('Should return status 201 with post request', async () => {
       const { status } = await request
         .post(loanUrl)
         .set(...authHeader)

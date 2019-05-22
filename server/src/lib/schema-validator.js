@@ -9,6 +9,8 @@ Validator.prototype.customFormats.myEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
+Validator.prototype.customFormats.myDate = date => !!Date.parse(date);
+
 const errorTypes = {
   required: ({ field }) => `Field ${field} is required`,
   type: ({ field, type }) => `Field ${field} should be of type ${type}`,

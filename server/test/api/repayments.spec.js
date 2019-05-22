@@ -16,21 +16,20 @@ const authHeader = ['Authorization', token];
 const request = chai.request(app).keepOpen();
 const { expect } = chai;
 
-before(async () => {
-  await Repayment.initialise();
-  await Loan.initialise();
-});
 after(async () => {
   request.close();
   await Repayment.deleteAll();
   await Loan.deleteAll();
 });
 
-
 describe('repayments', () => {
   let url;
   let loanId;
   before(async () => {
+    await Repayment.initialise();
+    await Loan.initialise();
+    await Loan.deleteAll();
+    await Repayment.deleteAll();
     const loanData = {
       client: faker.internet.email(),
       createdOn: new Date(),
