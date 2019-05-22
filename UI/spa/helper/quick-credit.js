@@ -1,9 +1,12 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable radix */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-undef */
+
+import { render } from './render.js'
 /**
  * Handles attaching events for nodelist
  * @param {*} listOfNodes {an array of DOM nodes} 
