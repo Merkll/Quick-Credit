@@ -7,7 +7,7 @@ import { render } from '../helper/render.js';
 import { validateFormFields } from '../helper/util.js';
 import Router from '../router.js';
 
-const apiUrl = 'http://quick-credit-staging.herokuapp.com/api/v1';
+const apiUrl = 'https://quick-credit-staging.herokuapp.com/api/v1';
 
 const getAuthHeader = () => {
   const token = SiteAction.getAuthToken();
