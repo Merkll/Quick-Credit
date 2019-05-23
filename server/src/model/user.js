@@ -16,11 +16,19 @@ export default (Model) => {
     email: { 
       type: 'string', format: 'myEmail', required: true, unique: true, fieldName: 'Email' 
     },
-    firstName: { type: 'string', required: true, fieldName: 'First Name' },
-    lastName: { type: 'string', required: true, fieldName: 'Last Name' },
-    password: { type: 'string', required: true, fieldName: 'Password' },
-    address: { type: 'string', required: true, fieldName: 'User Address' },
-    status: { type: 'string' },
+    firstName: { 
+      type: 'string', format: 'myString', required: true, fieldName: 'First Name' 
+    },
+    lastName: { 
+      type: 'string', format: 'myString', required: true, fieldName: 'Last Name' 
+    },
+    password: { 
+      type: 'string', format: 'myString', required: true, fieldName: 'Password' 
+    },
+    address: { 
+      type: 'string', format: 'myString', required: true, fieldName: 'User Address' 
+    },
+    status: { type: 'string', format: 'myString', },
     isAdmin: { type: 'boolean' },
   }, {
     beforeInsert: (data) => {

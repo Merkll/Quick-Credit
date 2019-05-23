@@ -9,8 +9,16 @@ export const createRepayment = async (loan, amount) => {
   if (!loan) throw new Error('Loan to query not specified');
   const { data: loanData } = await Loan.find({ id: { eq: loan } });
   const loanDetails = loanData[0];
-  const { balance, paymentinstallment } = loanDetails;
+  const {
+    balance, paymentinstallment, status, createdon, updatedon, repaid: loanRepaid 
+  } = loanDetails;
   if (amount > balance) return { error: ` Payment Amount in excess of ${formatAmount(amount - balance)}` };
+  if (status !== 'approved') return { error: 'Cant post repayment for non approved loans' };
+  if (loanRepaid) return { error: 'loan already repaid' };
+  // eslint-disable-next-line no-unneeded-ternary
+  const loanDate = updatedon ? updatedon : createdon;
+  const dateDiff = new Date().getMonth() - new Date(loanDate).getMonth();
+  if (dateDiff < 1) return { error: 'Repayment not yet due' };
   let repaidAmount = amount;
   if (!amount) repaidAmount = (balance - paymentinstallment >= 0) ? paymentinstallment : balance;
   const repaymentDetails = {

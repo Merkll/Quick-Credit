@@ -10,6 +10,7 @@ Validator.prototype.customFormats.myEmail = (email) => {
 };
 
 Validator.prototype.customFormats.myDate = date => !!Date.parse(date);
+Validator.prototype.customFormats.myString = string => string.length > 0;
 
 const errorTypes = {
   required: ({ field }) => `Field ${field} is required`,

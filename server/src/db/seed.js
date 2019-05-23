@@ -27,7 +27,7 @@ const createUsers = async (numberOfUsers) => {
 
 const createLoan = async (numberofLoans, numberOfUsers, userData) => {
   const loanData = Array(numberofLoans).fill(0).map(() => ({
-    client: userData[faker.random.number({ min: 0, max: numberOfUsers - 1 })].email,
+    client: userData[faker.random.number({ min: 0, max: numberOfUsers - 2 })].email,
     createdOn: new Date(),
     status: 'pending',
     repaid: faker.random.boolean(),
@@ -54,17 +54,17 @@ const createRepayment = async (numberOfRepayments, numberofLoans, loandata) => {
 export default async function () { 
   const promiseData = Object.entries(Model).map(async ([, model]) => {
     if (model.initialise) {
-      // await model.dropTable();
+      await model.dropTable();
       await model.initialise();
     }
     return true;
   });
   await Promise.all(promiseData);
 
-  if (process.env.NODE_ENV !== 'dev' || process.env.ENV === 'test' || process.env.ENV === 'staging') return false;
-  const numberOfUsers = 20;
-  const numberofLoans = 15;
-  const numberOfRepayments = 50;
+  if (process.env.ENV === 'test') return false;
+  const numberOfUsers = 3;
+  const numberofLoans = 2;
+  const numberOfRepayments = 1;
 
   const userData = await createUsers(numberOfUsers);
   const loanData = await createLoan(numberofLoans, numberOfUsers, userData);

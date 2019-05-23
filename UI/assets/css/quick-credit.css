@@ -100,7 +100,7 @@ body{
 .home-overlay.overlay{
     position: absolute;
     top: 0px;
-    left: 70%;
+    left: 0%;
     right: 0px;
     z-index: 5;
 }
@@ -148,10 +148,10 @@ body{
     color: firebrick;
     border-color: firebrick;
 }
-/* .content .details .btn, .content .details a {
+.content .details button {
     color: white;
-    border-color: white;
-} */
+}
+
 .full-overlay .content .details label {
     font-size: 14px
 }
@@ -225,6 +225,9 @@ body{
 .color-red{
     color: firebrick;
 }
+.color-white{
+    color: white;
+}
 .color-grey{
     color: grey !important;
 }
@@ -255,7 +258,8 @@ input{
     border-bottom: .1px solid rgb(224, 223, 223);
     height: 30px;
     width: 100%;
-    color: white
+    color: white;
+    padding-left: 5px;
 }
 input.isrequired{
     border-bottom: 1px solid red;
@@ -311,7 +315,7 @@ textarea {
     outline: none;
 }
 .btn{
-    min-width: 70px;
+    min-width: 100px;
     height: 25px;
     border: none;
     background-color: var(--btn-color);
@@ -457,7 +461,7 @@ textarea {
     height: inherit;
 }
 .card{
-    height: 250px;
+    height: 300px;
     width: 230px;
     margin: auto;
     margin-bottom: 20px;
@@ -485,10 +489,10 @@ textarea {
     color: var(--secondary-text-color)
 
 }
-.card-header span:hover{
+/* .card-header span:hover{
     color: red;
 
-}
+} */
 .card-content{
     padding: 5px;
 }
@@ -562,7 +566,7 @@ textarea {
 }
 .message{
     color: white;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: bolder;
     text-align: center;
 }

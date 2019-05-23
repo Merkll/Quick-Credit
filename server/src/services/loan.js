@@ -67,5 +67,5 @@ export const changeLoanStatus = async ({ loan, status }) => {
       });
     }
   }
-  return data;
+  return data[0];
 };

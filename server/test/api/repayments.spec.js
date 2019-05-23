@@ -81,11 +81,11 @@ describe('repayments', () => {
       expect(status).to.be.eql(404);
     });
 
-    it('Should return status 201 with post request', async () => {
+    it('Should return status 422 with unverified loans', async () => {
       const { status } = await request
         .post(url)
         .set(...authHeader);
-      expect(status).to.be.eql(201);
+      expect(status).to.be.eql(422);
     });
   });
 });

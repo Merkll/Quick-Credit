@@ -14,6 +14,7 @@
 
 import DB from '../db/db';
 import Validator from '../lib/schema-validator';
+import { formatDataDate } from '../helpers/util';
 
 const database = process.env.DB_DATABASE || 'quickCredit'; 
 
@@ -130,6 +131,7 @@ export default class Model {
     if (associate) this.associate(query);
     this.QueryData = await query.execute();
     this.QueryData = this.triggerHook('afterFind', this.QueryData);
+    this.QueryData = formatDataDate(this.QueryData);
     return this;
   }
 
@@ -138,6 +140,7 @@ export default class Model {
     if (associate) this.associate(query);
     this.QueryData = await query.execute();
     this.triggerHook('afterFind', this.QueryData, hookData);
+    this.QueryData = formatDataDate(this.QueryData);
     return this;
   }
 
@@ -149,16 +152,33 @@ export default class Model {
     return { valid, errors };
   }
 
-  async insert(data = []) {
+  filterData(modelData) {
+    let data = modelData;
+    if (!Array.isArray(data)) data = [data];
+    const fields = this.schema;
+    const filtered = data.map((field) => {
+      return Object.entries(field).reduce((object, [key, value]) => {
+        // eslint-disable-next-line no-param-reassign
+        if (fields[key]) object[key] = value;
+        return object;
+      }, {});
+    });
+    return (!Array.isArray(modelData) && filtered.length === 1) ? filtered[0] : filtered;
+  }
+
+  async insert(dataToInsert = []) {
+    const data = this.filterData(dataToInsert);
     const transformedData = this.triggerHook('beforeInsert', data);
     this.QueryData = await this.DB.insert(transformedData).into(this.table).execute();
     this.QueryData = this.triggerHook('afterInsert', this.QueryData);
+    this.QueryData = formatDataDate(this.QueryData);
     return this;
   }
 
   async delete(criteria = {}) {
     this.QueryData = await this.DB.delete(this.table).where(criteria).execute();
     this.triggerHook('afterDelete', this.QueryData);
+    this.QueryData = formatDataDate(this.QueryData);
     return this;
   }
 
@@ -177,6 +197,7 @@ export default class Model {
     this.QueryData = await this.DB.update(this.table)
       .setFields(transformedValue).where(criteria).execute();
     this.triggerHook('afterUpdate', this.QueryData);
+    this.QueryData = formatDataDate(this.QueryData);
     return this;
   }
 

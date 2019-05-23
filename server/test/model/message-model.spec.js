@@ -7,25 +7,26 @@ import { Message } from '../../src/model';
 
 let MessageData;
 
-before(async () => {
-  MessageData = Array(10).fill(0).map((data, index) => ({
-    id: index + 1,
-    createdOn: new Date(),
-    sender: faker.random.number(),
-    repliedTo: faker.random.number(),
-    recipient: faker.random.number(),
-    body: faker.lorem.sentences(),
-    subject: faker.lorem.sentence(),
-    excerpt: faker.lorem.sentence(),
-  }
-  ));
-  await Message.initialise();
-  await Message.insert(MessageData);
-});
-after(async () => {
-  await Message.deleteAll();
-});
+
 describe('Message Model', () => {
+  before(async () => {
+    MessageData = Array(10).fill(0).map((data, index) => ({
+      id: index + 1,
+      createdOn: new Date(),
+      sender: faker.random.number(),
+      repliedTo: faker.random.number(),
+      recipient: faker.random.number(),
+      body: faker.lorem.sentences(),
+      subject: faker.lorem.sentence(),
+      excerpt: faker.lorem.sentence(),
+    }
+    ));
+    await Message.initialise();
+    await Message.insert(MessageData);
+  });
+  after(async () => {
+    await Message.deleteAll();
+  });
   context('Model Initialization', () => {
     it('Should return MessageData', async () => {
       const { data } = await Message.findAll();

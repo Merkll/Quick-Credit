@@ -37,6 +37,7 @@
     -o-transition: opacity 3s ease-in;
      transition: opacity 3s ease-in;
      opacity: 1;
+     z-index: 9999;
 }
 
 .hide{
