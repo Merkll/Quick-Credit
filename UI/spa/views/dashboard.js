@@ -5,6 +5,8 @@ import View from './view.js';
 import TopMenu from '../components/top-menu.component.js';
 import Sidebar from '../components/sidebar.component.js';
 
+import { sideBarLinks, topMenuLinks } from '../helper/template.js';
+
 
 const template = `
 <div>
@@ -58,7 +60,7 @@ const template = `
                     <h3 class="title">New Users</h3>
                 </div>        
         </div>
-        <div class="content">
+        <div class="content" id="content">
             <div class="page-title">
                 <span>New Loan Applications</span>
             </div>
@@ -92,67 +94,8 @@ export default new View({
   }
   ],
   hooks: {
-    data(data) {
-      const { isadmin } = data;
-      const topMenuLinks = {
-        childTag: 'links',
-        childComponent: { type: 'literal', data: '<a href="{{href}}">{{text}}</a>' },
-        childNodes: [
-          {
-            text: 'Logout',
-            href: './home.html',
-          }
-        ]
-      };
-      const sideBarlinks = {
-        client: {
-          childTag: 'links',
-          childComponent: { type: 'literal', data: '<a href="{{href}}" class="router" data-path="{{path}}" data-view="{{view}}">{{text}}</a>' },
-          childNodes: [
-            {
-              text: 'Loans',
-              href: './loans.html',
-              path: '/loans',
-              view: 'loans'
-            },
-            {
-              text: 'Apply',
-              href: './application.html',
-              path: '/apply',
-              view: 'application'
-            },
-            {
-              text: 'Profile',
-              href: './single-client.html',
-              path: '/profile',
-              view: 'single-client'
-            }
-          ]
-        },
-        admin: {
-          childTag: 'links',
-          childComponent: { type: 'literal', data: '<a href="{{href}}" class="router" data-path="{{path}}" data-view="{{view}}">{{text}}</a>' },
-          childNodes: [
-            {
-              text: 'Dashboard',
-              href: './dashboard.html',
-              class: 'active'
-            },
-            {
-              text: 'Loans',
-              href: './admin-loans.html',
-              path: '/loans',
-              view: 'loans'
-            },
-            {
-              text: 'Clients',
-              href: './admin-clients.html',
-            }
-          ]
-        }
-      };
-      const mode = isadmin ? 'admin' : 'client';
-      this.components[0].data = { links: sideBarlinks[mode], ...data };   
+    data(data) {     
+      this.components[0].data = { links: sideBarLinks(), ...data };   
       this.components[1].data = { ...topMenuLinks };
     },
     afterRender: () => {

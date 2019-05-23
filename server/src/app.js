@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   process.env.HOST = req.get('host');
+  console.log(req.body);
   next();
 });
 app.use('/', routes(router));

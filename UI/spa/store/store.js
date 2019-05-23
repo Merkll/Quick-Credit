@@ -11,8 +11,8 @@ const apiUrl = 'http://localhost:5000/api/v1';
 
 const getAuthHeader = () => {
   const token = SiteAction.getAuthToken();
-  return { 'Authorization': token };
-} 
+  return { Authorization: token };
+}; 
 
 export default class SiteAction {
   static saveAuthToken(token) {
@@ -63,7 +63,11 @@ export default class SiteAction {
     } = data;
     SiteAction.saveAuthToken(token);    
     render('alert', { content: `Welcome ${firstname}` });
-    Router.renderRoute('/dashboard', SiteAction.saveUserDetails({ firstname, id, isadmin }));
+    if (isadmin) {
+      Router.renderRoute('/dashboard', SiteAction.saveUserDetails({ firstname, id, isadmin }));
+    } else {
+      Router.renderRoute('/loans', SiteAction.saveUserDetails({ firstname, id, isadmin }))
+    }
     return data;
   }
 
@@ -71,7 +75,52 @@ export default class SiteAction {
     const { error, data } = await request(`${apiUrl}/loans`, {
       ...getAuthHeader()
     }).get().send();
-    if (error) return render('alert', { content: `Welcome ${error}`, classes: 'bg-red' });
+    if (error) return render('alert', { content: `${error}`, classes: 'bg-red' });
     return data;
+  }
+
+  static async getClients() {
+    const { error, data } = await request(`${apiUrl}/users`, {
+      ...getAuthHeader()
+    }).get().send();
+    if (error) return render('alert', { content: `${error}`, classes: 'bg-red' });
+    return data;
+  }
+
+  static async getClient(client) {
+    const { error, data } = await request(`${apiUrl}/users/${client}`, {
+      ...getAuthHeader()
+    }).get().send();
+    if (error) return render('alert', { content: `${error}`, classes: 'bg-red' });
+    return data;
+  }
+
+  static async getLoan(loanId) {
+    const { error, data } = await request(`${apiUrl}/loans/${loanId}`, {
+      ...getAuthHeader()
+    }).get().send();
+    if (error) return render('alert', { content: `${error}`, classes: 'bg-red' });
+    const { data: repaymentData = [] } = await request(`${apiUrl}/loans/${loanId}/repayments`, {
+      ...getAuthHeader()
+    }).get().send();
+    return { loan: data, repayments: repaymentData };
+  }
+
+  static async changeLoanStatus(loanDetails) {
+    const { loan, action } = loanDetails;
+    const { error, data } = await request(`${apiUrl}/loans/${loan}`, {
+      ...getAuthHeader()
+    }).patch({ status: action }).send();
+    if (error) return render('alert', { content: `${error}`, classes: 'bg-red' });
+    return { loan: data, message: `Loan succesfully ${action}` };
+  }
+
+  static async postRepayment(loanDetails) {
+    const { loan } = loanDetails;
+    const { error, data } = await request(`${apiUrl}/loans/${loan}/repayments`, {
+      ...getAuthHeader()
+    }).post().send();
+    if (error) return render('alert', { content: `${error}`, classes: 'bg-red' });
+    return { loan: data, message: 'Loan Repayment succesfull' };
   }
 }

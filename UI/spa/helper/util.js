@@ -52,3 +52,9 @@ export const validateFormFields = (formData, form) => {
   }  
   return true;
 };
+
+export const removeAllElement = (node, elementName) => {
+  foreachNodeInNodelist(node.childNodes, (childnode) => {
+    if (childnode.localName === elementName) node.removeChild(childnode);
+  });
+};

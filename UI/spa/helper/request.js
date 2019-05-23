@@ -20,7 +20,7 @@ class Request {
     };
   }
 
-  post(data) {
+  post(data = {}) {
     this.fetchBody = { 
       ...this.fetchBody,
       method: 'POST', 
@@ -62,7 +62,6 @@ class Request {
   }
 
   async execute() {
-    console.log(this.fetchBody);
     const data = await fetch(this.url, this.fetchBody);
     return data.json();
   }

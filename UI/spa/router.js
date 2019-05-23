@@ -11,11 +11,12 @@ class Router {
     if (!this.routerIdentifier) return;
     this.router = document.querySelectorAll(this.routerIdentifier);
     addEventToDomNodelist('click', this.router, async (event) => {
-      event.preventDefault()
-      const target = event.target;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const target = event.currentTarget;
       const { path, view } = target.dataset;
       if (!this.routes[path]) this.routes[path] = (await import(`./views/${view}.js`)).default;
-      this.renderRoute(path);
+      this.renderRoute(path, target.dataset);
     });
   }
 
