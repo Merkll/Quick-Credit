@@ -161,7 +161,6 @@ const templates = {};
      * @param {String} template 
      */
   export const render = async (templateComponent, tags, dataToPassHook = {}) => {
-    activateTemplateLoader();
     const { component, template: templateHtml } = await loadTemplateFile(templateComponent);
     if (component) {
       const populatedTemplate = await populate({ templateHtml, tags, component });
@@ -176,7 +175,6 @@ const templates = {};
         if (rootElement) rootElement.innerHTML = html; 
         templateHook({ component, action: 'afterRender', data: dataToPassHook });
       }
-      deactivateTemplateLoader();
       return html;            
     }
     return null;

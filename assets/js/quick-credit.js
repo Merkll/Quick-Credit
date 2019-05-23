@@ -120,10 +120,10 @@ const validateFormFields = (formData, form) => {
     let isFieldValid = true;
     if (validator) isFieldValid = validators[validator](fieldValue);
     if (fieldValue.length === 0 && isRequired) {
-      messages.push(`*field ${fieldName} is Required`);
+      messages.push(`field ${fieldName} is Required`);
       inputNode.style.borderColor = 'red';
     } else if (!isFieldValid.valid) {
-      messages.push(isFieldValid.message || `*field ${fieldName} is not valid`);
+      messages.push(isFieldValid.message || `field ${fieldName} is not valid`);
       inputNode.style.borderColor = 'red';
     } else inputNode.style.borderColor = 'white';
   }

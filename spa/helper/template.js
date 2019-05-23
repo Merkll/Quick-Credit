@@ -57,7 +57,7 @@ export const topMenuLinks = {
   childNodes: [
     {
       text: 'Logout',
-      href: './index.html',
+      href: '.',
     }
   ]
 };
