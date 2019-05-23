@@ -4,9 +4,9 @@
 import View from './view.js';
 import TopMenu from '../components/top-menu.component.js';
 import Sidebar from '../components/sidebar.component.js';
-import Loans from '../components/loans.component.js';
+import Clients from '../components/clients.component.js';
 import SiteAction from '../store/store.js';
-import { sideBarLinks, topMenuLinks } from '../helper/template.js';
+import { sideBarLinks } from '../helper/template.js';
 
 const template = `
 <div>
@@ -18,15 +18,24 @@ const template = `
     <div class="col-9">
         <div class="content" id="content">
             <div class="page-title">
-                <span>Loans</span>
+                <span>Clients</span>
             </div>
-            <div class="card-container" id = "loans-root"></div>                   
+            <div class="custom-select filter-form float-right">
+                    <form action="" class="filter-form">
+                            <select name="" id="">
+                                <option value="">All Clients</option>
+                                <option value="">Approved Clients</option>
+                                <option value="">Pending Approval</option>
+                            </select>
+                    </form>
+                </div>
+            <div class="card-container" id = "clients-root"></div>                   
         </div>
     </div>
 </div>
 <div class="overlay full-overlay">
         <i class="close-btn icon close"></i>
-        <div id="single-loan-root">
+        <div id="single-client-root">
 
         </div>
 </div>
@@ -44,17 +53,27 @@ export default new View({
     data: {}
   },
   {
-    component: Loans,
+    component: Clients,
     data: {}
   },
   ],
   hooks: {
     async data() {
       const user = SiteAction.getUserDetails();
+      const topMenuLinks = {
+        childTag: 'links',
+        childComponent: { type: 'literal', data: '<a href="{{href}}">{{text}}</a>' },
+        childNodes: [
+          {
+            text: 'Logout',
+            href: './home.html',
+          }
+        ]
+      };
       this.components[0].data = { links: sideBarLinks(), ...user };   
       this.components[1].data = { ...topMenuLinks };
-      const loans = await SiteAction.getLoans();
-      this.components[2].data = loans;
+      const clients = await SiteAction.getClients();
+      this.components[2].data = clients;
       return template;
     },
     afterRender: () => {

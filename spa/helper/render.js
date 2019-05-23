@@ -55,17 +55,23 @@ const templates = {};
     return templateHtml.replace(new RegExp(templateTag, 'g'), `${value}${templateTag}`); // appends original tag to handle multiple elements
   };
 
-  export const mapStringReplace = (template, dataToreplace) => {
+  export const mapStringReplace = (template, dataToreplace, trail = false) => {
     let data = dataToreplace;
     let replacedTemplate = template;
       Object.entries(data).map(([key, value]) => {
         replacedTemplate = replaceTag(replacedTemplate, key, value);
       });
+
+    if (trail) return replacedTemplate;
     return replaceTrailingTags(replacedTemplate);
   }
 
-  export const generateMultiFromTemplate = (template, data) =>{
-    return data.map((singleData) => mapStringReplace(template, singleData)).join(' ');
+  export const generateMultiFromTemplate = (template, data, before) =>{
+    return data.map((singleData) => {
+      let beforeTemplate = template;
+      if (typeof before === 'function') beforeTemplate = before(singleData, beforeTemplate);
+      return mapStringReplace(beforeTemplate, singleData)
+    }).join(' ');
   }
 
   /**
@@ -76,7 +82,6 @@ const templates = {};
   const multipleChildPopulate = async ({ templateHtml, childNodes, childTag, childTemplate, childComponent, rootTag }) => {
     for (const child of childNodes) {
       const { data, baseTemplate = childComponent } = child; // data takes precedence
-      console.log(child);
       if (data) {
         templateHtml = replaceTag(templateHtml, childTag, data);
       } else if (baseTemplate) {

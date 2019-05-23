@@ -1,3 +1,5 @@
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/named */
 /* eslint-disable import/extensions */
@@ -8,7 +10,9 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-undef */
 import SiteAction from '../store/store.js';
+import Router from '../router.js';
 import { render } from './render.js';
+import { removeAllElement, foreachNodeInNodelist } from './util.js';
 
 /**
  * Handles attaching events for nodelist
@@ -38,6 +42,7 @@ export const onViewLoaded = () => {
     if (event.target.matches('.view-message')) viewMessageAction(event);
     if (event.target.matches('.sidebar-icon i')) sideBarAction(event);
     if (event.target.matches('.loan-action')) loanAction(event);
+    if (event.target.matches('.loan-repayment')) repaymentAction(event);
     if (event.target.matches('.client-action')) clientAction(event);
   });
 
@@ -133,22 +138,25 @@ const modalCloseAction = (event) => {
 
 const viewLoanAction = async (event) => {
   event.preventDefault();
-  const loanId = event.target.dataset.loan;
-  const loanDetails = SiteAction.getLoan(loanId);
-  console.log(loanDetails);
-  // const repayments = Mock.repayments[loanId];
-  // const loanDetails = Mock.loanDetails[loanId];
-  // await render('single-loan', {}, { repayments, loanDetails });
-  // document.querySelector('.full-overlay').classList.add('show');
+  const loanid = event.target.dataset.loan;
+  document.querySelector('.full-overlay').classList.add('show');
+  const loanHolder = document.createElement('div');
+  loanHolder.id = 'single-loan';
+  removeAllElement(document.querySelector('.full-overlay'), 'div');
+  document.querySelector('.full-overlay').appendChild(loanHolder);
+  Router.renderRoute('/loan', { loanid });
 };
 
 const viewClientAction = async (event) => {
   event.preventDefault();
-  const clientId = event.target.dataset.client;
-  const clientDetails = Mock.clientDetails[clientId];
-  const clientLoans = Mock.loans;
-  await render('single-client', {}, { clientDetails, clientLoans });
+  event.stopImmediatePropagation();
+  const { email } = event.target.dataset;
   document.querySelector('.full-overlay').classList.add('show');
+  const loanHolder = document.createElement('div');
+  loanHolder.id = 'single-client';
+  removeAllElement(document.querySelector('.full-overlay'), 'div');
+  document.querySelector('.full-overlay').appendChild(loanHolder);
+  Router.renderRoute('/client', { email });
 };
 
 const newMessageAction = (event) => {
@@ -184,15 +192,46 @@ const sideBarAction = (event) => {
 const loanAction = async (event) => {
   event.preventDefault();
   const actionBtn = document.querySelectorAll('.loan-action');
-  const { action } = event.target.dataset;
-  render('alert', { content: `Loan ${action} Succesful` });
+  const data = await SiteAction.changeLoanStatus(event.target.dataset);
+  const message = data.message ? data.message : 'couldnt complete your request';
+  if (data.loan) {
+    const { id, status } = data.loan;
+    const repaymentBtn = `<button class="btn float-right overlay-btn loan-repayment" data-action="repayment" data-loan="${id}">Post Repayment</button>`;
+    const repaymentNode = new DOMParser().parseFromString(repaymentBtn, 'text/xml').firstChild;
+    let parentNode;
+    foreachNodeInNodelist(actionBtn, (node) => {
+      const parent = node.parentNode;
+      parentNode = parent;
+      if (parent) {
+        parent.removeChild(node);
+      }
+    });
+    const statusNodes = document.querySelectorAll(`span[data-loan="${id}"`);
+    foreachNodeInNodelist(statusNodes, (node) => {
+      // eslint-disable-next-line no-param-reassign
+      node.innerHTML = status;
+    });
+    if (parentNode && status === 'approved') parentNode.innerHTML = `${parentNode.innerHTML}${repaymentBtn}`;
+  }  
+  render('alert', { content: `${message}` });
+};
+
+const repaymentAction = async (event) => {
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  const actionBtn = document.querySelectorAll('.loan-action');
+  const { message } = await SiteAction.postRepayment(event.target.dataset);
+  const response = message || 'couldnt complete your request';
+  render('alert', { content: `${response}` });
 };
 
 const clientAction = async (event) => {
   event.preventDefault();
+  event.stopImmediatePropagation();
   const actionBtn = document.querySelectorAll('.client-action');
   const { action } = event.target.dataset;
   render('alert', { content: `Client ${action} Succesful` });
+  console.log(actionBtn);
 };
 
 const loanApplication = (formData, form) => {

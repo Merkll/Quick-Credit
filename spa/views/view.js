@@ -19,7 +19,8 @@ export default class View {
   }
 
   getElem() {
-    return this.elem ? this.elem : document.querySelector(this.elemSelector);
+    const containerElement = this.elem ? this.elem : document.querySelector(this.elemSelector);
+    return containerElement || document.querySelector('#content');
   }
 
   addHook(hook, handler) {
@@ -35,9 +36,7 @@ export default class View {
 
   async renderComponents() {
     if (!Array.isArray(this.components)) return null;
-    const components = this.components.map(({ component, data }) => {
-      return component.render(data)
-    });
+    const components = this.components.map(({ component, data }) => component.render(data));
     const renderedComponent = await Promise.all(components);
     return renderedComponent;
   }
