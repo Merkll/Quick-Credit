@@ -7,7 +7,7 @@ import { render } from '../helper/render.js';
 import { validateFormFields } from '../helper/util.js';
 import Router from '../router.js';
 
-const apiUrl = 'https://quick-credit-staging.herokuapp.com/api/v1';
+const apiUrl = 'http://localhost:5000/api/v1';
 
 const getAuthHeader = () => {
   const token = SiteAction.getAuthToken();
@@ -48,7 +48,8 @@ export default class SiteAction {
     } = data;
     SiteAction.saveAuthToken(token); 
     render('alert', { content: `Welcome ${firstname}` });
-    Router.renderRoute('/dashboard', SiteAction.saveUserDetails({ firstname, id, isadmin }));
+    if (isadmin) Router.renderRoute('/dashboard', SiteAction.saveUserDetails({ firstname, id, isadmin }));
+    else Router.renderRoute('/loans', SiteAction.saveUserDetails({ firstname, id, isadmin }));
 
     return data;
   }
