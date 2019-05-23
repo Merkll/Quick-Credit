@@ -31,9 +31,9 @@ const template = `
                                       <input type="password" name="password" data-validator="password" required>
                                   </div>
                                   <button class="btn primary-bg-color primary-color home-btn" type="submit"> Login</button>
-                                  <span class="primary-color size-16">Not yet a Member? <a href="./signup.html" class="color-red router" data-path="/signup" data-view="signup">Signup here</a></span>
+                                  <span class="primary-color size-16"><a href="./signup.html" class="color-white router" data-path="/signup" data-view="signup">Signup here</a></span>
                               </br>
-                                  <span class="primary-color size-16">Forgot password reset? <a href="./password-reset.html" class="color-red">here</a></span>
+                                  <span class="primary-color size-16"><a href="./password-reset.html" class="color-white">Reset Password</a></span>
                               </form>
                       </div>
                   </div>

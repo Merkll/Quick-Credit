@@ -2,7 +2,7 @@
 /**
  * Business login for all authentication based actions
  */
-import uuid from 'uuid/v4';
+import GeneratePassword from 'password-generator';
 import { User, Auth } from '../model';
 import { filterPassword } from '../helpers/util';
 
@@ -49,7 +49,7 @@ export const validateToken = async (token) => {
 };
 
 export const passwordReset = async (email) => {
-  const token = uuid();
+  const token = GeneratePassword();
   await MailEvent('password-reset', {
     to: email,
     token,

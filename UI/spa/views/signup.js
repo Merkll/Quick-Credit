@@ -7,7 +7,7 @@ const template = `
 <div>
 <div id="top-menu-root"></div>
     <div class="home-bg-image full-height"></div>
-        <div class="overlay home-overlay animate-fadein full-height">
+        <div class="overlay home-overlay animate-fadein full-height signup-overlay">
             <div class="row to-front">
                     <div class="col-6 offset-3 margin-top-30">
                             <div class="form">

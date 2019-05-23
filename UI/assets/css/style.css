@@ -1,7 +1,7 @@
 .home-bg-image{
     width: 100%;
     min-height: 500px;
-    background-image: url('../images/accounting-budget-calculate-3305.jpg');   
+    background-image: url('../images/3accounting-budget-calculate-3305.jpg');   
     background-repeat: no-repeat, repeat;
     background-color: #cccccc;
     background-size: cover;
@@ -31,7 +31,9 @@
     color: firebrick;
     border-color: firebrick;
 }
-
+.signup-overlay{
+    left: 0% !important;
+}
 .message-category{
     background-color: rgb(243, 243, 243);
     margin-top: 20px;
@@ -133,6 +135,7 @@
     .interest-calc-form{
         left: 100px;
     }
+
     /* .home-banner{
         margin-top: 0px;
         height: 160px !important;

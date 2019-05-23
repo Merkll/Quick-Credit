@@ -44,7 +44,6 @@ describe('Data Model', () => {
   before(async () => {
     await ArticleModel.initialise();
     await UserModel.initialise();
-
     const { data } = await UserModel.insert(UserData);
 
     const ArticleData = Array(5).fill(0).map((d, i) => ({

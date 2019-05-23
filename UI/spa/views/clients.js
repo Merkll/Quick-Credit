@@ -15,7 +15,7 @@ const template = `
     <div class="col-2 no-padding sidebar-col">
             <div id="sidebar-root"></div>
     </div>
-    <div class="col-9">
+    <div class="col-10">
         <div class="content" id="content">
             <div class="page-title">
                 <span>Clients</span>

@@ -1,5 +1,7 @@
+/* eslint-disable import/named */
 /* eslint-disable import/extensions */
 import { onViewLoaded } from '../helper/quick-credit.js';
+import { activateTemplateLoader, deactivateTemplateLoader } from '../helper/render.js';
 
 const removeAllChildren = (node) => {
   while (node.firstChild) {
@@ -31,7 +33,7 @@ export default class View {
   trigerHook(hook, data) {
     const hookHandler = this.hooks[hook];
     if (typeof hookHandler === 'function') return hookHandler.bind(this)(data);
-    return data;
+    return (data && data.view) ? null : data;
   }
 
   async renderComponents() {
@@ -42,6 +44,7 @@ export default class View {
   }
 
   async render(viewData) {
+    activateTemplateLoader();
     const data = await this.trigerHook('data', viewData) || this.template;
     const populatedTemplate = await this.trigerHook('populate', data);
     this.populatedTemplate = populatedTemplate;
@@ -58,5 +61,6 @@ export default class View {
     }
     await this.trigerHook('render', data);
     await this.trigerHook('afterRender', data);
+    deactivateTemplateLoader();
   }
 }

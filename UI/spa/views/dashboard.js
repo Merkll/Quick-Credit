@@ -15,7 +15,7 @@ const template = `
     <div class="col-2 no-padding sidebar-col">
             <div id="sidebar-root"></div>
     </div>
-    <div class="col-9">
+    <div class="col-10">
             <div class="search-box">
                     <a href="#" class="search-icon"><i class="fas fa-search"></i></a href="#">
                     <form action="">

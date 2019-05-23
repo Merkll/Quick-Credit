@@ -30,10 +30,10 @@ export default (Model) => {
         const loanData = detail;
         loanData.tenor = parseInt(loanData.tenor, 10) || 1;
         const { amount, tenor } = loanData;
-        const interest = amount * 0.05;
+        const interest = Math.round((amount * 0.05) * 100) / 100;
         loanData.interest = interest;
         const installment = (amount + interest) / tenor;
-        loanData.paymentInstallment = installment;
+        loanData.paymentInstallment = Math.round(installment * 100) / 100;
         loanData.createdOn = new Date();
         loanData.balance = amount + interest;
         return loanData;

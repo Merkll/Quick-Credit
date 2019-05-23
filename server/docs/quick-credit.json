@@ -304,6 +304,177 @@
         }
       }
     },
+    "/auth/password-reset": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "summary": "signin User to the platform",
+        "operationId": "password-reset",
+        "description": "Authenticates existing user",
+        "responses": {
+          "200": {
+            "description": "Password sent to user email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      ],
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "$ref": "#/components/schemas/TypeId"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "summary": "Signup User to the platform",
+        "operationId": "password reset",
+        "description": "Changes user's password",
+        "responses": {
+          "204": {
+            "description": "Password saved succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 201
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/User"
+                        }
+                      ],
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/TypeId"
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "User with that email address exist",
+                      "enum": [
+                        "User with that email address exist",
+                        "Invalid User details"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Request Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 405
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Request Method not allowed for this resource"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "number",
+                      "example": 422
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Post body required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "description": "User Details"
+        }
+      }
+    },
     "/users": {
       "get": {
         "tags": [
@@ -652,7 +823,7 @@
         ],
         "summary": "Gets a specific loan application",
         "operationId": "specificLoan",
-        "description": "Authenticates existing user",
+        "description": "Queries a specific loan",
         "parameters": [
           {
             "in": "path",

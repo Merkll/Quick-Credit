@@ -14,13 +14,12 @@ const router = express.Router();
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors('*'));
 app.use(morgan(':method :url :status :response-time ms'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   process.env.HOST = req.get('host');
-  console.log(req.body);
   next();
 });
 app.use('/', routes(router));
