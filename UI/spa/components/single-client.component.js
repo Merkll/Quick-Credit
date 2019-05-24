@@ -13,7 +13,7 @@ import SiteAction from '../store/store.js';
 const templateHtml = `
         <div class="page-title">
         <a href="./single-client.html"><span>Client <i>{{userId}}</i></span></a>
-        <span class="float-right color-grey">{{status}}</i></span>
+        <span class="float-right color-grey {{status}}">{{status}}</i></span>
         </div>
         <div class="details">
         <div class="form">

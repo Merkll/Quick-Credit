@@ -5,7 +5,7 @@ import { MailEvent } from '../lib/mail';
 import { UserService } from '.'; // code smell check later
 import { formatAmount } from '../helpers/util';
 
-export const createRepayment = async (loan, amount) => {
+export const createRepayment = async (loan, amount, force) => {
   if (!loan) throw new Error('Loan to query not specified');
   const { data: loanData } = await Loan.find({ id: { eq: loan } });
   const loanDetails = loanData[0];
@@ -18,7 +18,7 @@ export const createRepayment = async (loan, amount) => {
   // eslint-disable-next-line no-unneeded-ternary
   const loanDate = updatedon ? updatedon : createdon;
   const dateDiff = new Date().getMonth() - new Date(loanDate).getMonth();
-  if (dateDiff < 1) return { error: 'Repayment not yet due' };
+  if (dateDiff < 1 && !force) return { error: 'Repayment not yet due' };
   let repaidAmount = amount;
   if (!amount) repaidAmount = (balance - paymentinstallment >= 0) ? paymentinstallment : balance;
   const repaymentDetails = {

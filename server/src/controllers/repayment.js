@@ -18,10 +18,10 @@ export const getLoanRepayments = async (req, res, next) => {
 
 export const postLoanRepayment = async (req, res, next) => {
   const { loan } = req.params;
-  const { amount } = req.body;
+  const { amount, force = false } = req.body;
   const loanDetails = await LoanService.getLoan(loan);
   if (!loanDetails || loanDetails.length === 0) return next(new NotFoundError('loan with that id not found'));
-  const data = await RepaymentService.createRepayment(loan, amount);
+  const data = await RepaymentService.createRepayment(loan, amount, force);
   if (data.error) return next(new InvalidRequestBodyError(data.error));
   const response = new Response(data, 201);
   return res.status(response.status).json(response);

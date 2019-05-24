@@ -13,7 +13,7 @@ const loanCardTemplate = `
 <div class="card">
 <div class="card-header">
 <a href="#" class="router" data-path="/loan" data-view="single-loan" data-loanId="{{id}}"><span>Loan: {{id}}</span></a>
-    <span class="loan-status" data-loan="{{id}}">{{status}}</span>
+    <span class="loan-status {{status}}" data-loan="{{id}}">{{status}}</span>
 </div>
 <div class="card-content">
     <span>Application Date <i>{{createdon}}</i></span>

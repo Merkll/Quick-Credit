@@ -3,7 +3,9 @@ const formDataToJson = (formData) => {
   if (!formData.entries) return JSON.stringify(formData);
   const form = {};
   for (const [fieldName, fieldValue] of formData.entries()) {
-    form[fieldName] = fieldValue;
+    if (fieldName === 'tenor') form[fieldName] = parseInt(fieldValue, 10);
+    else if (fieldName === 'amount') form[fieldName] = parseFloat(fieldValue);
+    else form[fieldName] = fieldValue;
   }
   return JSON.stringify(form);
 };

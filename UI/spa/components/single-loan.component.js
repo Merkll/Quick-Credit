@@ -13,7 +13,7 @@ import SiteAction from '../store/store.js';
 const templateHtml = `
 <div class="page-title">
 <a href="#"><span>Loan <i>{{id}}</i></span></a>
-<span class="float-right color-grey loan-status" data-loan="{{id}}">{{status}}</i></span>
+<span class="float-right color-grey loan-status {{status}}" data-loan="{{id}}">{{status}}</i></span>
 </div>
 <div class="details">
 <div class="form">

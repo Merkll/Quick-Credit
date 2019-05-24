@@ -100,10 +100,10 @@ const validateFormFields = (formData, form) => {
     let isFieldValid = true;
     if (validator) isFieldValid = validators[validator](fieldValue);
     if (fieldValue.length === 0 && isRequired) {
-      messages.push(`*field ${fieldName} is Required`);
+      messages.push(`field ${fieldName} is Required`);
       inputNode.style.borderColor = 'red';
     } else if (!isFieldValid.valid) {
-      messages.push(isFieldValid.message || `*field ${fieldName} is not valid`);
+      messages.push(isFieldValid.message || `field ${fieldName} is not valid`);
       inputNode.style.borderColor = 'red';
     } else inputNode.style.borderColor = 'white';
   }
@@ -133,6 +133,9 @@ const modalCloseAction = (event) => {
   const modal = event.target.parentNode;
   const modalParent = modal.closest('.overlay');
   modal.classList.remove('show');
+  foreachNodeInNodelist(document.querySelectorAll('.alert'), (node) => {
+    if (node) node.classList.remove('show');
+  });
   if (modalParent) modalParent.classList.remove('show');
 };
 
@@ -210,6 +213,7 @@ const loanAction = async (event) => {
     foreachNodeInNodelist(statusNodes, (node) => {
       // eslint-disable-next-line no-param-reassign
       node.innerHTML = status;
+      node.classList.add(status);
     });
     if (parentNode && status === 'approved') parentNode.innerHTML = `${parentNode.innerHTML}${repaymentBtn}`;
   }  
@@ -221,8 +225,8 @@ const repaymentAction = async (event) => {
   event.stopImmediatePropagation();
   const actionBtn = document.querySelectorAll('.loan-action');
   const { message } = await SiteAction.postRepayment(event.target.dataset);
-  const response = message || 'couldnt complete your request';
-  render('alert', { content: `${response}` });
+  const response = message;
+  if (message) render('alert', { content: `${response}` });
 };
 
 const clientAction = async (event) => {
@@ -234,12 +238,8 @@ const clientAction = async (event) => {
   console.log(actionBtn);
 };
 
-const loanApplication = (formData, form) => {
-  const isValid = validateFormFields(formData, form);
-  if (isValid) {
-    render('alert', { content: 'Loan application Successful' });
-    window.location.href = './single-loans.html';
-  }
+const loanApplication = async (formData, form) => {
+  await SiteAction.loanApplication(formData, form);
 };
 
 

@@ -15,7 +15,7 @@ export const getLoan = async (req, res, next) => {
   const data = isLoanExist(loanData, next);
   if (!data) return null;
   // throws error if loan doesnt belong to user and user isnt an admin
-  if (email !== data.user && !isAdmin) return next(new AuthorizationError('You are not authorized to view that loan'));
+  if (email !== data.client && !isAdmin) return next(new AuthorizationError('You are not authorized to view that loan'));
   const response = new Response(data);
   return res.status(response.status).json(response);
 };

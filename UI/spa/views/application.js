@@ -29,12 +29,12 @@ const template = `
                                 </div>
                                 <div class="input-wrapper">
                                         <label for="" class="primary-color">Tenor</label>
-                                        <input class="required" type="text" name="tenor" data-validator="number" placeholder="12" required>
+                                        <input class="required" type="text" name="tenor" data-validator="tenor" placeholder="12" required>
                                 </div>
                         </div>
                         <div class="input-wrapper">
                                 <label for="" class="primary-color">Purpose</label>
-                                <input class="required" type="text" name="Purpose" placeholder="purpose" required>
+                                <input class="required" type="text" name="purpose" placeholder="purpose" required>
                         </div>
                         <div class="input-wrapper">
                             <button class="btn login-btn" type="submit">Apply</button>

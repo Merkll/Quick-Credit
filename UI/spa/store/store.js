@@ -8,6 +8,7 @@ import { validateFormFields } from '../helper/util.js';
 import Router from '../router.js';
 
 const apiUrl = 'https://quick-credit-staging.herokuapp.com/api/v1';
+// const apiUrl = 'http://localhost:5000/api/v1';
 
 const getAuthHeader = () => {
   const token = SiteAction.getAuthToken();
@@ -122,5 +123,18 @@ export default class SiteAction {
     }).post().send();
     if (error) return render('alert', { content: `${error}`, classes: 'bg-red' });
     return { loan: data, message: 'Loan Repayment succesfull' };
+  }
+
+  static async loanApplication(formData, form) {
+    const { messages } = validateFormFields(formData, form);
+    if (messages) {
+      return render('alert', { content: `${messages.join('</br>')}`, classes: 'bg-red' });
+    }
+    const { error, data } = await request(`${apiUrl}/loans`, {
+      ...getAuthHeader()
+    }).post(formData).send();
+    if (error) return render('alert', { content: `${Array.isArray(error) ? error.join('</br>') : error}`, classes: 'bg-red' });
+    Router.renderRoute('/loans', SiteAction.getUserDetails());
+    return data;
   }
 }

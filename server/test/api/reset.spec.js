@@ -52,7 +52,7 @@ describe('PASSWORD RESET API', () => {
     it('Should return status 200', async () => {
       const { status } = await request.get(url);
       expect(status).to.be.eql(200);
-    }).timeout(5000);
+    }).timeout(10000);
   });
   context('Change Password', () => {
     const authToken = faker.random.uuid();

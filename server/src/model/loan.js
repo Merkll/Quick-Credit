@@ -36,6 +36,8 @@ export default (Model) => {
         loanData.paymentInstallment = Math.round(installment * 100) / 100;
         loanData.createdOn = new Date();
         loanData.balance = amount + interest;
+        loanData.status = 'pending';
+        loanData.repaid = false;
         return loanData;
       });
     },

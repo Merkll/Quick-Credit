@@ -13,7 +13,7 @@ const clientCardTemplate = `
 <div class="card">
 <div class="card-header">
 <a href="#" class="router" data-path="/client" data-view="single-client" data-email="{{email}}"><span>Client: {{id}}</span></a>
-    <span data-client="{{id}}">{{status}}</span>
+    <span class="{{status}}" data-client="{{id}}">{{status}}</span>
 </div>
 <div class="card-content">
     <span>Date Joined <i>{{createdon}}</i></span>
