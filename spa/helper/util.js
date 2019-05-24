@@ -31,6 +31,7 @@ export const validateFormFields = (formData, form) => {
     password: password => ({ valid: password.length >= 6, message: 'Password should have min 6 chars' }),
     amount: amount => ({ valid: !!parseFloat(amount) }),
     number: number => ({ valid: typeof number === 'number' }),
+    tenor: number => ({ valid: (parseInt(number, 10) > 0 && parseInt(number, 10) <= 12) }),
   };
   const messages = [];
   for (const [fieldName, fieldValue] of formData.entries()) {

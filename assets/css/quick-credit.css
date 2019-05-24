@@ -1038,3 +1038,10 @@ Inspiration gotten from Alex Marinenko (https://codepen.io/jo-asakura/pen/stFHi)
   .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
+
+  .approved{
+      color: rgb(4, 179, 4) !important;
+  }
+  .rejected{
+      color: red !important;
+  }
