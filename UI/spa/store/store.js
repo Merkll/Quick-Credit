@@ -11,10 +11,10 @@ const apiUrl = 'https://quick-credit-staging.herokuapp.com/api/v1';
 // const apiUrl = 'http://localhost:5000/api/v1';
 
 const getAuthHeader = () => {
+  // eslint-disable-next-line no-use-before-define
   const token = SiteAction.getAuthToken();
   return { Authorization: token };
 }; 
-
 export default class SiteAction {
   static saveAuthToken(token) {
     window.localStorage.setItem('token', token);
@@ -67,7 +67,7 @@ export default class SiteAction {
     if (isadmin) {
       Router.renderRoute('/dashboard', SiteAction.saveUserDetails({ firstname, id, isadmin }));
     } else {
-      Router.renderRoute('/loans', SiteAction.saveUserDetails({ firstname, id, isadmin }))
+      Router.renderRoute('/loans', SiteAction.saveUserDetails({ firstname, id, isadmin }));
     }
     return data;
   }

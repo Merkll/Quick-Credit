@@ -1,0 +1,181 @@
+
+.animate-fadein {
+  -webkit-animation: fadein 2s;
+     -moz-animation: fadein 2s;
+      -ms-animation: fadein 2s;
+       -o-animation: fadein 2s;
+          animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+[class*="col-"]{
+  transition: all 1.0s ease-in;
+}
+*:focus{
+  transition: all 1.0s ease-in;
+}
+
+.show{
+  -webkit-transition: opacity 3s ease-in;
+  -moz-transition: opacity 3s ease-in;
+  -ms-transition: opacity 3s ease-in;
+  -o-transition: opacity 3s ease-in;
+   transition: opacity 3s ease-in;
+   opacity: 1;
+   z-index: 9999;
+}
+
+.hide{
+  -webkit-transition: visibility 3s ease-in-out;
+  -moz-transition: visibility 3s ease-in-out;
+  -ms-transition: visibility 3s ease-in-out;
+  -o-transition: visibility 3s ease-in-out;
+   transition: visibility 3s ease-in-out;
+   opacity: 0;
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@-moz-keyframes fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.loader {
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+@keyframes move_wave {
+  0% {
+      transform: translateX(0) translateZ(0) scaleY(1)
+  }
+  50% {
+      transform: translateX(-25%) translateZ(0) scaleY(0.55)
+  }
+  100% {
+      transform: translateX(-50%) translateZ(0) scaleY(1)
+  }
+}
+.waveContainer {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px; /*-58px*/;
+  top: 0;
+  margin: auto;
+}
+.waveContainerInner {
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+  height: var(--wave-height);
+  bottom: 1px;
+  background-image: linear-gradient(to top, #702d67 20%, #702d67 80%);
+}
+.bgTop {
+  z-index: 15;
+  opacity: 0.5;
+}
+.bgMiddle {
+  z-index: 10;
+  opacity: 0.75;
+}
+.bgBottom {
+  z-index: 5;
+}
+:root{
+  --wave-height: 200px;
+  --wave-color: #702d67;
+}
+.wave {
+  position: absolute;
+  left: 0;
+  width: 200%;
+  height: var(--wave-height);
+  background-repeat: repeat no-repeat;
+  background-position: 0 bottom;
+  transform-origin: center bottom;
+}
+.waveTop {
+  background-size: 50% 100px;
+  background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png');
+}
+.waveAnimation .waveTop {
+animation: move-wave 3s;
+ -webkit-animation: move-wave 3s;
+ -webkit-animation-delay: 1s;
+ animation-delay: 1s;
+}
+.waveMiddle {
+  background-size: 50% 120px;
+  background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png');
+}
+.waveAnimation .waveMiddle {
+  animation: move_wave 10s linear infinite;
+}
+.waveBottom {
+  background-size: 50% 100px;
+  background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')
+}
+.waveAnimation .waveBottom {
+  animation: move_wave 15s linear infinite;
+}
+
+@media only screen and (min-width: 700px) {
+  .waveContainer {
+      bottom: 210px; /*150*/
+  }
+}
+
+@media only screen and (max-width: 590px) {
+  .waveContainer {
+      bottom: -31px; /*-145px;*/
+  }
+  /* .bgTop, .bgBottom, .bgMiddle{
+      display: none;
+  } */
+}
+
+@media only screen and (max-width: 298px) {
+  .waveContainer {
+      bottom: -70px;
+  }
+}
+

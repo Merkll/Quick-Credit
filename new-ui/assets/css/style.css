@@ -1,0 +1,468 @@
+@import url('./animation.css');
+@import url(https://fonts.googleapis.com/css?family=Karla);
+
+:root{
+  --primary-bg-color: white;
+  --secondary-bg-color: #702d67;
+  --primary-text-color: #ff5425;
+  --secondary-text-color: white;
+  --logo-color: #ff5425;
+  --btn-color: #ff5425;
+  --wave-bg-color: #702d67;
+  --sidebar-color: #702d67;
+}
+
+html,body{
+  height: 100%;
+}
+body{
+  margin: 0;
+  background-color: white;
+}
+
+.container{
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: .3fr auto;
+  grid-template-rows: 50px auto 50px;
+  grid-template-areas: "header header" 
+                      "main main" 
+                      "footer footer";
+}
+
+.container.landing{
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: .3fr auto;
+  grid-template-rows: 50px auto;
+  grid-template-areas: "header header" 
+                      "main main"; 
+}
+.landing{
+  color: var(--secondary-text-color);
+}
+
+header {
+  grid-area: header;
+  padding: 10px;
+}
+header span{
+  display: inline-block;
+  font-size: 1.5em;
+}
+header span i {
+  color: white;
+  font-weight: bolder;
+  background-color: red;
+  padding: 2px;
+}
+header .nav-list{
+  list-style: none;
+  float: right;
+  padding: 0px;
+  margin: 0px;
+}
+header .nav-list::after{
+  display: table;
+  content: " ";
+  clear: both;
+}
+
+.nav-item{
+  margin: 0px 5px;
+  font-size: 1.2em;
+  display: inline;
+}
+
+aside{
+  grid-area: sidebar;
+}
+
+main{
+  grid-area: main;
+}
+
+main .content{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  padding-top: 50px;
+}
+main .content, header{
+  background-color: var(--secondary-bg-color);
+}
+
+footer{
+  grid-area: footer;
+}
+
+a{
+  color: var(--primary-text-color);
+  text-decoration: none;
+  font-weight: bolder;
+  font-size: 20px;
+}
+a:hover{
+  color: var(--secondary-text-color);
+}
+
+.btn{
+  border: none;
+  outline: none;
+  width: 100px;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  font-weight: bolder;
+  font-size: 20px;
+}
+.btn:hover{
+  background-color: var(--secondary-bg-color);
+  color: var(--secondary-text-color);
+}
+
+/* form */
+.form form{
+  display: block;
+  margin-top: 20px;
+}
+/* Form css */
+.input-wrapper{
+  margin-bottom: 35px;
+}
+label{
+  font-weight: bolder;
+  font-size: 18px;
+  color: white;
+}
+input{
+  border: none;
+  background-color: transparent;
+  border-bottom: .1px solid rgb(224, 223, 223);
+  height: 30px;
+  width: 100%;
+  color: white;
+  padding-left: 5px;
+}
+input.isrequired{
+  border-bottom: 1px solid red;
+  transition: all 0.5s linear;
+}
+input:focus{
+  border-bottom: 1px solid red;
+  outline: none;
+  transition: all 0.5s linear;
+}
+.input-group .input-wrapper{
+  width: auto;
+  float: left;
+  margin-right: 40px;
+}
+
+.input-group::after{
+  content: " ";
+  display: table;
+  clear: both;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+-webkit-appearance: none; 
+margin: 0; 
+}
+textarea {
+  width: 100%;
+  resize: none;
+}
+::placeholder{
+  color: white;
+  opacity: .7
+}
+.custom-select{
+  border: 1px solid #ccc;
+  width: 120px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.custom-select select {
+  padding: 5px 8px;
+  width: 130%;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  background-image: none;
+  -webkit-appearance: none;
+}
+
+.custom-select select:focus {
+  outline: none;
+}
+.btn{
+  min-width: 100px;
+  height: 25px;
+  border: none;
+  background-color: var(--btn-color);
+  color: white;
+  font-weight: 900;
+}
+.btn:hover, .btn:focus{
+  background-color: red;
+  transition: all 0.5s linear;
+}
+
+.form{
+  margin-bottom: 50px;
+  padding: 10px;
+  /* box-shadow: 3px 2px rgb(226, 226, 226); */
+}
+.form-selection{
+  margin-bottom: 25px;
+  padding: 10px;
+  background-color: firebrick;
+  height: 40px;
+
+}
+
+
+
+/* login-form */
+.login-form{
+  width: 100%;
+}
+
+.login-form form {
+  /* border-left: 5px solid white; */
+  border-top:2px solid white;
+  /* border-right: 10px solid #FFF; */
+  padding: 10px;
+  padding-top: 40px;
+  /* margin: 50px auto; */
+  /* background-image: -webkit-linear-gradient(left, #000 50%, #FFF 50%), -webkit-linear-gradient(left, #000 50%, #FFF 50%); */
+  /* background-image: -moz-linear-gradient(left, #000 50%, #FFF 50%), -moz-linear-gradient(left, #000 50%, #FFF 50%); */
+  /* background-image: -o-linear-gradient(left, #000 50%, #FFF 50%), -o-linear-gradient(left, #000 50%, #FFF 50%); */
+  /* background-image: linear-gradient(to right, #000 50%, #FFF 50%), linear-gradient(to right, #000 50%, #FFF 50%); */
+  /* background-position: 0 0, 0 100% ; */
+  /* background-repeat: no-repeat; */
+  /* background-size: 100% 10px; */
+}
+
+.form{
+  
+	/* padding:10px; */
+}
+
+.form *{
+  font-size: 18px;
+}
+
+.form-title{
+  float:left;
+	padding:0 5px;
+	margin:-54px 0 0 75px;
+  background-color: var(--secondary-bg-color);
+  font-size: 22px;
+}
+
+
+form span{
+  display: inline-block;
+  margin-top: 7px;
+}
+
+/* landing page specific */
+.tagline{
+  width: 100%;
+  padding: 20px;
+  font-size: 34px;
+  padding-left: 50px;
+}
+.tagline p {
+  font-weight: 500;
+  font-size: 24px;
+}
+.tagline p i{
+  color: firebrick;
+  padding: 3px;
+  font-weight: bolder;
+}
+
+.landing main .content{
+  box-shadow: 0 2px 3px 0 purple;
+}
+
+.corner {
+  font-size: 1em;
+  padding: 1em;
+  background-repeat: no-repeat;
+  background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%;
+  background-size: 1em 1em, 1em 1em, 1em 1em, 1em 1em;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22white%22 %2F%3E%3C%2Fsvg%3E"), 
+  url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22white%22 transform=%22translate(24, 0) rotate(90)%22 %2F%3E%3C%2Fsvg%3E"), 
+  url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22white%22 transform=%22translate(24, 24) rotate(180)%22 %2F%3E%3C%2Fsvg%3E"), 
+  url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22white%22 transform=%22translate(0, 24) rotate(270)%22 %2F%3E%3C%2Fsvg%3E");
+}
+
+.red-corner{
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22firebrick%22 %2F%3E%3C%2Fsvg%3E"), 
+  url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22firebrick%22 transform=%22translate(24, 0) rotate(90)%22 %2F%3E%3C%2Fsvg%3E"), 
+  url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22firebrick%22 transform=%22translate(24, 24) rotate(180)%22 %2F%3E%3C%2Fsvg%3E"), 
+  url("data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox=%220 0 24 24%22%3E%3Cpolygon points=%2224 0 6 0 0 0 0 6 0 24 6 24 6 6 24 6 24 0%22 fill=%22firebrick%22 transform=%22translate(0, 24) rotate(270)%22 %2F%3E%3C%2Fsvg%3E");
+  color: firebrick;
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  background-color: white;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+h2.corner{
+  text-align: center;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.why .heading{
+  display: block;
+  text-align: center;
+  margin: auto;
+  margin-top: 50px;
+  font-size: 24px;
+  font-weight: bold;
+  width: 30%;
+}
+
+.reason-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-between;
+  padding: 20px;
+  padding-top: 50px;
+}
+
+.reason{
+  height: 120px;
+  width: 120px;
+  margin-right: 10px;
+  margin-bottom: 30px;
+  background-color: transparent;
+  position: relative;
+  padding: 10px;
+}
+
+.reason img{
+  width: inherit;
+}
+.reason span{
+  display: inline-block;
+  position: absolute;
+  bottom: 10px;
+  left: 20%;
+  color: firebrick;
+  font-weight: bolder;
+}
+
+.steps{
+  background-color: var(--secondary-bg-color);
+  padding: 20px;
+}
+.steps .card{
+  background-color: white;
+  /* padding: 20px; */
+}
+
+@media only screen and (min-width: 700px) {
+  .tagline{
+    width: 30%;
+    height: 250px;
+  }
+  .login-form{
+    width: 40%;
+    margin-right: 100px;
+  }
+  .landing main .content{
+    height: 450px;
+    border-bottom-right-radius: 50%;
+  }
+  .steps{
+    border-top-left-radius: 50%
+  }
+  .reason-container{
+    justify-content: space-around;
+  }
+  h2.corner{
+    width: 30%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.sidebar {
+  position: fixed;
+  width: 25%;
+  height: 100vh;
+  background: #312450;
+  font-size: 0.65em;
+}
+
+.nav {
+  position: relative;
+  margin: 0 5%;
+  text-align: left;
+  top: 20%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  font-weight: bold;
+}
+
+.nav ul {
+  list-style: none;
+}
+.nav ul li {
+  position: relative;
+  margin: 2em 0;
+}
+.nav ul li a {
+  line-height: 5em;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.4em;
+  color: rgba(255, 255, 255, 0.35);
+  display: block;
+  transition: all ease-out 300ms;
+}
+.nav ul li.active a {
+  color: white;
+}
+.nav ul li:not(.active)::after {
+  opacity: 0.2;
+}
+.nav ul li:not(.active):hover a {
+  color: rgba(255, 255, 255, 0.75);
+}
+.nav ul li::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 0.2em;
+  background: black;
+  left: 0;
+  bottom: 0;
+  background-image: linear-gradient(to right, #5e42a6, #b74e91);
+}
